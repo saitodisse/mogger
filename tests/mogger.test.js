@@ -6,8 +6,12 @@ var tracer = new Mogger.Tracer({
 
 module.exports = {
 	setUp: function (callback) {
+		
+		var loogerConfig = {};
+		loogerConfig.output = fakeConsole;
+
 		tracer = new Mogger.Tracer({
-			output: fakeConsole
+			loggerConfig: loogerConfig
 		});
 
 		fakeConsole.logRecorder = [];
@@ -22,13 +26,40 @@ module.exports = {
 	'Mogger object': function(test) {
 		test.equal('function', typeof Mogger.Tracer);
 		test.equal('object', typeof tracer);
-		test.equal('function', typeof tracer.trace);
+		test.equal('function', typeof tracer.traceObj);
 		
 		test.done();
 	},
 
-	'Colorful Logger dependency': function(test) {
+	'dependency ColorfulLogger exists': function(test) {
 		test.notEqual('undefined', typeof tracer.logger);
+		
+		test.done();
+	},
+
+	'can use other logger dependencie': function(test) {
+		var someLogger = {name: 'someLogger'};
+
+		tracer = new Mogger.Tracer({
+			logger: someLogger
+		});
+
+		test.equal(someLogger, tracer.logger);
+		
+		test.done();
+	},
+
+	'can trace a function': function(test) {
+		var someObj = {};
+		someObj.addNumbers = function (arg1, arg2) {
+			return arg1 + arg2;
+		};
+
+		tracer.traceObj(someObj);
+
+		someObj.addNumbers(1, 2);
+
+		test.equal('addNumbers', fakeConsole.logRecorder[0].message);
 		
 		test.done();
 	},

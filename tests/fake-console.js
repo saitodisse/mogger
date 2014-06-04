@@ -1,9 +1,9 @@
 var fakeConsole = {};
+var slice = Array.prototype.slice;
 fakeConsole.logRecorder = [];
 
 fakeConsole.log = function() {
-	var split = Array.prototype.split;
-	var args = split(arguments);
+	var args = slice.call(arguments);
 	var message = args.shift();
 
 	fakeConsole.logRecorder.push({
@@ -38,8 +38,7 @@ fakeConsole.group = function() {
 };
 
 fakeConsole.groupCollapsed = function() {
-	var split = Array.prototype.split;
-	var args = split(arguments);
+	var args = slice(arguments);
 	var message = args.shift();
 
 	fakeConsole.logRecorder.push({
@@ -50,8 +49,7 @@ fakeConsole.groupCollapsed = function() {
 };
 
 fakeConsole.groupEnd = function() {
-	var split = Array.prototype.split;
-	var args = split(arguments);
+	var args = slice(arguments);
 	var message = args.shift();
 
 	fakeConsole.logRecorder.push({
