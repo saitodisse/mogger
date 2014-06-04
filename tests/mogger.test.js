@@ -1,12 +1,12 @@
-var ColorfulLogger = require('../src/colorful-logger');
+var Mogger = require('../src/colorful-logger');
 var fakeConsole = require('./fake-console');
-var colorfulLogger = new ColorfulLogger.Logger({
+var colorfulLogger = new Mogger.Tracer({
 	output: fakeConsole
 });
 
 module.exports = {
 	setUp: function (callback) {
-		colorfulLogger = new ColorfulLogger.Logger({
+		colorfulLogger = new Mogger.Tracer({
 			output: fakeConsole
 		});
 
@@ -19,8 +19,8 @@ module.exports = {
 		callback();		
 	},
 
-	'ColorfulLogger object': function(test) {
-		test.equal('function', typeof ColorfulLogger.Logger);
+	'Mogger object': function(test) {
+		test.equal('function', typeof Mogger.Tracer);
 		
 		test.equal('object', typeof colorfulLogger);
 		
@@ -30,7 +30,7 @@ module.exports = {
 	},
 
 	'config has his owns defaults': function(test) {
-		colorfulLogger = new ColorfulLogger.Logger();
+		colorfulLogger = new Mogger.Tracer();
 		var config = colorfulLogger.config;
 
 		test.ok(config.enabled);
@@ -50,7 +50,7 @@ module.exports = {
 	},
 
 	'when disabled do not call the output': function(test){
-		colorfulLogger = new ColorfulLogger.Logger({
+		colorfulLogger = new Mogger.Tracer({
 			enabled: false
 		});
 
@@ -62,7 +62,7 @@ module.exports = {
 	},
 
 	'can be disabled after initialization': function(test){
-		colorfulLogger = new ColorfulLogger.Logger({
+		colorfulLogger = new Mogger.Tracer({
 			enabled: false
 		});
 		

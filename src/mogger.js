@@ -2,22 +2,22 @@
 
   // AMD
   if (typeof define === 'function' && define.amd) {
-    define(['lodash', 'exports'], function (_, exports) {
-      factory(root, exports, _);
+    define(['colorful-logger', 'exports'], function (ColorfulLogger, exports) {
+      factory(root, exports, ColorfulLogger);
     });
 
   // Node.js
   } else if (typeof exports !== 'undefined') {
-    var _ = require('lodash');
-    factory(root, exports, _);
+    var ColorfulLogger = require('colorful-logger');
+    factory(root, exports, ColorfulLogger);
   }
 
-}(this, function(root, ColorfulLogger, _) {
+}(this, function(root, Mogger, ColorfulLogger) {
 
 	/*******************************
 		string utilities
 	*******************************/
-	ColorfulLogger.stringUtility = {
+	Mogger.stringUtility = {
 		rpad: function (str, padString, length) {
 	    while (str.length < length) {
 	        str = str + padString;
@@ -36,14 +36,14 @@
 	};
 
 	/*******************************
-		ColorfulLogger
+		Mogger
 	*******************************/
-	ColorfulLogger.Logger = function (config){
-		var stringUtility = ColorfulLogger.stringUtility;
+	Mogger.Tracer = function (config){
+		var stringUtility = Mogger.stringUtility;
 
 		config = config || {};
 
-		var defaults = _.partialRight(_.assign, function(a, b) {
+		var defaults = ColorfulLogger.partialRight(ColorfulLogger.assign, function(a, b) {
 		  return typeof a == 'undefined' ? b : a;
 		});
 
@@ -76,7 +76,7 @@
 				return false;
 			}
 
-			if(_.isArray(opt)){
+			if(ColorfulLogger.isArray(opt)){
 				for (i = 0; i < opt.length; i++) {
 					optItem = opt[i];
 
@@ -106,9 +106,9 @@
 			if(opt && (opt.css || opt.randomColor) && this.config.enabledCss){
 				if(opt.randomColor){
 					var someColors = ['#600','#330','#033','#21460F','#6700B9','#284','#7653C1'];
-					var randomNumber = _.random(0, someColors.length-1, false);
+					var randomNumber = ColorfulLogger.random(0, someColors.length-1, false);
 					var oneColor = someColors[randomNumber];
-					if(_.isUndefined(opt.css)){
+					if(ColorfulLogger.isUndefined(opt.css)){
 						opt.css = 'color: ' + oneColor;
 					}
 					else{
@@ -122,14 +122,14 @@
 
 		this.getMessage = function(opt) {
 			var message = '';
-			if(_.isObject(opt)){
+			if(ColorfulLogger.isObject(opt)){
 				message = opt.message;
 			}
-			else if(_.isString(opt)){
+			else if(ColorfulLogger.isString(opt)){
 				message = opt;
 			}
 
-			var hasCss = (!_.isUndefined(opt.css) || opt.randomColor);
+			var hasCss = (!ColorfulLogger.isUndefined(opt.css) || opt.randomColor);
 			if(hasCss && this.config.enabledCss){
 				message = '%c' + message;
 			}
@@ -155,7 +155,7 @@
 			var localConsole = this.config.output;
 			var logtype = (opt && opt.logType) || 'log';
 
-			if(_.isUndefined(cssList) || cssList.length === 0){
+			if(ColorfulLogger.isUndefined(cssList) || cssList.length === 0){
 				localConsole[logtype](message);
 			}
 			else{
@@ -166,7 +166,7 @@
 
 	};
 
-  return ColorfulLogger;
+  return Mogger;
 
 }));
 

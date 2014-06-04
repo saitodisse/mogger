@@ -1,36 +1,40 @@
-#meld-trace-logger 
-###[beta 0.0.1]
-meld + trace + colorful console.log
+#mogger.js
+###[beta 0.0.5]
+meld + trace + colorful logger
 
-##AMD (require.js)
-###install with bower
+###node.js
 ```
-bower install git@github.com:saitodisse/meld-trace-logger.git --save
+npm install saitodisse/mogger --save
 ```
 
-###configure
+###AMD (require.js)
+```
+bower install git@github.com:saitodisse/mogger.git --save
+```
+
+####configure
 ```javascript
 require.config({
 	// The shim config allows us to configure dependencies for
 	// scripts that do not call define() to register a module
 	shim: {
-		ColorfulLogger: {
+		Mogger: {
 			deps: ['lodash']
 		}
 	},
 	paths: {
 		lodash: '../bower_components/lodash/dist/lodash',
-		ColorfulLogger: '../bower_components/meld-trace-logger/src/colorful-logger'
+		Mogger: '../bower_components/mogger/src/colorful-logger'
 	}
 });
 ```
 
-###call
+####call
 ```javascript
 define([
-	'ColorfulLogger'
-], function (ColorfulLogger) {
-	var logger = new ColorfulLogger.Logger();
+	'Mogger'
+], function (Mogger) {
+	var logger = new Mogger.Tracer();
 
 	// a simple usage, not fun
 	logger.log('Welcome to Meld Trace Logger');
@@ -43,23 +47,23 @@ define([
 });
 ```
 
-##tests
-###pre-requirements
+###tests
+####pre-requirements
 ```
 sudo npm i jshint nodeunit supervisor grunt-cli -g
 ```
 
-###test + jshint
+####test + jshint
 ```
 grunt
 ```
 
-###watch for changes: test + jshint
+####watch for changes: test + jshint
 ```
 grunt test
 ```
 
-###nodeunit + node-debug
+####nodeunit + node-debug
 from: http://stackoverflow.com/questions/16652358/how-to-debug-nodeunit-using-node-inspector
 ```shell
 npm -g install supervisor node-inspector

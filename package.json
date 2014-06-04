@@ -1,11 +1,11 @@
 {
-  "name": "meld-trace-logger",
+  "name": "mogger",
   "version": "0.0.1",
   "description": "colorful console log, with meld and trace",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/saitodisse/meld-trace-logger.git"
+    "url": "git://github.com/saitodisse/mogger.git"
   },
   "keywords": [
     "meld",
@@ -16,11 +16,11 @@
   "author": "Julio Saito",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/saitodisse/meld-trace-logger/issues"
+    "url": "https://github.com/saitodisse/mogger/issues"
   },
-  "homepage": "https://github.com/saitodisse/meld-trace-logger",
+  "homepage": "https://github.com/saitodisse/mogger",
   "dependencies": {
-    "lodash": "^2.4.1",
+    "colorful-logger": "git://github.com/saitodisse/colorful-logger",
     "meld": "^1.3.1"
   },
   "devDependencies": {

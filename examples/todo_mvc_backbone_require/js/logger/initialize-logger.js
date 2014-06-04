@@ -1,13 +1,13 @@
 /*global define*/
 define([
-	'ColorfulLogger',
+	'Mogger',
 	'backbone',
 	'collections/todos',
 	'views/todos'
-], function (ColorfulLogger, Backbone, Todos, TodoView) {
+], function (Mogger, Backbone, Todos, TodoView) {
 	'use strict';
 
-	var logger = new ColorfulLogger.Logger({
+	var logger = new Mogger.Tracer({
 		ignorePattern: /^ignored/i
 	});
 

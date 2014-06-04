@@ -1,7 +1,7 @@
 {
-  "name": "meld-trace-logger",
+  "name": "mogger",
   "version": "0.0.1",
-  "homepage": "https://github.com/saitodisse/meld-trace-logger",
+  "homepage": "https://github.com/saitodisse/mogger",
   "authors": [
     "Julio Makdisse Saito <saitodisse@gmail.com>"
   ],
