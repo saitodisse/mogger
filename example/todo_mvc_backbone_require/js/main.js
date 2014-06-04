@@ -19,10 +19,6 @@ require.config({
 		backboneLocalstorage: {
 			deps: ['backbone'],
 			exports: 'Store'
-		},
-
-		Mogger: {
-			deps: ['lodash']
 		}
 	},
 	paths: {
@@ -32,7 +28,6 @@ require.config({
 		backboneLocalstorage: '../bower_components/backbone.localStorage/backbone.localStorage',
 		text: '../bower_components/requirejs-text/text',
 
-		lodash: '../bower_components/lodash/dist/lodash',
 		Mogger: '../bower_components/mogger/src/mogger'
 	}
 });
@@ -41,10 +36,11 @@ require([
 	'backbone',
 	'views/app',
 	'routers/router',
-	'./logger/initialize-logger'
-], function (Backbone, AppView, Workspace, Logger) {
+	'Mogger'
+], function (Backbone, AppView, Workspace, Mogger) {
 	
-	new Logger();
+	var tracer = new Mogger.Tracer();
+	tracer.traceObj(Backbone.View.prototype);
 
 	/*jshint nonew:false*/
 	// Initialize routing and start Backbone.history()

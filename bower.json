@@ -13,19 +13,23 @@
   "keywords": [
     "console",
     "log",
+    "logger",
     "trace",
+    "tracer",
+    "colorful",
     "aop",
     "meld"
   ],
   "license": "MIT",
-  "dependencies"  : {
-    "colorful-logger": "git@github.com:saitodisse/colorful-logger.git"
+  "dependencies": {
+    "colorful-logger": "git@github.com:saitodisse/colorful-logger.git",
+    "meld": "~1.3.1"
   },
   "ignore": [
     "**/.*",
     "node_modules",
     "bower_components",
     "tests",
-    "examples"
+    "example"
   ]
 }
