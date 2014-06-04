@@ -1,6 +1,6 @@
 {
   "name": "mogger",
-  "version": "0.0.1",
+  "version": "0.0.5",
   "description": "colorful console log, with meld and trace",
   "main": "index.js",
   "repository": {
@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/saitodisse/mogger",
   "dependencies": {
-    "colorful-logger": "git://github.com/saitodisse/colorful-logger",
+    "mogger": "git://github.com/saitodisse/mogger",
     "meld": "^1.3.1"
   },
   "devDependencies": {

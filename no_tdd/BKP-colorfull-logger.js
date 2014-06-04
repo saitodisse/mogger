@@ -1,11 +1,11 @@
 var utility = require('./string-utility');
 
-module.exports = function colorfulLogger(message, thisObj, args, colorIndex){
-  /* colorfulLogger shows a console.debug with colors.
+module.exports = function mogger(message, thisObj, args, colorIndex){
+  /* mogger shows a console.debug with colors.
    *   creates a group and puts arguments and this
   
     usage:  
-  colorfulLogger('method()', this, arguments, 1);
+  mogger('method()', this, arguments, 1);
   
   /**
    * @param  {[string]}     message      [message to show]
@@ -143,8 +143,8 @@ module.exports = function colorfulLogger(message, thisObj, args, colorIndex){
   logGroup();
 
   // show -------pause----------
-  clearTimeout(colorfulLogger.globalTimeoutLogId);
-  colorfulLogger.globalTimeoutLogId = setTimeout(function () {
+  clearTimeout(mogger.globalTimeoutLogId);
+  mogger.globalTimeoutLogId = setTimeout(function () {
       // if is not canceled, shows line bellow
       console.debug('----------------------------------pause--------------------------');
   }, 100);

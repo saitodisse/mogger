@@ -4,6 +4,6 @@
  12 files changed, 56 insertions(+), 45 deletions(-)
  create mode 100644 TODO.md
  create mode 100644 colorful
- rename src/{colorfull-logger.js => colorful-logger.js} (90%)
- rename tests/{colorfull-logger.test.js => colorful-logger.test.js} (60%)
+ rename src/{colorfull-logger.js => mogger.js} (90%)
+ rename tests/{colorfull-logger.test.js => mogger.test.js} (60%)
 [1;32m :: git push origin master[0m

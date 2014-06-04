@@ -1,6 +1,6 @@
 var meld = require('meld');
 var trace = require('meld/aspect/trace');
-var __LOG = require('./colorful-logger');
+var __LOG = require('./mogger');
 
 
 module.exports = function(appName, app, colorIndex){

@@ -24,7 +24,7 @@ require.config({
 	},
 	paths: {
 		lodash: '../bower_components/lodash/dist/lodash',
-		Mogger: '../bower_components/mogger/src/colorful-logger'
+		Mogger: '../bower_components/mogger/src/mogger'
 	}
 });
 ```

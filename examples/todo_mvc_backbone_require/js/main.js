@@ -33,7 +33,7 @@ require.config({
 		text: '../bower_components/requirejs-text/text',
 
 		lodash: '../bower_components/lodash/dist/lodash',
-		Mogger: '../bower_components/mogger/src/colorful-logger'
+		Mogger: '../bower_components/mogger/src/mogger'
 	}
 });
 

@@ -1,9 +1,9 @@
-var _ = require('lodash');
 var fakeConsole = {};
 fakeConsole.logRecorder = [];
 
 fakeConsole.log = function() {
-	var args = _.toArray(arguments);
+	var split = Array.prototype.split;
+	var args = split(arguments);
 	var message = args.shift();
 
 	fakeConsole.logRecorder.push({
@@ -38,7 +38,8 @@ fakeConsole.group = function() {
 };
 
 fakeConsole.groupCollapsed = function() {
-	var args = _.toArray(arguments);
+	var split = Array.prototype.split;
+	var args = split(arguments);
 	var message = args.shift();
 
 	fakeConsole.logRecorder.push({
@@ -49,7 +50,8 @@ fakeConsole.groupCollapsed = function() {
 };
 
 fakeConsole.groupEnd = function() {
-	var args = _.toArray(arguments);
+	var split = Array.prototype.split;
+	var args = split(arguments);
 	var message = args.shift();
 
 	fakeConsole.logRecorder.push({
