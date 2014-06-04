@@ -19,7 +19,7 @@
   ],
   "license": "MIT",
   "dependencies"  : {
-    "lodash"  : "*"
+    "colorful-logger": "git@github.com:saitodisse/colorful-logger.git"
   },
   "ignore": [
     "**/.*",
