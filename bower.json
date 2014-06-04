@@ -23,7 +23,7 @@
   "license": "MIT",
   "dependencies": {
     "colorful-logger": "git@github.com:saitodisse/colorful-logger.git",
-    "meld": "~1.3.1"
+    "meld": "git@github.com:saitodisse/meld.git#master"
   },
   "ignore": [
     "**/.*",
