@@ -55,7 +55,9 @@ module.exports = {
 			return arg1 + arg2;
 		};
 
-		tracer.traceObj(someObj);
+		tracer.traceObj({
+			target: someObj
+		});
 
 		someObj.addNumbers(1, 2);
 
@@ -64,42 +66,57 @@ module.exports = {
 		test.done();
 	},
 
-	'can customize the trace log message': function(test) {
-		var someObj = {};
-		someObj.addNumbers = function (arg1, arg2) {
-			return arg1 + arg2;
-		};
+	// 'can call colorLogger with a CSS': function(test) {
+	// 	var someObj = {};
+	// 	someObj.addNumbers = function (arg1, arg2) {
+	// 		return arg1 + arg2;
+	// 	};
 
-		tracer.configure({
-			beforeFunction: '=> ',
-			afterFunction: ' <='
-		});
+	// 	tracer.configure({
+	// 		cssFunction: 'color: red'
+	// 	});
 
-		tracer.traceObj(someObj);
+	// 	tracer.traceObj({
+	// 		target: someObj
+	// 	});
 
-		someObj.addNumbers(1, 2);
+	// 	someObj.addNumbers(1, 2);
 
-		test.equal('=> addNumbers <=', fakeConsole.logRecorder[0].message);
+	// 	test.equal('%caddNumbers', fakeConsole.logRecorder[0].message);
+	// 	test.equal('color: red', fakeConsole.logRecorder[0].cssList[0]);
 		
-		test.done();
-	},
+	// 	test.done();
+	// },
 
-	'can call colorLogger with a CSS': function(test) {
+	'can add a customized beforeFunction': function(test) {
 		var someObj = {};
 		someObj.addNumbers = function (arg1, arg2) {
 			return arg1 + arg2;
 		};
 
-		tracer.configure({
-			cssFunction: 'color: red'
+		//trace
+		tracer.traceObj({
+			target: someObj,
+			targetConfig: {
+				css: 'color: red',
+				size: 15 
+			},
+			
+			before: {
+				message: 'SomeObj',
+				css: 'color: blue',
+				size: 10
+			},
+			
 		});
 
-		tracer.traceObj(someObj);
-
+		//call
 		someObj.addNumbers(1, 2);
 
-		test.equal('%caddNumbers', fakeConsole.logRecorder[0].message);
-		test.equal('color: red', fakeConsole.logRecorder[0].cssList[0]);
+		//verify
+		test.equal('%cSomeObj   %caddNumbers     ', fakeConsole.logRecorder[0].message);
+		test.equal('color: blue', fakeConsole.logRecorder[0].cssList[0]);
+		test.equal('color: red', fakeConsole.logRecorder[0].cssList[1]);
 		
 		test.done();
 	},

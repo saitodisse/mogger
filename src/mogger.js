@@ -22,43 +22,47 @@
 	Mogger.Tracer = function (config){
     var logger = config && config.logger;
     var loggerConfig = config && config.loggerConfig;
-    this.logger = logger || new ColorfulLogger.Logger(loggerConfig);
+    logger = this.logger = logger || new ColorfulLogger.Logger(loggerConfig);
 
-    this.configure = function(options) {
-      if(options.beforeFunction){
-        this.beforeFunction = options.beforeFunction;
+    var GetReporter = function (options) {
+      if(options.before){
+        this.before = options.before;
       }
-      if(options.afterFunction){
-        this.afterFunction = options.afterFunction;
+      if(options.targetConfig){
+        this.targetConfig = options.targetConfig;
       }
-      if(options.cssFunction){
-        this.cssFunction = options.cssFunction;
-      }
-    };
 
-    this.customReporter = {
-      onCall: function (info) {
-        var fName = info.method;
-        if(this.beforeFunction){
-          fName = this.beforeFunction + fName;
+      this.onCall = function(info) {
+        var logs = [];
+
+        //before (namespace)
+        if(this.before){
+          logs.push(this.before);
         }
-        if(this.afterFunction){
-          fName = fName + this.afterFunction;
+
+        //target (function)
+        if(this.targetConfig){
+          targetLog = this.targetConfig;
+          targetLog.message = info.method;
         }
-        if(this.cssFunction){
-          fName = {
-            message: fName,
-            css: this.cssFunction
-          }
+        else{
+          var targetLog = {
+            message: info.method
+          };
         }
-        this.logger.log(fName);
-      }.bind(this),
+        logs.push(targetLog);
+
+        //colorful-logger
+        logger.log(logs);
+      }.bind(this);
+      
       // onReturn:
       // onThrow:
-    };
+    }
 
-		this.traceObj = function(traceFunc) {
-      meld(traceFunc, /./, meldTrace(this.customReporter));
+		this.traceObj = function(opt) {
+      var reporter = new GetReporter(opt);
+      meld(opt.target, /./, meldTrace(reporter));
 		};
 
 	};
