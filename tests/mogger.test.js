@@ -64,4 +64,44 @@ module.exports = {
 		test.done();
 	},
 
+	'can customize the trace log message': function(test) {
+		var someObj = {};
+		someObj.addNumbers = function (arg1, arg2) {
+			return arg1 + arg2;
+		};
+
+		tracer.configure({
+			beforeFunction: '=> ',
+			afterFunction: ' <='
+		});
+
+		tracer.traceObj(someObj);
+
+		someObj.addNumbers(1, 2);
+
+		test.equal('=> addNumbers <=', fakeConsole.logRecorder[0].message);
+		
+		test.done();
+	},
+
+	'can call colorLogger with a CSS': function(test) {
+		var someObj = {};
+		someObj.addNumbers = function (arg1, arg2) {
+			return arg1 + arg2;
+		};
+
+		tracer.configure({
+			cssFunction: 'color: red'
+		});
+
+		tracer.traceObj(someObj);
+
+		someObj.addNumbers(1, 2);
+
+		test.equal('%caddNumbers', fakeConsole.logRecorder[0].message);
+		test.equal('color: red', fakeConsole.logRecorder[0].cssList[0]);
+		
+		test.done();
+	},
+
 };

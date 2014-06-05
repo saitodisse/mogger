@@ -24,9 +24,33 @@
     var loggerConfig = config && config.loggerConfig;
     this.logger = logger || new ColorfulLogger.Logger(loggerConfig);
 
-    var customReporter = {
+    this.configure = function(options) {
+      if(options.beforeFunction){
+        this.beforeFunction = options.beforeFunction;
+      }
+      if(options.afterFunction){
+        this.afterFunction = options.afterFunction;
+      }
+      if(options.cssFunction){
+        this.cssFunction = options.cssFunction;
+      }
+    };
+
+    this.customReporter = {
       onCall: function (info) {
         var fName = info.method;
+        if(this.beforeFunction){
+          fName = this.beforeFunction + fName;
+        }
+        if(this.afterFunction){
+          fName = fName + this.afterFunction;
+        }
+        if(this.cssFunction){
+          fName = {
+            message: fName,
+            css: this.cssFunction
+          }
+        }
         this.logger.log(fName);
       }.bind(this),
       // onReturn:
@@ -34,7 +58,7 @@
     };
 
 		this.traceObj = function(traceFunc) {
-      meld(traceFunc, /./, meldTrace(customReporter));
+      meld(traceFunc, /./, meldTrace(this.customReporter));
 		};
 
 	};
