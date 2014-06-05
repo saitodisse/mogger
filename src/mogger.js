@@ -31,6 +31,9 @@
       if(options.targetConfig){
         this.targetConfig = options.targetConfig;
       }
+      if(options.showArguments){
+        this.showArguments = options.showArguments;
+      }
 
       this.onCall = function(info) {
         var logs = [];
@@ -52,8 +55,24 @@
         }
         logs.push(targetLog);
 
+
         //colorful-logger
-        logger.log(logs);
+        if(this.showArguments){
+          logs[0] = this.before;
+          logs[0].logType = 'groupCollapsed';
+          logger.log(logs);
+
+          logger.log({
+            message: info.args
+          });
+          logger.log({
+            logType: 'groupEnd'
+          });
+        }
+        else{
+          logger.log(logs);
+        }
+
       }.bind(this);
       
       // onReturn:

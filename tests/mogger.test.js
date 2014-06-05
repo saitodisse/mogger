@@ -92,9 +92,53 @@ module.exports = {
 		someObj.addNumbers(1, 2);
 
 		//verify
+		console.dir(fakeConsole.logRecorder)
 		test.equal('%cSomeObj   %caddNumbers     ', fakeConsole.logRecorder[0].message);
 		test.equal('color: blue', fakeConsole.logRecorder[0].cssList[0]);
 		test.equal('color: red', fakeConsole.logRecorder[0].cssList[1]);
+		
+		test.done();
+	},
+
+	'show arguments inside a group': function(test) {
+		var someObj = {};
+		someObj.addNumbers = function (arg1, arg2) {
+			return arg1 + arg2;
+		};
+
+		//trace
+		tracer.traceObj({
+			target: someObj,
+			targetConfig: {
+				css: 'color: red',
+				size: 15 
+			},
+			
+			before: {
+				message: 'SomeObj',
+				css: 'color: blue',
+				size: 10
+			},
+
+			showArguments: true
+			
+		});
+
+		//call
+		someObj.addNumbers(1, 2);
+
+		//verify
+		console.dir(fakeConsole.logRecorder)
+		test.equal('groupCollapsed', fakeConsole.logRecorder[0].methodName);
+		test.equal('%cSomeObj   %caddNumbers     ', fakeConsole.logRecorder[0].message);
+		test.equal('color: blue', fakeConsole.logRecorder[0].cssList[0]);
+		test.equal('color: red', fakeConsole.logRecorder[0].cssList[1]);
+
+		test.equal('log', fakeConsole.logRecorder[1].methodName);
+		test.equal(1, fakeConsole.logRecorder[1].message[0]);
+		test.equal(2, fakeConsole.logRecorder[1].message[1]);
+
+		test.equal('groupEnd', fakeConsole.logRecorder[2].methodName);
 		
 		test.done();
 	},
