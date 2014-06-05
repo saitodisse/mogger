@@ -53,19 +53,23 @@ require([
 	var tracer = new Mogger.Tracer();
 	tracer.traceObj({
 		before: {	message: 'Router', css: 'color: #A42',	size: 15 },
-		target: Backbone.Router.prototype, targetConfig: {	css: 'color: #A42',	size: 25 }
+		target: Backbone.Router.prototype, targetConfig: {	css: 'color: #A42',	size: 25 },
+		showArguments: true
 	});
 	tracer.traceObj({
 		before: {	message: ' View', css: 'color: #2A2',	size: 15 },
-		target: Backbone.View.prototype, targetConfig: {	css: 'color: #2A2',	size: 25 }
+		target: Backbone.View.prototype, targetConfig: {	css: 'color: #2A2',	size: 25 },
+		showArguments: true
 	});
 	tracer.traceObj({
 		before: {	message: '  Collection', css: 'color: #278',	size: 15 },
-		target: Backbone.Collection.prototype, targetConfig: {	css: 'color: #278',	size: 25 }
+		target: Backbone.Collection.prototype, targetConfig: {	css: 'color: #278',	size: 25 },
+		showArguments: true
 	});
 	tracer.traceObj({
 		before: {	message: '   Model', css: 'color: #242',	size: 15 },
-		target: Backbone.Model.prototype, targetConfig: {	css: 'color: #242',	size: 25 }
+		target: Backbone.Model.prototype, targetConfig: {	css: 'color: #242',	size: 25 },
+		showArguments: true
 	});
 
 	/*jshint nonew:false*/

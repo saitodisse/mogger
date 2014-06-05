@@ -92,7 +92,6 @@ module.exports = {
 		someObj.addNumbers(1, 2);
 
 		//verify
-		console.dir(fakeConsole.logRecorder)
 		test.equal('%cSomeObj   %caddNumbers     ', fakeConsole.logRecorder[0].message);
 		test.equal('color: blue', fakeConsole.logRecorder[0].cssList[0]);
 		test.equal('color: red', fakeConsole.logRecorder[0].cssList[1]);
@@ -128,7 +127,6 @@ module.exports = {
 		someObj.addNumbers(1, 2);
 
 		//verify
-		console.dir(fakeConsole.logRecorder)
 		test.equal('groupCollapsed', fakeConsole.logRecorder[0].methodName);
 		test.equal('%cSomeObj   %caddNumbers     ', fakeConsole.logRecorder[0].message);
 		test.equal('color: blue', fakeConsole.logRecorder[0].cssList[0]);

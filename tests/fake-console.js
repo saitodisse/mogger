@@ -38,7 +38,7 @@ fakeConsole.group = function() {
 };
 
 fakeConsole.groupCollapsed = function() {
-	var args = slice(arguments);
+	var args = slice.call(arguments);
 	var message = args.shift();
 
 	fakeConsole.logRecorder.push({
@@ -49,7 +49,7 @@ fakeConsole.groupCollapsed = function() {
 };
 
 fakeConsole.groupEnd = function() {
-	var args = slice(arguments);
+	var args = slice.call(arguments);
 	var message = args.shift();
 
 	fakeConsole.logRecorder.push({

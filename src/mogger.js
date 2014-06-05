@@ -36,7 +36,7 @@
       }
 
       this.onCall = function(info) {
-        var logs = [];
+        var logs = [], targetLog;
 
         //before (namespace)
         if(this.before){
@@ -49,7 +49,7 @@
           targetLog.message = info.method;
         }
         else{
-          var targetLog = {
+          targetLog = {
             message: info.method
           };
         }
@@ -58,7 +58,6 @@
 
         //colorful-logger
         if(this.showArguments){
-          logs[0] = this.before;
           logs[0].logType = 'groupCollapsed';
           logger.log(logs);
 
@@ -77,7 +76,7 @@
       
       // onReturn:
       // onThrow:
-    }
+    };
 
 		this.traceObj = function(opt) {
       var reporter = new GetReporter(opt);
