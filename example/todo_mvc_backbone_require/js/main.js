@@ -51,7 +51,22 @@ require([
 ], function (Backbone, AppView, Workspace, Mogger) {
 	
 	var tracer = new Mogger.Tracer();
-	tracer.traceObj(Backbone.View.prototype);
+	tracer.traceObj({
+		before: {	message: '.Router', css: 'color: #AA2',	size: 15 },
+		target: Backbone.Router.prototype, targetConfig: {	css: 'color: #AA0',	size: 25 }
+	});
+	tracer.traceObj({
+		before: {	message: ' .View', css: 'color: #2A2',	size: 15 },
+		target: Backbone.View.prototype, targetConfig: {	css: 'color: #0A0',	size: 25 }
+	});
+	tracer.traceObj({
+		before: {	message: '  .Collection', css: 'color: #278',	size: 15 },
+		target: Backbone.Collection.prototype, targetConfig: {	css: 'color: #070',	size: 25 }
+	});
+	tracer.traceObj({
+		before: {	message: '   .Model', css: 'color: #242',	size: 15 },
+		target: Backbone.Model.prototype, targetConfig: {	css: 'color: #040',	size: 25 }
+	});
 
 	/*jshint nonew:false*/
 	// Initialize routing and start Backbone.history()

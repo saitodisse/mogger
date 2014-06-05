@@ -66,28 +66,6 @@ module.exports = {
 		test.done();
 	},
 
-	// 'can call colorLogger with a CSS': function(test) {
-	// 	var someObj = {};
-	// 	someObj.addNumbers = function (arg1, arg2) {
-	// 		return arg1 + arg2;
-	// 	};
-
-	// 	tracer.configure({
-	// 		cssFunction: 'color: red'
-	// 	});
-
-	// 	tracer.traceObj({
-	// 		target: someObj
-	// 	});
-
-	// 	someObj.addNumbers(1, 2);
-
-	// 	test.equal('%caddNumbers', fakeConsole.logRecorder[0].message);
-	// 	test.equal('color: red', fakeConsole.logRecorder[0].cssList[0]);
-		
-	// 	test.done();
-	// },
-
 	'can add a customized beforeFunction': function(test) {
 		var someObj = {};
 		someObj.addNumbers = function (arg1, arg2) {
