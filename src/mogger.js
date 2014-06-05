@@ -2,19 +2,19 @@
 
   // AMD
   if (typeof define === 'function' && define.amd) {
-    define(['colorful-logger', 'meld', 'meld/aspect/trace', 'exports'], function (ColorfulLogger, meld, traceMeld, exports) {
-      factory(root, exports, ColorfulLogger, meld, traceMeld);
+    define(['colorful-logger', 'meld', 'meldTrace', 'exports'], function (ColorfulLogger, meld, meldTrace, exports) {
+      factory(root, exports, ColorfulLogger, meld, meldTrace);
     });
 
   // Node.js
   } else if (typeof exports !== 'undefined') {
     var ColorfulLogger = require('colorful-logger');
     var meld = require('meld');
-    var traceMeld = require('meld/aspect/trace');
-    factory(root, exports, ColorfulLogger, meld, traceMeld);
+    var meldTrace = require('meld/aspect/trace');
+    factory(root, exports, ColorfulLogger, meld, meldTrace);
   }
 
-}(this, function(root, Mogger, ColorfulLogger, meld, traceMeld) {
+}(this, function(root, Mogger, ColorfulLogger, meld, meldTrace) {
 
 	/*******************************
 		Mogger.Tracer
@@ -34,7 +34,7 @@
     };
 
 		this.traceObj = function(traceFunc) {
-      meld(traceFunc, /./, traceMeld(customReporter));
+      meld(traceFunc, /./, meldTrace(customReporter));
 		};
 
 	};

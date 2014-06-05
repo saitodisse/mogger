@@ -37,8 +37,7 @@ require.config({
 
 		Mogger: '../bower_components/mogger/src/mogger',
 		meld: '../bower_components/meld/meld',
-		traceMeld: '../bower_components/meld/aspect/trace',
-		// traceMeld: '../bower_components/meld/aspect/trace',
+		meldTrace: '../bower_components/meld/aspect/trace',
 		lodash: '../bower_components/lodash/dist/lodash',
 		'colorful-logger': '../bower_components/colorful-logger/src/colorful-logger'
 	}
