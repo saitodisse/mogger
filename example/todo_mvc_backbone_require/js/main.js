@@ -47,38 +47,10 @@ require([
 	'backbone',
 	'views/app',
 	'routers/router',
-	'Mogger'
-], function (Backbone, AppView, Workspace, Mogger) {
+	'logger/logger-example'
+], function (Backbone, AppView, Workspace, LoggerExample) {
 	
-	// new Tracer
-	var tracer = new Mogger.Tracer({
-		showPause: true
-	});
-
-	// each traced object
-	var OBJECT_SIZE = 15;
-	var FUNCTION_SIZE = 25;
-	
-	tracer.traceObj({
-		before: {	message: 'Router', css: 'color: #A42',	OBJECT_SIZE },
-		target: Backbone.Router.prototype, targetConfig: {	css: 'color: #A42',	FUNCTION_SIZE },
-		showArguments: true
-	});
-	tracer.traceObj({
-		before: {	message: ' View', css: 'color: #2A2',	OBJECT_SIZE },
-		target: Backbone.View.prototype, targetConfig: {	css: 'color: #2A2',	FUNCTION_SIZE },
-		showArguments: true
-	});
-	tracer.traceObj({
-		before: {	message: '  Collection', css: 'color: #278',	OBJECT_SIZE },
-		target: Backbone.Collection.prototype, targetConfig: {	css: 'color: #278',	FUNCTION_SIZE },
-		showArguments: true
-	});
-	tracer.traceObj({
-		before: {	message: '   Model', css: 'color: #242',	OBJECT_SIZE },
-		target: Backbone.Model.prototype, targetConfig: {	css: 'color: #242',	FUNCTION_SIZE },
-		showArguments: true
-	});
+	new LoggerExample();
 
 	/*jshint nonew:false*/
 	// Initialize routing and start Backbone.history()
