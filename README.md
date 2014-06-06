@@ -1,4 +1,4 @@
-#mogger.js
+#mogger
 meld + trace + colorful logger
 
 version: 0.0.5

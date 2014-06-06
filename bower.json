@@ -5,7 +5,7 @@
   "authors": [
     "Julio Makdisse Saito <saitodisse@gmail.com>"
   ],
-  "description": "trace and render logs with colors",
+  "description": "print colorful logs with AOP using meld",
   "main": "index.js",
   "moduleType": [
     "amd"

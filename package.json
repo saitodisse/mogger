@@ -1,7 +1,7 @@
 {
   "name": "mogger",
   "version": "0.0.5",
-  "description": "colorful console log, with meld and trace",
+  "description": "print colorful logs with AOP using meld",
   "main": "index.js",
   "repository": {
     "type": "git",
