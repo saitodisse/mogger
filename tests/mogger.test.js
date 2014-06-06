@@ -4,14 +4,19 @@ var tracer = new Mogger.Tracer({
 	output: fakeConsole
 });
 
+var someObj = {
+	addNumbers: function (arg1, arg2) {
+		return arg1 + arg2;
+	}
+};
+
 module.exports = {
 	setUp: function (callback) {
-		
-		var loogerConfig = {};
-		loogerConfig.output = fakeConsole;
 
 		tracer = new Mogger.Tracer({
-			loggerConfig: loogerConfig
+			loggerConfig: {
+				output: fakeConsole
+			}
 		});
 
 		fakeConsole.logRecorder = [];
@@ -20,7 +25,8 @@ module.exports = {
 	},
 	
 	tearDown: function (callback) {
-		callback();		
+		tracer.removeMeld();
+		callback();
 	},
 
 	'Mogger object': function(test) {
@@ -50,11 +56,6 @@ module.exports = {
 	},
 
 	'can trace a function': function(test) {
-		var someObj = {};
-		someObj.addNumbers = function (arg1, arg2) {
-			return arg1 + arg2;
-		};
-
 		tracer.traceObj({
 			target: someObj
 		});
@@ -67,11 +68,6 @@ module.exports = {
 	},
 
 	'can add a customized beforeFunction': function(test) {
-		var someObj = {};
-		someObj.addNumbers = function (arg1, arg2) {
-			return arg1 + arg2;
-		};
-
 		//trace
 		tracer.traceObj({
 			target: someObj,
@@ -92,6 +88,8 @@ module.exports = {
 		someObj.addNumbers(1, 2);
 
 		//verify
+		test.equal(1, fakeConsole.logRecorder.length);
+
 		test.equal('%cSomeObj   %caddNumbers     ', fakeConsole.logRecorder[0].message);
 		test.equal('color: blue', fakeConsole.logRecorder[0].cssList[0]);
 		test.equal('color: red', fakeConsole.logRecorder[0].cssList[1]);
@@ -100,11 +98,6 @@ module.exports = {
 	},
 
 	'show arguments inside a group': function(test) {
-		var someObj = {};
-		someObj.addNumbers = function (arg1, arg2) {
-			return arg1 + arg2;
-		};
-
 		//trace
 		tracer.traceObj({
 			target: someObj,
@@ -127,18 +120,52 @@ module.exports = {
 		someObj.addNumbers(1, 2);
 
 		//verify
+		test.equal(3, fakeConsole.logRecorder.length);
+		//(0) => groupCollapsed
 		test.equal('groupCollapsed', fakeConsole.logRecorder[0].methodName);
 		test.equal('%cSomeObj   %caddNumbers     ', fakeConsole.logRecorder[0].message);
 		test.equal('color: blue', fakeConsole.logRecorder[0].cssList[0]);
 		test.equal('color: red', fakeConsole.logRecorder[0].cssList[1]);
-
+		//(1) => log
 		test.equal('log', fakeConsole.logRecorder[1].methodName);
 		test.equal(1, fakeConsole.logRecorder[1].message[0]);
 		test.equal(2, fakeConsole.logRecorder[1].message[1]);
-
+		//(2) => groupEnd
 		test.equal('groupEnd', fakeConsole.logRecorder[2].methodName);
 		
 		test.done();
 	},
+
+	// 'show time spent when a pause ocours': function(test) {
+	// 	tracer = new Mogger.Tracer({
+	// 		loggerConfig: {
+	// 			output: fakeConsole
+	// 		},
+	// 		showPause: true
+	// 	});
+	// 	fakeConsole.logRecorder = [];
+
+	// 	//trace
+	// 	tracer.traceObj({
+	// 		target: someObj			
+	// 	});
+
+	// 	//call 3 times
+	// 	someObj.addNumbers(1, 2);
+
+	// 	setTimeout(function() {
+	// 		someObj.addNumbers(1, 2);
+	// 	}, 20);
+
+	// 	setTimeout(function() {
+	// 		someObj.addNumbers(1, 2);
+
+
+	// 		test.equal(3, fakeConsole.logRecorder.length);
+	// 		test.done();
+
+	// 	}, 80);
+
+	// },
 
 };

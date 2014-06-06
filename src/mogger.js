@@ -80,8 +80,12 @@
 
 		this.traceObj = function(opt) {
       var reporter = new GetReporter(opt);
-      meld(opt.target, /./, meldTrace(reporter));
+      this.meldRemover = meld(opt.target, /./, meldTrace(reporter));
 		};
+
+    this.removeMeld = function() {
+      this.meldRemover && this.meldRemover.remove();
+    };
 
 	};
 
