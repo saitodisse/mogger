@@ -1,4 +1,17 @@
-(function(root, factory) {
+/** @license MIT License (c) Copyright (c) 2014 Julio Makdisse Saito */
+
+/**
+ * Mogger
+ * Meld + Trace + Colorful logger
+ *
+ * Licensed under the MIT License at:
+ * http://www.opensource.org/licenses/mit-license.php
+ *
+ * @author Julio Makdisse Saito (saitodisse@gmail.com)
+ * @version 0.5.0
+ */
+
+ (function(root, factory) {
 
   // AMD
   if (typeof define === 'function' && define.amd) {
@@ -20,9 +33,15 @@
 		Mogger.Tracer
 	*******************************/
 	Mogger.Tracer = function (config){
-    var logger = config && config.logger;
-    var loggerConfig = config && config.loggerConfig;
+    config = config || {};
+    
+    //get logger and send configuration to him
+    var logger = config.logger;
+    var loggerConfig = config.loggerConfig;
     logger = this.logger = logger || new ColorfulLogger.Logger(loggerConfig);
+    
+    //showPause when to much time without any log
+    var showPause = config.showPause || false;
 
     var GetReporter = function (options) {
       if(options.before){
@@ -70,6 +89,15 @@
         }
         else{
           logger.log(logs);
+        }
+
+        if(showPause){
+          // cancel pause made before
+          clearTimeout(this.globalTimeoutLogId);
+          // if is not canceled, shows line bellow
+          this.globalTimeoutLogId = setTimeout(function (){
+            logger.log('----------------------------------pause--------------------------');
+          }.bind(this), 100);
         }
 
       }.bind(this);

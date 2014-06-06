@@ -50,25 +50,33 @@ require([
 	'Mogger'
 ], function (Backbone, AppView, Workspace, Mogger) {
 	
-	var tracer = new Mogger.Tracer();
+	// new Tracer
+	var tracer = new Mogger.Tracer({
+		showPause: true
+	});
+
+	// each traced object
+	var OBJECT_SIZE = 15;
+	var FUNCTION_SIZE = 25;
+	
 	tracer.traceObj({
-		before: {	message: 'Router', css: 'color: #A42',	size: 15 },
-		target: Backbone.Router.prototype, targetConfig: {	css: 'color: #A42',	size: 25 },
+		before: {	message: 'Router', css: 'color: #A42',	OBJECT_SIZE },
+		target: Backbone.Router.prototype, targetConfig: {	css: 'color: #A42',	FUNCTION_SIZE },
 		showArguments: true
 	});
 	tracer.traceObj({
-		before: {	message: ' View', css: 'color: #2A2',	size: 15 },
-		target: Backbone.View.prototype, targetConfig: {	css: 'color: #2A2',	size: 25 },
+		before: {	message: ' View', css: 'color: #2A2',	OBJECT_SIZE },
+		target: Backbone.View.prototype, targetConfig: {	css: 'color: #2A2',	FUNCTION_SIZE },
 		showArguments: true
 	});
 	tracer.traceObj({
-		before: {	message: '  Collection', css: 'color: #278',	size: 15 },
-		target: Backbone.Collection.prototype, targetConfig: {	css: 'color: #278',	size: 25 },
+		before: {	message: '  Collection', css: 'color: #278',	OBJECT_SIZE },
+		target: Backbone.Collection.prototype, targetConfig: {	css: 'color: #278',	FUNCTION_SIZE },
 		showArguments: true
 	});
 	tracer.traceObj({
-		before: {	message: '   Model', css: 'color: #242',	size: 15 },
-		target: Backbone.Model.prototype, targetConfig: {	css: 'color: #242',	size: 25 },
+		before: {	message: '   Model', css: 'color: #242',	OBJECT_SIZE },
+		target: Backbone.Model.prototype, targetConfig: {	css: 'color: #242',	FUNCTION_SIZE },
 		showArguments: true
 	});
 

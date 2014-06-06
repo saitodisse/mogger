@@ -1,3 +1,16 @@
+/** @license MIT License (c) Copyright (c) 2014 Julio Makdisse Saito */
+
+/**
+ * Mogger
+ * Meld + Trace + Colorful logger
+ *
+ * Licensed under the MIT License at:
+ * http://www.opensource.org/licenses/mit-license.php
+ *
+ * @author Julio Makdisse Saito (saitodisse@gmail.com)
+ * @version 0.5.0
+ */
+
 var Mogger = require('../src/mogger');
 var fakeConsole = require('./fake-console');
 var tracer = new Mogger.Tracer({
@@ -55,6 +68,13 @@ module.exports = {
 		test.done();
 	},
 
+	/*
+		------------------------------------------------------------------------------------
+		# traceObj({ target: someObj });
+		------------------------------------------------------------------------------------
+		:: each function that is called in someObj will generate a log output
+		------------------------------------------------------------------------------------
+	*/
 	'can trace a function': function(test) {
 		tracer.traceObj({
 			target: someObj
@@ -67,6 +87,13 @@ module.exports = {
 		test.done();
 	},
 
+	/*
+		------------------------------------------------------------------------------------
+		# before: {LOG}
+		------------------------------------------------------------------------------------
+		:: put a namespace or 'class' name here, for better visualization
+		------------------------------------------------------------------------------------
+	*/
 	'can add a customized beforeFunction': function(test) {
 		//trace
 		tracer.traceObj({
@@ -97,6 +124,13 @@ module.exports = {
 		test.done();
 	},
 
+	/*
+		------------------------------------------------------------------------------------
+		# traceObj.showArguments: true
+		------------------------------------------------------------------------------------
+		:: make a group and put all arguments inside
+		------------------------------------------------------------------------------------
+	*/
 	'show arguments inside a group': function(test) {
 		//trace
 		tracer.traceObj({
@@ -136,36 +170,52 @@ module.exports = {
 		test.done();
 	},
 
-	// 'show time spent when a pause ocours': function(test) {
-	// 	tracer = new Mogger.Tracer({
-	// 		loggerConfig: {
-	// 			output: fakeConsole
-	// 		},
-	// 		showPause: true
-	// 	});
-	// 	fakeConsole.logRecorder = [];
+	/*
+		------------------------------------------------------------------------------------
+		# tracer.showPause: true
+		------------------------------------------------------------------------------------
+		:: after some timespan without any log a pause message is sent
+		------------------------------------------------------------------------------------
+	*/
+	'show time spent when a pause ocours': function(test) {
+		tracer = new Mogger.Tracer({
+			loggerConfig: {
+				output: fakeConsole
+			},
+			showPause: true
+		});
+		fakeConsole.logRecorder = [];
 
-	// 	//trace
-	// 	tracer.traceObj({
-	// 		target: someObj			
-	// 	});
+		//trace
+		tracer.traceObj({
+			target: someObj			
+		});
 
-	// 	//call 3 times
-	// 	someObj.addNumbers(1, 2);
+		//call 3 times
+		someObj.addNumbers(1, 2);
 
-	// 	setTimeout(function() {
-	// 		someObj.addNumbers(1, 2);
-	// 	}, 20);
+		setTimeout(function() {
+			someObj.addNumbers(1, 2);
+		}, 20);
 
-	// 	setTimeout(function() {
-	// 		someObj.addNumbers(1, 2);
+		setTimeout(function() {
+			someObj.addNumbers(1, 2);
+		}, 80);
 
+		// after 90ms and is not yet seen any PAUSE
+		setTimeout(function() {
+			test.equal(3, fakeConsole.logRecorder.length);
+			test.done();
+		}, 170);
 
-	// 		test.equal(3, fakeConsole.logRecorder.length);
-	// 		test.done();
+		// after 110ms PAUSE is showed
+		setTimeout(function() {
+			test.equal(4, fakeConsole.logRecorder.length);
+			test.equal('----------------------------------pause--------------------------',
+								 fakeConsole.logRecorder[3].message);
+			test.done();
+		}, 190);
 
-	// 	}, 80);
-
-	// },
+	},
 
 };
