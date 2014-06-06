@@ -1,8 +1,7 @@
 #mogger.js
 meld + trace + colorful logger
----------------------------------
+
 version: 0.0.5
----------------------------------
 
 ##install
 ###node.js
