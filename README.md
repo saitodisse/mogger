@@ -1,3 +1,5 @@
+by: [saitodisse](http://saitodisse.github.io/)
+
 #mogger
 meld + trace + colorful logger
 
