@@ -22,6 +22,16 @@ bower install git@github.com:saitodisse/mogger.git --save
 sudo npm i jshint buster supervisor grunt-cli -g
 ```
 
+####run buster
+```
+buster-test
+```
+
+####TDD
+```
+buster-autotest
+```
+
 ####test + jshint
 ```
 grunt
@@ -32,14 +42,5 @@ grunt
 grunt test
 ```
 
-####buster-test
-from: http://stackoverflow.com/questions/16652358/how-to-debug-nodeunit-using-node-inspector
-```shell
-npm -g install supervisor node-inspector
-
-# console 1: supervisor restarts node-inspector when it quits, ignores file changes
-supervisor -i . -x node-inspector .
-
-# console 2
-supervisor --debug-brk -- `which buster-test` test/
-```
+####buster-test live debug with node-inspector
+here: http://docs.busterjs.org/en/latest/developers/developing/#debugging-a-buster-js-run
