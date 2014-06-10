@@ -3,11 +3,8 @@
  */
 module.exports = function(grunt) {
   grunt.initConfig({
-    nodeunit: {
-      options:{
-        reporter: 'default'//'minimal'
-      },
-      files: ['tests/*.test.js'],
+    buster: {
+      foo: {}
     },
 
     jshint: {
@@ -15,31 +12,31 @@ module.exports = function(grunt) {
         jshintrc: '.jshintrc',
         reporter: require('jshint-stylish')
       },
-      all: ['Gruntfile.js', '*.js', 'tests/{,*/}*.js']
+      all: ['Gruntfile.js', '*.js', 'test/{,*/}*.js']
     },    
 
     watch: {
       jshint:{
-        files: ['Gruntfile.js', 'src/*.js', 'tests/*.js'],
+        files: ['Gruntfile.js', 'src/*.js', 'test/*.js'],
         tasks: ['jshint']
       },
-      nodeunit:{
-        files: ['src/*.js', 'tests/*.test.js'],
-        tasks: ['nodeunit']
+      buster:{
+        files: ['src/*.js', 'test/*.test.js'],
+        tasks: ['buster']
       }
     }
   });
 
-  grunt.loadNpmTasks('grunt-contrib-nodeunit');
+  grunt.loadNpmTasks('grunt-buster');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-jshint');
 
-  grunt.registerTask('default', ['nodeunit', 'jshint']);
+  grunt.registerTask('default', ['buster', 'jshint']);
   grunt.option('force', true);
 
   grunt.registerTask('test', [
     'jshint',
-    'nodeunit',
+    'buster',
     'watch'
   ]);
 

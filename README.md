@@ -19,7 +19,7 @@ bower install git@github.com:saitodisse/mogger.git --save
 ##test
 ####pre-requirements
 ```
-sudo npm i jshint nodeunit supervisor grunt-cli -g
+sudo npm i jshint buster supervisor grunt-cli -g
 ```
 
 ####test + jshint
@@ -32,7 +32,7 @@ grunt
 grunt test
 ```
 
-####nodeunit + node-debug
+####buster-test
 from: http://stackoverflow.com/questions/16652358/how-to-debug-nodeunit-using-node-inspector
 ```shell
 npm -g install supervisor node-inspector
@@ -41,7 +41,5 @@ npm -g install supervisor node-inspector
 supervisor -i . -x node-inspector .
 
 # console 2
-supervisor --debug-brk -- `which nodeunit` tests/
+supervisor --debug-brk -- `which buster-test` test/
 ```
-
-
