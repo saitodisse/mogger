@@ -61,9 +61,16 @@
       if(options.showArguments){
         this.showArguments = options.showArguments;
       }
+      if(options.ignorePattern){
+        this.ignorePattern = options.ignorePattern;
+      }
 
       this.onCall = function(info) {
         var logs = [], targetLog;
+
+        if(this.ignorePattern && this.ignorePattern.test(info.method)){
+          return false;
+        }
 
         //before (namespace)
         if(this.before){
