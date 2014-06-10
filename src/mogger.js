@@ -29,10 +29,17 @@
 
 }(this, function(root, Mogger, ColorfulLogger, meld, meldTrace) {
 
-	/*******************************
-		Mogger.Tracer
-	*******************************/
-	Mogger.Tracer = function (config){
+  var globalTimeoutLogId = null;
+  var setParentTimeout = function(logger) {
+    globalTimeoutLogId = setTimeout(function (){
+      logger.log('----------------------------------pause--------------------------');
+    }.bind(this), 100);
+  };
+
+  /*******************************
+    Mogger.Tracer
+  *******************************/
+  Mogger.Tracer = function (config){
     config = config || {};
     
     //get logger and send configuration to him
@@ -42,6 +49,7 @@
     
     //showPause when to much time without any log
     var showPause = config.showPause || false;
+
 
     var GetReporter = function (options) {
       if(options.before){
@@ -93,11 +101,9 @@
 
         if(showPause){
           // cancel pause made before
-          clearTimeout(this.globalTimeoutLogId);
+          clearTimeout(globalTimeoutLogId);
           // if is not canceled, shows line bellow
-          this.globalTimeoutLogId = setTimeout(function (){
-            logger.log('----------------------------------pause--------------------------');
-          }.bind(this), 100);
+          setParentTimeout(logger);
         }
 
       }.bind(this);

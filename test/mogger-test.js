@@ -11,6 +11,8 @@
  * @version 0.5.0
  */
 
+var buster = require("buster");
+
 var Mogger = require('../src/mogger');
 var fakeConsole = require('./fake-console');
 var tracer = new Mogger.Tracer({
@@ -23,49 +25,38 @@ var someObj = {
 	}
 };
 
-module.exports = {
-	setUp: function (callback) {
-
+var testCase = buster.testCase("Mogger", {
+  setUp: function () {
 		tracer = new Mogger.Tracer({
 			loggerConfig: {
 				output: fakeConsole
 			}
 		});
-
 		fakeConsole.logRecorder = [];
-
-		callback();
 	},
-	
-	tearDown: function (callback) {
+
+	tearDown: function () {
 		tracer.removeMeld();
-		callback();
 	},
 
-	'Mogger object': function(test) {
-		test.equal('function', typeof Mogger.Tracer);
-		test.equal('object', typeof tracer);
-		test.equal('function', typeof tracer.traceObj);
-		
-		test.done();
+	'contructor': function() {
+		buster.assert.equals('function', typeof Mogger.Tracer);
+		buster.assert.equals('object', typeof tracer);
+		buster.assert.equals('function', typeof tracer.traceObj);
 	},
 
-	'dependency ColorfulLogger exists': function(test) {
-		test.notEqual('undefined', typeof tracer.logger);
-		
-		test.done();
+	'dependency ColorfulLogger exists': function() {
+		buster.refute.equals('undefined', typeof tracer.logger);
 	},
 
-	'can use other logger dependencie': function(test) {
+	'can use other logger dependencie': function() {
 		var someLogger = {name: 'someLogger'};
 
 		tracer = new Mogger.Tracer({
 			logger: someLogger
 		});
 
-		test.equal(someLogger, tracer.logger);
-		
-		test.done();
+		buster.assert.equals(someLogger, tracer.logger);
 	},
 
 	/*
@@ -75,16 +66,16 @@ module.exports = {
 		:: each function that is called in someObj will generate a log output
 		------------------------------------------------------------------------------------
 	*/
-	'can trace a function': function(test) {
+	'can trace a function': function() {
 		tracer.traceObj({
 			target: someObj
 		});
 
 		someObj.addNumbers(1, 2);
 
-		test.equal('addNumbers', fakeConsole.logRecorder[0].message);
+		buster.assert.equals('addNumbers', fakeConsole.logRecorder[0].message);
 		
-		test.done();
+		
 	},
 
 	/*
@@ -94,7 +85,7 @@ module.exports = {
 		:: put a namespace or 'class' name here, for better visualization
 		------------------------------------------------------------------------------------
 	*/
-	'can add a customized beforeFunction': function(test) {
+	'can add a customized beforeFunction': function() {
 		//trace
 		tracer.traceObj({
 			target: someObj,
@@ -115,13 +106,13 @@ module.exports = {
 		someObj.addNumbers(1, 2);
 
 		//verify
-		test.equal(1, fakeConsole.logRecorder.length);
+		buster.assert.equals(1, fakeConsole.logRecorder.length);
 
-		test.equal('%cSomeObj   %caddNumbers     ', fakeConsole.logRecorder[0].message);
-		test.equal('color: blue', fakeConsole.logRecorder[0].cssList[0]);
-		test.equal('color: red', fakeConsole.logRecorder[0].cssList[1]);
+		buster.assert.equals('%cSomeObj   %caddNumbers     ', fakeConsole.logRecorder[0].message);
+		buster.assert.equals('color: blue', fakeConsole.logRecorder[0].cssList[0]);
+		buster.assert.equals('color: red', fakeConsole.logRecorder[0].cssList[1]);
 		
-		test.done();
+		
 	},
 
 	/*
@@ -131,7 +122,7 @@ module.exports = {
 		:: make a group and put all arguments inside
 		------------------------------------------------------------------------------------
 	*/
-	'show arguments inside a group': function(test) {
+	'show arguments inside a group': function() {
 		//trace
 		tracer.traceObj({
 			target: someObj,
@@ -154,37 +145,36 @@ module.exports = {
 		someObj.addNumbers(1, 2);
 
 		//verify
-		test.equal(3, fakeConsole.logRecorder.length);
+		buster.assert.equals(3, fakeConsole.logRecorder.length);
 		//(0) => groupCollapsed
-		test.equal('groupCollapsed', fakeConsole.logRecorder[0].methodName);
-		test.equal('%cSomeObj   %caddNumbers     ', fakeConsole.logRecorder[0].message);
-		test.equal('color: blue', fakeConsole.logRecorder[0].cssList[0]);
-		test.equal('color: red', fakeConsole.logRecorder[0].cssList[1]);
+		buster.assert.equals('groupCollapsed', fakeConsole.logRecorder[0].methodName);
+		buster.assert.equals('%cSomeObj   %caddNumbers     ', fakeConsole.logRecorder[0].message);
+		buster.assert.equals('color: blue', fakeConsole.logRecorder[0].cssList[0]);
+		buster.assert.equals('color: red', fakeConsole.logRecorder[0].cssList[1]);
 		//(1) => log
-		test.equal('log', fakeConsole.logRecorder[1].methodName);
-		test.equal(1, fakeConsole.logRecorder[1].message[0]);
-		test.equal(2, fakeConsole.logRecorder[1].message[1]);
+		buster.assert.equals('log', fakeConsole.logRecorder[1].methodName);
+		buster.assert.equals(1, fakeConsole.logRecorder[1].message[0]);
+		buster.assert.equals(2, fakeConsole.logRecorder[1].message[1]);
 		//(2) => groupEnd
-		test.equal('groupEnd', fakeConsole.logRecorder[2].methodName);
+		buster.assert.equals('groupEnd', fakeConsole.logRecorder[2].methodName);
 		
-		test.done();
+		
 	},
 
 	/*
 		------------------------------------------------------------------------------------
 		# tracer.showPause: true
 		------------------------------------------------------------------------------------
-		:: after some timespan without any log a pause message is sent
+		:: after some timespan without any log a pause message is showed
 		------------------------------------------------------------------------------------
 	*/
-	'show time spent when a pause ocours': function(test) {
+	'show pause after some time': function(done) {
 		tracer = new Mogger.Tracer({
 			loggerConfig: {
 				output: fakeConsole
 			},
 			showPause: true
 		});
-		fakeConsole.logRecorder = [];
 
 		//trace
 		tracer.traceObj({
@@ -202,20 +192,54 @@ module.exports = {
 			someObj.addNumbers(1, 2);
 		}, 80);
 
-		// after 90ms and is not yet seen any PAUSE
+		// after 90ms of the last log PAUSE is not showed yet
 		setTimeout(function() {
-			test.equal(3, fakeConsole.logRecorder.length);
-			test.done();
+			buster.assert.equals(3, fakeConsole.logRecorder.length);
+			
 		}, 170);
 
 		// after 110ms PAUSE is showed
 		setTimeout(function() {
-			test.equal(4, fakeConsole.logRecorder.length);
-			test.equal('----------------------------------pause--------------------------',
-								 fakeConsole.logRecorder[3].message);
-			test.done();
+			buster.assert.equals(4, fakeConsole.logRecorder.length);
+			buster.assert.equals('----------------------------------pause--------------------------',
+				fakeConsole.logRecorder[3].message);
+			done();
 		}, 190);
 
 	},
 
-};
+	'two logs but one pause only': function(done) {
+		tracer = new Mogger.Tracer({
+			loggerConfig: {
+				output: fakeConsole
+			},
+			showPause: true
+		});
+
+		//trace someObj2
+		var someObj2 = { addNumbers: function (arg1, arg2) { return arg1 + arg2; } };
+		tracer.traceObj({
+			target: someObj2
+		});
+		//trace someObj3
+		var someObj3 = { addNumbers: function (arg1, arg2) { return arg1 + arg2; } };
+		tracer.traceObj({
+			target: someObj3
+		});
+
+		//call each one time
+		someObj2.addNumbers(1, 2);
+		someObj3.addNumbers(1, 2);
+
+		// after 110ms only one PAUSE is showed
+		setTimeout(function() {
+ 			
+ 			//someObj2.addNumbers, someObj3.addNumbers and PAUSE
+ 			buster.assert.equals(3, fakeConsole.logRecorder.length);
+ 			
+ 			done();
+		}, 110);
+
+	},
+
+});
