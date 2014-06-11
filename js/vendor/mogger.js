@@ -15,8 +15,20 @@
 
   // AMD
   if (typeof define === 'function' && define.amd) {
-    define(['colorful-logger', 'meld', 'meldTrace', 'exports'], function (ColorfulLogger, meld, meldTrace, exports) {
-      factory(root, exports, ColorfulLogger, meld, meldTrace);
+    define(['exports',
+            'colorful-logger',
+            'meld',
+            'meldTrace',
+            'lodash'
+          ],
+          function (
+            exports,
+            ColorfulLogger,
+            meld,
+            meldTrace,
+            _
+    ){
+      factory(root, exports, ColorfulLogger, meld, meldTrace, _);
     });
 
   // Node.js
@@ -24,24 +36,96 @@
     var ColorfulLogger = require('colorful-logger');
     var meld = require('meld');
     var meldTrace = require('meld/aspect/trace');
-    factory(root, exports, ColorfulLogger, meld, meldTrace);
+    var _ = require('lodash');
+    factory(root, exports, ColorfulLogger, meld, meldTrace, _);
   }
 
-}(this, function(root, Mogger, ColorfulLogger, meld, meldTrace) {
+}(this, function(root, Mogger, ColorfulLogger, meld, meldTrace, _) {
 
-	/*******************************
-		Mogger.Tracer
-	*******************************/
-	Mogger.Tracer = function (config){
+  var globalTimeoutLogId = null;
+  var setParentTimeout = function(logger) {
+    globalTimeoutLogId = setTimeout(function (){
+      logger.log('----------------------------------pause--------------------------');
+    }.bind(this), 100);
+  };
+
+  /*******************************
+    Mogger.Tracer
+  *******************************/
+  Mogger.Tracer = function (config){
     config = config || {};
     
     //get logger and send configuration to him
     var logger = config.logger;
     var loggerConfig = config.loggerConfig;
     logger = this.logger = logger || new ColorfulLogger.Logger(loggerConfig);
-    
+
     //showPause when to much time without any log
     var showPause = config.showPause || false;
+
+    /*
+      interceptorsObj:
+      {
+        globalInterceptors: config.interceptors,
+        localInterceptors: options.interceptors,
+        info: info
+      }
+    */
+    var checkExistingInterceptors = function(interceptorsObj) {
+      var hasLocalInterceptors = !_.isUndefined(interceptorsObj.localInterceptors);
+      var hasGlobalInterceptors = !_.isUndefined(interceptorsObj.globalInterceptors);
+      return (hasLocalInterceptors || hasGlobalInterceptors);
+    };
+
+    var matchInterceptor = function(interceptor, methodName) {
+      var filterRegex = interceptor.filterRegex;
+      var matchFilterResult = filterRegex.test(methodName);
+      if(matchFilterResult){
+        return interceptor;
+      }
+      return false;
+    };
+
+    var selectInterceptor = function(interceptor, methodName) {
+      // interceptor Array
+      if(interceptor && _.isArray(interceptor)){
+        for (var i = 0; i < interceptor.length; i++) {
+          var interceptorItem = interceptor[i];
+          if( matchInterceptor(interceptorItem, methodName) ){
+            return interceptorItem;
+          }
+        }
+      }
+      // interceptor single obj
+      else if(interceptor && !_.isArray(interceptor)){
+        return matchInterceptor(interceptor, methodName);
+      }
+
+      // no filter match
+      return false;
+    };
+
+    var applyInterceptor = function(interceptorsObj, interceptor) {
+      return interceptor.callback(interceptorsObj.info);
+    };
+
+    var checkApplyInterceptors = function(interceptorsObj) {
+      if(!checkExistingInterceptors(interceptorsObj)){
+        return interceptorsObj.info.method;
+      }
+      
+      var interceptor = selectInterceptor(interceptorsObj.localInterceptors,  interceptorsObj.info.method);
+      if (interceptor === false) {
+        interceptor = selectInterceptor(interceptorsObj.globalInterceptors, interceptorsObj.info.method);
+      }
+
+      if (interceptor) {
+        return applyInterceptor(interceptorsObj, interceptor);
+      }
+      else {
+        return interceptorsObj.info.method;
+      }
+    };
 
     var GetReporter = function (options) {
       if(options.before){
@@ -53,23 +137,41 @@
       if(options.showArguments){
         this.showArguments = options.showArguments;
       }
+      if(options.ignorePattern){
+        this.ignorePattern = options.ignorePattern;
+      }
 
       this.onCall = function(info) {
-        var logs = [], targetLog;
+        var logs = [],
+            targetLog,
+            mainMessage = info.method;
+
+        if(this.ignorePattern && this.ignorePattern.test(info.method)){
+          return false;
+        }
 
         //before (namespace)
         if(this.before){
           logs.push(this.before);
         }
 
+        
+        // Interceptors
+        var interceptorsObj = {
+          globalInterceptors: config.interceptors,
+          localInterceptors: options.interceptors,
+          info: info
+        };
+        mainMessage = checkApplyInterceptors(interceptorsObj);
+
         //target (function)
         if(this.targetConfig){
           targetLog = this.targetConfig;
-          targetLog.message = info.method;
+          targetLog.message = mainMessage;
         }
         else{
           targetLog = {
-            message: info.method
+            message: mainMessage
           };
         }
         logs.push(targetLog);
@@ -93,11 +195,9 @@
 
         if(showPause){
           // cancel pause made before
-          clearTimeout(this.globalTimeoutLogId);
+          clearTimeout(globalTimeoutLogId);
           // if is not canceled, shows line bellow
-          this.globalTimeoutLogId = setTimeout(function (){
-            logger.log('----------------------------------pause--------------------------');
-          }.bind(this), 100);
+          setParentTimeout(logger);
         }
 
       }.bind(this);

@@ -11,7 +11,29 @@ define([
 	'use strict';
 
 	var tracer = new Mogger.Tracer({
-		showPause: true
+
+		showPause: true,
+
+		interceptors: [
+		{
+			filterRegex: /^(trigger|get|has|\$|setFilter|_on\w+|render)/i,
+			callback: function(info) {
+				return info.method + '("' + info.args[0] + '")';
+			}
+		},
+		{
+			filterRegex: /^(on)/i,
+			callback: function(info) {
+				return '^ ' + info.method + '("' + info.args[0] + '")';
+			}
+		},
+		{
+			filterRegex: /^(listenTo)/i,
+			callback: function(info) {
+				return 'v ' + info.method + '("' + info.args[1] + '")';
+			}
+		}]
+
 	});
 
 	showTitle(tracer.logger);
@@ -23,11 +45,11 @@ define([
 	//////////////////////
 	// Router
 	//////////////////////
-	tracer.traceObj({
-		before: {	message: 'Router', css: 'color: #A42',	size: OBJECT_SIZE },
-		target: Backbone.Router.prototype, targetConfig: {	css: 'color: #A42',	size: FUNCTION_SIZE },
-		showArguments: true
-	});
+	// tracer.traceObj({
+	// 	before: {	message: 'Router', css: 'color: #A42',	size: OBJECT_SIZE },
+	// 	target: Backbone.Router.prototype, targetConfig: {	css: 'color: #A42',	size: FUNCTION_SIZE },
+	// 	showArguments: true
+	// });
 	tracer.traceObj({
 		before: {	message: 'TodoRouter.p', css: 'color: #A42',	size: OBJECT_SIZE },
 		target: TodoRouter.prototype, targetConfig: {	css: 'color: #A42',	size: FUNCTION_SIZE },
@@ -63,16 +85,16 @@ define([
 	//////////////////////
 	// Todos
 	//////////////////////
-	tracer.traceObj({
-		before: {	message: '  Collection', css: 'color: #075',	size: OBJECT_SIZE },
-		target: Backbone.Collection.prototype, targetConfig: {	css: 'color: #075',	size: FUNCTION_SIZE },
-		showArguments: true
-	});
-	tracer.traceObj({
-		before: {	message: '  Todos.p', css: 'color: #075',	size: OBJECT_SIZE },
-		target: Todos.prototype, targetConfig: {	css: 'color: #075',	size: FUNCTION_SIZE },
-		showArguments: true
-	});
+	// tracer.traceObj({
+	// 	before: {	message: '  Collection', css: 'color: #075',	size: OBJECT_SIZE },
+	// 	target: Backbone.Collection.prototype, targetConfig: {	css: 'color: #075',	size: FUNCTION_SIZE },
+	// 	showArguments: true
+	// });
+	// tracer.traceObj({
+	// 	before: {	message: '  Todos.p', css: 'color: #075',	size: OBJECT_SIZE },
+	// 	target: Todos.prototype, targetConfig: {	css: 'color: #075',	size: FUNCTION_SIZE },
+	// 	showArguments: true
+	// });
 	tracer.traceObj({
 		before: {	message: '  Todos', css: 'color: #075',	size: OBJECT_SIZE },
 		target: Todos, targetConfig: {	css: 'color: #075',	size: FUNCTION_SIZE },
@@ -83,11 +105,11 @@ define([
 	//////////////////////
 	// Todo
 	//////////////////////
-	tracer.traceObj({
-		before: {	message: '   Model', css: 'color: #249',	size: OBJECT_SIZE },
-		target: Backbone.Model.prototype, targetConfig: {	css: 'color: #249',	size: FUNCTION_SIZE },
-		showArguments: true
-	});
+	// tracer.traceObj({
+	// 	before: {	message: '   Model', css: 'color: #249',	size: OBJECT_SIZE },
+	// 	target: Backbone.Model.prototype, targetConfig: {	css: 'color: #249',	size: FUNCTION_SIZE },
+	// 	showArguments: true
+	// });
 	tracer.traceObj({
 		before: {	message: '   Todo.p', css: 'color: #249',	size: OBJECT_SIZE },
 		target: Todo.prototype, targetConfig: {	css: 'color: #249',	size: FUNCTION_SIZE },
