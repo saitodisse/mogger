@@ -2,11 +2,26 @@
 	position: relative;
 	width: 100%;
 	font-size: 57px;
-	line-height: 50px;
+	line-height: 68px;
 	font-weight: bold;
 	text-align: center;
+	margin: 20px 0;
 	color: #999;
 	text-shadow: -1px -1px rgba(0, 0, 0, 0.2);
+	-webkit-text-rendering: optimizeLegibility;
+	-moz-text-rendering: optimizeLegibility;
+	-ms-text-rendering: optimizeLegibility;
+	-o-text-rendering: optimizeLegibility;
+	text-rendering: optimizeLegibility;
+}
+
+#mogger-example p, a{
+	position: relative;
+	width: 100%;
+	font-size: 20px;
+	text-align: center;
+	color: #595;
+	margin-top: 10px;
 	-webkit-text-rendering: optimizeLegibility;
 	-moz-text-rendering: optimizeLegibility;
 	-ms-text-rendering: optimizeLegibility;
@@ -17,11 +32,9 @@
 #mogger-example h2{
 	position: relative;
 	width: 100%;
-	font-size: 24px;
-	font-weight: bold;
+	font-size: 20px;
 	text-align: center;
 	color: #848484;
-	text-shadow: -1px -1px rgba(0, 0, 0, 0.2);
 	-webkit-text-rendering: optimizeLegibility;
 	-moz-text-rendering: optimizeLegibility;
 	-ms-text-rendering: optimizeLegibility;
@@ -30,5 +43,7 @@
 }
 
 #mogger-example h2 b{
-	color: #D37171;
+	color: #E37171;
+	font-size: 24px;
 }
+
