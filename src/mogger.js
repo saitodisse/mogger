@@ -15,7 +15,19 @@
 
   // AMD
   if (typeof define === 'function' && define.amd) {
-    define(['colorful-logger', 'meld', 'meldTrace', 'lodash', 'exports'], function (ColorfulLogger, meld, meldTrace, _, exports) {
+    define(['exports',
+            'colorful-logger',
+            'meld',
+            'meldTrace',
+            'lodash'
+          ],
+          function (
+            exports,
+            ColorfulLogger,
+            meld,
+            meldTrace,
+            _
+    ){
       factory(root, exports, ColorfulLogger, meld, meldTrace, _);
     });
 
@@ -52,13 +64,12 @@
     var showPause = config.showPause || false;
 
     /*
-    
+      interceptorsObj:
       {
         globalInterceptors: config.interceptors,
         localInterceptors: options.interceptors,
         info: info
       }
-    
     */
     var checkExistingInterceptors = function(interceptorsObj) {
       var hasLocalInterceptors = !_.isUndefined(interceptorsObj.localInterceptors);
