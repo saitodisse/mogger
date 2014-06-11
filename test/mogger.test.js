@@ -281,4 +281,140 @@ buster.testCase('Mogger', {
 		//someObj.addNumbers and someObj.addNumbers again
 		equals(2, fakeConsole.logRecorder.length);
 	},
+
+
+	/*
+		------------------------------------------------------------------------------------
+		# interceptor
+		------------------------------------------------------------------------------------
+		:: interceptors can modify the way that log is printed
+		------------------------------------------------------------------------------------
+	*/
+	'interceptor will log arguments': function() {
+		//the object and his function
+		var someObj = { 
+			addNumbers: function (arg1, arg2) { return arg1 + arg2; },
+			otherFunction: function (arg1, arg2) { return arg1 + arg2; }
+		};
+
+		//trace
+		tracer.traceObj({
+			target: someObj,
+			interceptor: {
+				filterRegex: /otherFunction/i,
+				callback: function(info) {
+					return info.method + '(' + info.args[0] + ', ' + info.args[1] + ')';
+				}
+			}
+		});
+
+		//call each one time
+		someObj.addNumbers(1, 2);
+		someObj.otherFunction(1, 2);
+
+		//someObj.addNumbers and someObj.addNumbers again
+		equals(2, fakeConsole.logRecorder.length);
+		equals('addNumbers', fakeConsole.logRecorder[0].message);
+		equals('otherFunction(1, 2)', fakeConsole.logRecorder[1].message);
+	},
+
+	/*
+		------------------------------------------------------------------------------------
+		# global interceptor
+		------------------------------------------------------------------------------------
+		:: global interceptors can modify the way that all logs are printed
+		------------------------------------------------------------------------------------
+	*/
+	'global interceptors': function() {
+		tracer = new Mogger.Tracer({
+			loggerConfig: {
+				output: fakeConsole
+			},
+			showPause: true,
+			interceptor: {
+				filterRegex: /.*/i,
+				callback: function(info) {
+					return info.method + '(' + info.args[0] + ', ' + info.args[1] + ')';
+				}
+			}
+		});
+
+		//the object and his function
+		var someObj = { 
+			addNumbers: function (arg1, arg2) { return arg1 + arg2; },
+			otherFunction: function (arg1, arg2) { return arg1 + arg2; }
+		};
+
+		//trace
+		tracer.traceObj({
+			target: someObj,
+		});
+
+		//call each one time
+		someObj.addNumbers(1, 2);
+		someObj.otherFunction(1, 2);
+
+		//someObj.addNumbers and someObj.addNumbers again
+		equals(2, fakeConsole.logRecorder.length);
+		equals('addNumbers(1, 2)', fakeConsole.logRecorder[0].message);
+		equals('otherFunction(1, 2)', fakeConsole.logRecorder[1].message);
+	},
+
+	/*
+		------------------------------------------------------------------------------------
+		# global interceptor vs local interceptor
+		------------------------------------------------------------------------------------
+		:: global interceptors can modify the way that all logs are printed
+		------------------------------------------------------------------------------------
+	*/
+	'local interceptor wins/overlaps global interceptor': function() {
+		tracer = new Mogger.Tracer({
+			loggerConfig: {
+				output: fakeConsole
+			},
+			showPause: true,
+
+			// GLOBAL INTERCEPTOR
+			interceptor: {
+				filterRegex: /.*/i,
+				callback: function(info) {
+					return '->' + info.method;
+				}
+			}
+
+		});
+
+		//the object and his function
+		var someObj = { 
+			addNumbers: function (arg1, arg2) { return arg1 + arg2; },
+			otherFunction: function (arg1, arg2) { return arg1 + arg2; }
+		};
+
+		//trace
+		tracer.traceObj({
+			target: someObj,
+
+			// LOCAL INTERCEPTOR
+			interceptor: {
+				filterRegex: /addNumbers/i,
+				callback: function(info) {
+					return info.method + '(' + info.args[0] + ', ' + info.args[1] + ')';
+				}
+			}
+
+		});
+
+		//call each one time
+		someObj.addNumbers(1, 2);
+		someObj.otherFunction(1, 2);
+
+		//someObj.addNumbers and someObj.addNumbers again
+		equals(2, fakeConsole.logRecorder.length);
+		equals('addNumbers(1, 2)', fakeConsole.logRecorder[0].message);
+		equals('->otherFunction', fakeConsole.logRecorder[1].message);
+	},
+
+
+
+
 });

@@ -46,7 +46,7 @@
     var logger = config.logger;
     var loggerConfig = config.loggerConfig;
     logger = this.logger = logger || new ColorfulLogger.Logger(loggerConfig);
-    
+
     //showPause when to much time without any log
     var showPause = config.showPause || false;
 
@@ -64,9 +64,16 @@
       if(options.ignorePattern){
         this.ignorePattern = options.ignorePattern;
       }
+      if(options.interceptor){
+        this.interceptor = options.interceptor;
+      }
 
       this.onCall = function(info) {
-        var logs = [], targetLog;
+        var logs = [],
+            targetLog,
+            willIntercept,
+            callback,
+            mainMessage = info.method;
 
         if(this.ignorePattern && this.ignorePattern.test(info.method)){
           return false;
@@ -77,14 +84,31 @@
           logs.push(this.before);
         }
 
+        //global interceptor
+        if(config.interceptor){
+          willIntercept = config.interceptor.filterRegex.test(info.method);
+          callback = config.interceptor.callback;
+          if(willIntercept){
+            mainMessage = callback(info);
+          }
+        }
+        //local interceptor
+        if(this.interceptor){
+          willIntercept = this.interceptor.filterRegex.test(info.method);
+          callback = this.interceptor.callback;
+          if(willIntercept){
+            mainMessage = callback(info);
+          }
+        }
+
         //target (function)
         if(this.targetConfig){
           targetLog = this.targetConfig;
-          targetLog.message = info.method;
+          targetLog.message = mainMessage;
         }
         else{
           targetLog = {
-            message: info.method
+            message: mainMessage
           };
         }
         logs.push(targetLog);
