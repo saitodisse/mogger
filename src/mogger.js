@@ -15,8 +15,8 @@
 
   // AMD
   if (typeof define === 'function' && define.amd) {
-    define(['colorful-logger', 'meld', 'meldTrace', 'exports'], function (ColorfulLogger, meld, meldTrace, exports) {
-      factory(root, exports, ColorfulLogger, meld, meldTrace);
+    define(['colorful-logger', 'meld', 'meldTrace', 'lodash', 'exports'], function (ColorfulLogger, meld, meldTrace, _, exports) {
+      factory(root, exports, ColorfulLogger, meld, meldTrace, _);
     });
 
   // Node.js
@@ -24,10 +24,11 @@
     var ColorfulLogger = require('colorful-logger');
     var meld = require('meld');
     var meldTrace = require('meld/aspect/trace');
-    factory(root, exports, ColorfulLogger, meld, meldTrace);
+    var _ = require('lodash');
+    factory(root, exports, ColorfulLogger, meld, meldTrace, _);
   }
 
-}(this, function(root, Mogger, ColorfulLogger, meld, meldTrace) {
+}(this, function(root, Mogger, ColorfulLogger, meld, meldTrace, _) {
 
   var globalTimeoutLogId = null;
   var setParentTimeout = function(logger) {
@@ -50,6 +51,70 @@
     //showPause when to much time without any log
     var showPause = config.showPause || false;
 
+    /*
+    
+      {
+        globalInterceptors: config.interceptors,
+        localInterceptors: options.interceptors,
+        info: info
+      }
+    
+    */
+    var checkExistingInterceptors = function(interceptorsObj) {
+      var hasLocalInterceptors = !_.isUndefined(interceptorsObj.localInterceptors);
+      var hasGlobalInterceptors = !_.isUndefined(interceptorsObj.globalInterceptors);
+      return (hasLocalInterceptors || hasGlobalInterceptors);
+    };
+
+    var matchInterceptor = function(interceptor, methodName) {
+      var filterRegex = interceptor.filterRegex;
+      var matchFilterResult = filterRegex.test(methodName);
+      if(matchFilterResult){
+        return interceptor;
+      }
+      return false;
+    };
+
+    var selectInterceptor = function(interceptor, methodName) {
+      // interceptor Array
+      if(interceptor && _.isArray(interceptor)){
+        for (var i = 0; i < interceptor.length; i++) {
+          var interceptorItem = interceptor[i];
+          if( matchInterceptor(interceptorItem, methodName) ){
+            return interceptorItem;
+          }
+        }
+      }
+      // interceptor single obj
+      else if(interceptor && !_.isArray(interceptor)){
+        return matchInterceptor(interceptor, methodName);
+      }
+
+      // no filter match
+      return false;
+    };
+
+    var applyInterceptor = function(interceptorsObj, interceptor) {
+      return interceptor.callback(interceptorsObj.info);
+    };
+
+    var checkApplyInterceptors = function(interceptorsObj) {
+      if(!checkExistingInterceptors(interceptorsObj)){
+        return interceptorsObj.info.method;
+      }
+      
+      var interceptor = selectInterceptor(interceptorsObj.localInterceptors,  interceptorsObj.info.method);
+      if (interceptor === false) {
+        interceptor = selectInterceptor(interceptorsObj.globalInterceptors, interceptorsObj.info.method);
+      }
+
+      if (interceptor) {
+        return applyInterceptor(interceptorsObj, interceptor);
+      }
+      else {
+        return interceptorsObj.info.method;
+      }
+    };
 
     var GetReporter = function (options) {
       if(options.before){
@@ -64,15 +129,10 @@
       if(options.ignorePattern){
         this.ignorePattern = options.ignorePattern;
       }
-      if(options.interceptor){
-        this.interceptor = options.interceptor;
-      }
 
       this.onCall = function(info) {
         var logs = [],
             targetLog,
-            willIntercept,
-            callback,
             mainMessage = info.method;
 
         if(this.ignorePattern && this.ignorePattern.test(info.method)){
@@ -84,22 +144,14 @@
           logs.push(this.before);
         }
 
-        //global interceptor
-        if(config.interceptor){
-          willIntercept = config.interceptor.filterRegex.test(info.method);
-          callback = config.interceptor.callback;
-          if(willIntercept){
-            mainMessage = callback(info);
-          }
-        }
-        //local interceptor
-        if(this.interceptor){
-          willIntercept = this.interceptor.filterRegex.test(info.method);
-          callback = this.interceptor.callback;
-          if(willIntercept){
-            mainMessage = callback(info);
-          }
-        }
+        
+        // Interceptors
+        var interceptorsObj = {
+          globalInterceptors: config.interceptors,
+          localInterceptors: options.interceptors,
+          info: info
+        };
+        mainMessage = checkApplyInterceptors(interceptorsObj);
 
         //target (function)
         if(this.targetConfig){

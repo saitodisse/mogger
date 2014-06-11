@@ -21,6 +21,7 @@
   "homepage": "https://github.com/saitodisse/mogger",
   "dependencies": {
     "colorful-logger": "saitodisse/colorful-logger",
+    "lodash": "^2.4.1",
     "meld": "saitodisse/meld"
   },
   "devDependencies": {

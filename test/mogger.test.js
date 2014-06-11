@@ -285,12 +285,12 @@ buster.testCase('Mogger', {
 
 	/*
 		------------------------------------------------------------------------------------
-		# interceptor
+		# interceptors
 		------------------------------------------------------------------------------------
 		:: interceptors can modify the way that log is printed
 		------------------------------------------------------------------------------------
 	*/
-	'interceptor will log arguments': function() {
+	'interceptors will log arguments': function() {
 		//the object and his function
 		var someObj = { 
 			addNumbers: function (arg1, arg2) { return arg1 + arg2; },
@@ -300,7 +300,7 @@ buster.testCase('Mogger', {
 		//trace
 		tracer.traceObj({
 			target: someObj,
-			interceptor: {
+			interceptors: {
 				filterRegex: /otherFunction/i,
 				callback: function(info) {
 					return info.method + '(' + info.args[0] + ', ' + info.args[1] + ')';
@@ -320,7 +320,7 @@ buster.testCase('Mogger', {
 
 	/*
 		------------------------------------------------------------------------------------
-		# global interceptor
+		# global interceptors
 		------------------------------------------------------------------------------------
 		:: global interceptors can modify the way that all logs are printed
 		------------------------------------------------------------------------------------
@@ -331,7 +331,7 @@ buster.testCase('Mogger', {
 				output: fakeConsole
 			},
 			showPause: true,
-			interceptor: {
+			interceptors: {
 				filterRegex: /.*/i,
 				callback: function(info) {
 					return info.method + '(' + info.args[0] + ', ' + info.args[1] + ')';
@@ -362,20 +362,20 @@ buster.testCase('Mogger', {
 
 	/*
 		------------------------------------------------------------------------------------
-		# global interceptor vs local interceptor
+		# global interceptors vs local interceptors
 		------------------------------------------------------------------------------------
 		:: global interceptors can modify the way that all logs are printed
 		------------------------------------------------------------------------------------
 	*/
-	'local interceptor wins/overlaps global interceptor': function() {
+	'local interceptors wins/overlaps global interceptors': function() {
 		tracer = new Mogger.Tracer({
 			loggerConfig: {
 				output: fakeConsole
 			},
 			showPause: true,
 
-			// GLOBAL INTERCEPTOR
-			interceptor: {
+			// GLOBAL INTERCEPTORS
+			interceptors: {
 				filterRegex: /.*/i,
 				callback: function(info) {
 					return '->' + info.method;
@@ -394,8 +394,8 @@ buster.testCase('Mogger', {
 		tracer.traceObj({
 			target: someObj,
 
-			// LOCAL INTERCEPTOR
-			interceptor: {
+			// LOCAL INTERCEPTORS
+			interceptors: {
 				filterRegex: /addNumbers/i,
 				callback: function(info) {
 					return info.method + '(' + info.args[0] + ', ' + info.args[1] + ')';
@@ -415,6 +415,74 @@ buster.testCase('Mogger', {
 	},
 
 
+	/*
+		------------------------------------------------------------------------------------
+		# many interceptors
+		------------------------------------------------------------------------------------
+	*/
+	'several interceptors can be configured': function() {
+		tracer = new Mogger.Tracer({
+			loggerConfig: {
+				output: fakeConsole
+			},
+			showPause: true,
+
+			// GLOBAL INTERCEPTORS
+			interceptors: [
+			{
+				filterRegex: /^a.*/i,
+				callback: function(info) {
+					return '[1] ' + info.method;
+				}
+			},
+			{
+				filterRegex: /^b.*/i,
+				callback: function(info) {
+					return '[2.1] ' + info.method;
+				}
+			}]
+
+		});
+
+		//the object and his function
+		var someObj = { 
+			aFunc: function (arg1, arg2) { return arg1 + arg2; },
+			bFunc: function (arg1, arg2) { return arg1 + arg2; },
+			cFunc: function (arg1, arg2) { return arg1 + arg2; }
+		};
+
+		//trace
+		tracer.traceObj({
+			target: someObj,
+
+			// LOCAL INTERCEPTORS
+			interceptors: [
+			{
+				filterRegex: /^b.*/i,
+				callback: function(info) {
+					return '[2.2] ' + info.method;
+				}
+			},
+			{
+				filterRegex: /^c.*/i,
+				callback: function(info) {
+					return '[3] ' + info.method;
+				}
+			}]
+
+		});
+
+		//call each one time
+		someObj.aFunc(1, 2);
+		someObj.bFunc(1, 2);
+		someObj.cFunc(1, 2);
+
+		//someObj.addNumbers and someObj.addNumbers again
+		equals(3, fakeConsole.logRecorder.length);
+		equals('[1] aFunc', fakeConsole.logRecorder[0].message);
+		equals('[2.2] bFunc', fakeConsole.logRecorder[1].message);
+		equals('[3] cFunc', fakeConsole.logRecorder[2].message);
+	},
 
 
 });
