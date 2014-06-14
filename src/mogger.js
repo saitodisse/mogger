@@ -53,7 +53,12 @@
     Mogger.Tracer
   *******************************/
   Mogger.Tracer = function (config){
+    // global configuration
     config = config || {};
+    this.globalConfig = config;
+    var getGlobalConfig = function() {
+      return this.globalConfig;
+    }.bind(this);
 
     //get logger and send configuration to him
     var logger = config.logger;
@@ -128,31 +133,20 @@
     };
 
     var GetReporter = function (options) {
-      if(options.before){
-        this.before = options.before;
-      }
-      if(options.targetConfig){
-        this.targetConfig = options.targetConfig;
-      }
-      if(options.showArguments){
-        this.showArguments = options.showArguments;
-      }
-      if(options.ignorePattern){
-        this.ignorePattern = options.ignorePattern;
-      }
-
       this.onCall = function(info) {
         var logs = [],
             targetLog,
-            mainMessage = info.method;
+            mainMessage = info.method,
+            isDisabled = getGlobalConfig().enabled === false,
+            isIgnored = options.ignorePattern && options.ignorePattern.test(info.method);
 
-        if(this.ignorePattern && this.ignorePattern.test(info.method)){
+        if(isDisabled || isIgnored){
           return false;
         }
 
         //before (namespace)
-        if(this.before){
-          logs.push(this.before);
+        if(options.before){
+          logs.push(options.before);
         }
 
         
@@ -165,8 +159,8 @@
         mainMessage = checkApplyInterceptors(interceptorsObj);
 
         //target (function)
-        if(this.targetConfig){
-          targetLog = this.targetConfig;
+        if(options.targetConfig){
+          targetLog = options.targetConfig;
           targetLog.message = mainMessage;
         }
         else{
@@ -178,7 +172,7 @@
 
 
         //colorful-logger
-        if(this.showArguments){
+        if(options.showArguments){
           logs[0].logType = 'groupCollapsed';
           logger.log(logs);
 
@@ -207,12 +201,6 @@
     };
 
 		this.traceObj = function(opt) {
-      var globalDisabled = (config.enabled === false);
-      var localDisabled = (opt.enabled === false);
-      if(globalDisabled || localDisabled){
-        return false;
-      }
-
       var reporter = new GetReporter(opt);
       this.meldRemover = meld(opt.target, /./, meldTrace(reporter));
 		};

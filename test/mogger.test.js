@@ -105,6 +105,37 @@ buster.testCase('Mogger', {
 
 	/*
 		------------------------------------------------------------------------------------
+		# Global: disable and enable after initialization
+		------------------------------------------------------------------------------------
+	*/
+	'global disabled after': function(){
+		tracer = new Mogger.Tracer({
+			loggerConfig: {
+				output: fakeConsole
+			}
+		});
+
+		// --------------------------------------------
+		// disabling before traceObj
+		tracer.globalConfig.enabled = false;
+		tracer.traceObj({ target: someObj });
+		
+		someObj.addNumbers(1, 2);
+		equals(0, fakeConsole.logRecorder.length);
+		// --------------------------------------------
+
+
+		// --------------------------------------------
+		// enabling after traceObj
+		tracer.globalConfig.enabled = true;
+		
+		someObj.addNumbers(1, 2);
+		equals(1, fakeConsole.logRecorder.length);
+		// --------------------------------------------
+	},
+
+	/*
+		------------------------------------------------------------------------------------
 		# Local: disable and enable
 		------------------------------------------------------------------------------------
 	*/
