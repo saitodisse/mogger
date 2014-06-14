@@ -80,6 +80,45 @@ buster.testCase('Mogger', {
 		
 	},
 
+
+	/*
+		------------------------------------------------------------------------------------
+		# disable and enable
+		------------------------------------------------------------------------------------
+	*/
+	'global disabled': function(){
+		tracer = new Mogger.Tracer({
+			loggerConfig: {
+				output: fakeConsole
+			},
+			enabled: false
+		});
+
+		tracer.traceObj({
+			target: someObj
+		});
+
+		someObj.addNumbers(1, 2);
+
+		equals(0, fakeConsole.logRecorder.length);
+	},
+
+	/*
+		------------------------------------------------------------------------------------
+		# disable and enable
+		------------------------------------------------------------------------------------
+	*/
+	'local disabled': function(){
+		tracer.traceObj({
+			target: someObj,
+			enabled: false
+		});
+
+		someObj.addNumbers(1, 2);
+
+		equals(0, fakeConsole.logRecorder.length);
+	},
+
 	/*
 		------------------------------------------------------------------------------------
 		# before: {LOG}

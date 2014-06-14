@@ -54,7 +54,7 @@
   *******************************/
   Mogger.Tracer = function (config){
     config = config || {};
-    
+
     //get logger and send configuration to him
     var logger = config.logger;
     var loggerConfig = config.loggerConfig;
@@ -207,6 +207,10 @@
     };
 
 		this.traceObj = function(opt) {
+      if(opt.enabled === false || config.enabled === false){
+        return false;
+      }
+
       var reporter = new GetReporter(opt);
       this.meldRemover = meld(opt.target, /./, meldTrace(reporter));
 		};
