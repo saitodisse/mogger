@@ -207,7 +207,9 @@
     };
 
 		this.traceObj = function(opt) {
-      if(opt.enabled === false || config.enabled === false){
+      var globalDisabled = (config.enabled === false);
+      var localDisabled = (opt.enabled === false);
+      if(globalDisabled || localDisabled){
         return false;
       }
 
