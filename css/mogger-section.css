@@ -1,7 +1,7 @@
 #mogger-example h1{
 	position: relative;
 	width: 100%;
-	font-size: 57px;
+	font-size: 64px;
 	line-height: 68px;
 	font-weight: bold;
 	text-align: center;
@@ -18,7 +18,7 @@
 #mogger-example p, a{
 	position: relative;
 	width: 100%;
-	font-size: 20px;
+	font-size: 18px;
 	text-align: center;
 	color: #595;
 	margin-top: 10px;
@@ -32,7 +32,7 @@
 #mogger-example h2{
 	position: relative;
 	width: 100%;
-	font-size: 20px;
+	font-size: 22px;
 	text-align: center;
 	color: #848484;
 	-webkit-text-rendering: optimizeLegibility;
@@ -42,8 +42,43 @@
 	text-rendering: optimizeLegibility;
 }
 
+#mogger-example h2 a{
+	color: #84A484;
+}
+
 #mogger-example h2 b{
 	color: #E37171;
 	font-size: 24px;
 }
 
+.centerThis{
+	position: relative;
+	width: 100%;
+	text-align: center;
+	margin-left: 30%;
+}
+
+.pressButton{
+	padding: 20px;
+
+	-webkit-box-shadow: 1px 5px 8px -1px rgba(50, 50, 50, 0.75);
+	-moz-box-shadow:    1px 5px 8px -1px rgba(50, 50, 50, 0.75);
+	box-shadow:         1px 5px 8px -1px rgba(50, 50, 50, 0.75);
+
+	position: relative;
+	width: 40%;
+	font-size: 20px;
+	text-align: center;
+	color: #848484;
+	background-color: #FFF;
+	-webkit-text-rendering: optimizeLegibility;
+	-moz-text-rendering: optimizeLegibility;
+	-ms-text-rendering: optimizeLegibility;
+	-o-text-rendering: optimizeLegibility;
+	text-rendering: optimizeLegibility;
+}
+
+.pressButton b{
+	color: #E37171;
+	font-size: 24px;
+}
