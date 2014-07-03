@@ -38,7 +38,7 @@ buster.testCase('Mogger', {
 	},
 
 	tearDown: function () {
-		tracer.removeMeld();
+		tracer.removeAllTraces();
 	},
 
 	'contructor': function() {
@@ -80,6 +80,28 @@ buster.testCase('Mogger', {
 		
 	},
 
+	/*
+		------------------------------------------------------------------------------------
+		# trace.targets === []
+		------------------------------------------------------------------------------------
+		:: each logged function will be stored in targets array
+		------------------------------------------------------------------------------------
+	*/
+	'store each traced function on targets': function() {
+
+		//trace someObj1
+		tracer.traceObj({ target: someObj	});
+
+		//trace someObj2
+		var someObj2 = { addNumbers: function (arg1, arg2) { return arg1 + arg2; } };
+		tracer.traceObj({ target: someObj2 });
+
+		//trace someObj3
+		var someObj3 = { addNumbers: function (arg1, arg2) { return arg1 + arg2; } };
+		tracer.traceObj({ target: someObj3 });
+
+		equals(3, tracer.targets.length);
+	},
 
 	/*
 		------------------------------------------------------------------------------------
@@ -118,6 +140,7 @@ buster.testCase('Mogger', {
 		// --------------------------------------------
 		// disabling before traceObj
 		tracer.globalConfig.enabled = false;
+
 		tracer.traceObj({ target: someObj });
 		
 		someObj.addNumbers(1, 2);
