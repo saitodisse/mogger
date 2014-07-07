@@ -27,7 +27,7 @@ var someObj = {
 	}
 };
 
-buster.testCase('Mogger', {
+buster.testCase('Mogger:', {
   setUp: function () {
 		tracer = new Mogger.Tracer({
 			loggerConfig: {
@@ -195,6 +195,58 @@ buster.testCase('Mogger', {
 				size: 10
 			},
 			
+		});
+
+		//call
+		someObj.addNumbers(1, 2);
+
+		//verify
+		equals(1, fakeConsole.logRecorder.length);
+
+		equals('%cSomeObj   %caddNumbers     ', fakeConsole.logRecorder[0].message);
+		equals('color: blue', fakeConsole.logRecorder[0].cssList[0]);
+		equals('color: red', fakeConsole.logRecorder[0].cssList[1]);
+		
+		
+	},
+
+
+	/*
+		------------------------------------------------------------------------------------
+		# global.before
+		------------------------------------------------------------------------------------
+		:: local configuration is high priority. Will merge with global.
+		------------------------------------------------------------------------------------
+	*/
+	'global configurations for css and size': function() {
+
+		tracer = new Mogger.Tracer({
+			loggerConfig: {
+				output: fakeConsole
+			},
+
+			/////////////////////////
+			// global target config
+			targetConfig: {
+				css: 'color: red',
+				size: 15
+			},
+
+			/////////////////////////
+			// global before config
+			before: {
+				css: 'color: blue',
+				size: 10
+			},
+		});
+
+		//trace
+		tracer.traceObj({
+			target: someObj,
+			before: {
+				message: 'SomeObj'
+			},
+
 		});
 
 		//call

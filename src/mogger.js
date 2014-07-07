@@ -132,35 +132,54 @@
       }
     };
 
+    var defaults = _.partialRight(_.assign, function(a, b) {
+      return typeof a == 'undefined' ? b : a;
+    });
+
     var GetReporter = function (options) {
       this.onCall = function(info) {
         var logs = [],
             targetLog,
             mainMessage = info.method,
             isDisabled = getGlobalConfig().enabled === false || options.enabled === false,
-            isIgnored = options.ignorePattern && options.ignorePattern.test(info.method);
+            isIgnored = options.ignorePattern && options.ignorePattern.test(info.method),
+            beforeConfig,
+            targetConfig,
+            interceptorsObj
+        ;
 
         if(isDisabled || isIgnored){
           return false;
         }
 
-        //before (namespace)
-        if(options.before){
-          logs.push(options.before);
-        }
+        // local
+        beforeConfig = defaults(options.before, getGlobalConfig().before);
 
+        //before (first column / namespace)
+        if(beforeConfig){
+          logs.push(beforeConfig);
+        }
         
         // Interceptors
-        var interceptorsObj = {
+        interceptorsObj = {
           globalInterceptors: config.interceptors,
           localInterceptors: options.interceptors,
           info: info
         };
-        mainMessage = checkApplyInterceptors(interceptorsObj);
 
+        // get target message
+        mainMessage = checkApplyInterceptors(interceptorsObj);
+        
+        if(typeof getGlobalConfig().targetConfig != 'undefined' && typeof options.targetConfig == 'undefined'){
+          targetConfig = getGlobalConfig().targetConfig;
+        }
+        else{
+          targetConfig = defaults(options.targetConfig, getGlobalConfig().targetConfig);
+        }
+        
         //target (function)
-        if(options.targetConfig){
-          targetLog = options.targetConfig;
+        if(targetConfig){
+          targetLog = targetConfig;
           targetLog.message = mainMessage;
         }
         else{
@@ -215,7 +234,7 @@
       this.targets.push({
         meldRemover: meld(opt.target, /./, meldTrace(reporter)),
         options: opt
-      })
+      });
 		};
 
     // ----------------------------
@@ -226,7 +245,7 @@
     this.removeAllTraces = function() {
       this.targets.forEach(function(target) {
         target.meldRemover && target.meldRemover.remove();
-      })
+      });
     };
 
 	};
