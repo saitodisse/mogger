@@ -231,8 +231,15 @@
     // ----------------------------
 		this.traceObj = function(opt) {
       var reporter = new GetReporter(opt);
+      var surrogateTargets = config.surrogateTargets;
+      var target = opt.target;
+
+      if(surrogateTargets && _.isString(target)){
+        target = surrogateTargets[target];
+      }
+
       this.targets.push({
-        meldRemover: meld(opt.target, /./, meldTrace(reporter)),
+        meldRemover: meld(target, /./, meldTrace(reporter)),
         options: opt
       });
 		};

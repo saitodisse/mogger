@@ -629,5 +629,31 @@ buster.testCase('Mogger:', {
 		equals('[3] cFunc', fakeConsole.logRecorder[2].message);
 	},
 
+	/*
+		------------------------------------------------------------------------------------
+		# Targets Surrogates
+		------------------------------------------------------------------------------------
+	*/
+	'global surrogateTargets allow strings to define local targets': function(){
+		var SurrogateTargetsSource = {
+			'someObj': someObj
+		}
+
+		tracer = new Mogger.Tracer({
+			loggerConfig: {
+				output: fakeConsole
+			},
+			surrogateTargets: SurrogateTargetsSource
+		});
+
+		tracer.traceObj({
+			target: 'someObj'
+		});
+
+		someObj.addNumbers(1, 2);
+
+		equals(1, fakeConsole.logRecorder.length);
+		equals('addNumbers', fakeConsole.logRecorder[0].message);
+	},
 
 });
