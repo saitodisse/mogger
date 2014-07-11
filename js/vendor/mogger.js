@@ -53,8 +53,13 @@
     Mogger.Tracer
   *******************************/
   Mogger.Tracer = function (config){
+    // global configuration
     config = config || {};
-    
+    this.globalConfig = config;
+    var getGlobalConfig = function() {
+      return this.globalConfig;
+    }.bind(this);
+
     //get logger and send configuration to him
     var logger = config.logger;
     var loggerConfig = config.loggerConfig;
@@ -127,46 +132,54 @@
       }
     };
 
-    var GetReporter = function (options) {
-      if(options.before){
-        this.before = options.before;
-      }
-      if(options.targetConfig){
-        this.targetConfig = options.targetConfig;
-      }
-      if(options.showArguments){
-        this.showArguments = options.showArguments;
-      }
-      if(options.ignorePattern){
-        this.ignorePattern = options.ignorePattern;
-      }
+    var defaults = _.partialRight(_.assign, function(a, b) {
+      return typeof a == 'undefined' ? b : a;
+    });
 
+    var GetReporter = function (options) {
       this.onCall = function(info) {
         var logs = [],
             targetLog,
-            mainMessage = info.method;
+            mainMessage = info.method,
+            isDisabled = getGlobalConfig().enabled === false || options.enabled === false,
+            isIgnored = options.ignorePattern && options.ignorePattern.test(info.method),
+            beforeConfig,
+            targetConfig,
+            interceptorsObj
+        ;
 
-        if(this.ignorePattern && this.ignorePattern.test(info.method)){
+        if(isDisabled || isIgnored){
           return false;
         }
 
-        //before (namespace)
-        if(this.before){
-          logs.push(this.before);
-        }
+        // local
+        beforeConfig = defaults(options.before, getGlobalConfig().before);
 
+        //before (first column / namespace)
+        if(beforeConfig){
+          logs.push(beforeConfig);
+        }
         
         // Interceptors
-        var interceptorsObj = {
+        interceptorsObj = {
           globalInterceptors: config.interceptors,
           localInterceptors: options.interceptors,
           info: info
         };
-        mainMessage = checkApplyInterceptors(interceptorsObj);
 
+        // get target message
+        mainMessage = checkApplyInterceptors(interceptorsObj);
+        
+        if(typeof getGlobalConfig().targetConfig != 'undefined' && typeof options.targetConfig == 'undefined'){
+          targetConfig = getGlobalConfig().targetConfig;
+        }
+        else{
+          targetConfig = defaults(options.targetConfig, getGlobalConfig().targetConfig);
+        }
+        
         //target (function)
-        if(this.targetConfig){
-          targetLog = this.targetConfig;
+        if(targetConfig){
+          targetLog = targetConfig;
           targetLog.message = mainMessage;
         }
         else{
@@ -178,7 +191,7 @@
 
 
         //colorful-logger
-        if(this.showArguments){
+        if(options.showArguments){
           logs[0].logType = 'groupCollapsed';
           logger.log(logs);
 
@@ -202,17 +215,44 @@
 
       }.bind(this);
       
-      // onReturn:
-      // onThrow:
+      // other things that can be catch in the future
+      //    onReturn:
+      //    onThrow:
     };
 
+    this.targets = [];
+
+
+    // ----------------------------
+    // traceObj
+    // ----------------------------
+    // register one object to be monitored
+    // each function will be catched here thanks to AOP meld/aspect/trace
+    // ----------------------------
 		this.traceObj = function(opt) {
       var reporter = new GetReporter(opt);
-      this.meldRemover = meld(opt.target, /./, meldTrace(reporter));
+      var surrogateTargets = config.surrogateTargets;
+      var target = opt.target;
+
+      if(surrogateTargets && _.isString(target)){
+        target = surrogateTargets[target];
+      }
+
+      this.targets.push({
+        meldRemover: meld(target, /./, meldTrace(reporter)),
+        options: opt
+      });
 		};
 
-    this.removeMeld = function() {
-      this.meldRemover && this.meldRemover.remove();
+    // ----------------------------
+    // removeAllTraces
+    // ----------------------------
+    // loop over all target and remove them from meld AOP tracer
+    // ----------------------------
+    this.removeAllTraces = function() {
+      this.targets.forEach(function(target) {
+        target.meldRemover && target.meldRemover.remove();
+      });
     };
 
 	};

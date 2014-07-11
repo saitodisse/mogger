@@ -47,10 +47,10 @@ require([
 	'backbone',
 	'views/app',
 	'routers/router',
-	'logger/logger-example'
-], function (Backbone, AppView, Workspace, LoggerExample) {
+	'mogger-example/mogger-example'
+], function (Backbone, AppView, Workspace, MoggerExample) {
 	
-	new LoggerExample();
+	new MoggerExample();
 
 	/*jshint nonew:false*/
 	// Initialize routing and start Backbone.history()
