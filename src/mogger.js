@@ -178,6 +178,8 @@
             beforeConfig,
             targetConfig,
             interceptorsObj,
+            wasModifiedByInterceptor,
+            willLogArguments,
             showArguments = !_.isUndefined(options.showArguments) ? options.showArguments : config.showArguments
         ;
 
@@ -201,13 +203,13 @@
           localInterceptors: options.interceptors,
           info: info
         };
+        mainMessage = checkApplyInterceptors(interceptorsObj);
+        wasModifiedByInterceptor = (mainMessage !== info.method);
 
         /*
-            get target message
+            targetConfig local or global
         */
-        mainMessage = checkApplyInterceptors(interceptorsObj);
-
-        if(typeof getGlobalConfig().targetConfig != 'undefined' && typeof options.targetConfig == 'undefined'){
+        if(typeof getGlobalConfig().targetConfig !== 'undefined' && typeof options.targetConfig === 'undefined'){
           targetConfig = getGlobalConfig().targetConfig;
         }
         else{
@@ -230,9 +232,13 @@
 
 
         /*
-            Function arguments
+            Function arguments in a groupCollapsed
         */
-        if(showArguments && checkRelevantArguments(info.args)){
+        willLogArguments = showArguments &&
+                           !wasModifiedByInterceptor &&
+                           checkRelevantArguments(info.args);
+        
+        if(willLogArguments){
           logs[0].logType = 'groupCollapsed';
           logger.log(logs);
 
