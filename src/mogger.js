@@ -185,24 +185,28 @@
           return false;
         }
 
-        // local
+        /*
+            before (first column / namespace)
+        */
         beforeConfig = defaults(options.before, getGlobalConfig().before);
-
-        //before (first column / namespace)
         if(beforeConfig){
           logs.push(beforeConfig);
         }
         
-        // Interceptors
+        /*
+            Interceptors
+        */
         interceptorsObj = {
           globalInterceptors: config.interceptors,
           localInterceptors: options.interceptors,
           info: info
         };
 
-        // get target message
+        /*
+            get target message
+        */
         mainMessage = checkApplyInterceptors(interceptorsObj);
-        
+
         if(typeof getGlobalConfig().targetConfig != 'undefined' && typeof options.targetConfig == 'undefined'){
           targetConfig = getGlobalConfig().targetConfig;
         }
@@ -210,7 +214,9 @@
           targetConfig = defaults(options.targetConfig, getGlobalConfig().targetConfig);
         }
         
-        //target (function)
+        /*
+            target (function)
+        */
         if(targetConfig){
           targetLog = targetConfig;
           targetLog.message = mainMessage;
@@ -222,7 +228,10 @@
         }
         logs.push(targetLog);
 
-        //colorful-logger
+
+        /*
+            Function arguments
+        */
         if(showArguments && checkRelevantArguments(info.args)){
           logs[0].logType = 'groupCollapsed';
           logger.log(logs);
@@ -235,13 +244,17 @@
           });
         }
         else{
+          logs[0].logType = 'log';
           logger.log(logs);
         }
 
+        /*
+            pause
+        */
         if(showPause){
           // cancel pause made before
           clearTimeout(globalTimeoutLogId);
-          // if is not canceled, shows line bellow
+          // if is not canceled, it shows the line bellow
           setParentTimeout(logger);
         }
 
@@ -263,9 +276,11 @@
     // ----------------------------
 		this.traceObj = function(opt) {
       var reporter = new GetReporter(opt);
-      var surrogateTargets = config.surrogateTargets;
       var target = opt.target;
-
+      
+      // gets target real object from surrogateTargets,
+      // only if its is an string
+      var surrogateTargets = config.surrogateTargets;
       if(surrogateTargets && _.isString(target)){
         target = surrogateTargets[target];
       }

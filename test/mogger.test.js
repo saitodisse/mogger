@@ -344,24 +344,33 @@ buster.testCase('Mogger:', {
 		someObj.addNumbers(1);
 		//verify "Show Arguments = True"
 		totalLogs += 3;
-		equals(totalLogs, fakeConsole.logRecorder.length);
+		equals('groupCollapsed', 	fakeConsole.logRecorder[totalLogs-3].methodName);
+		equals('log', 						fakeConsole.logRecorder[totalLogs-2].methodName);
+		equals('groupEnd', 				fakeConsole.logRecorder[totalLogs-1].methodName);
 
 		//call
 		someObj.addNumbers();
 		//verify "Show Arguments = False"
 		totalLogs += 1;
 		equals(totalLogs, fakeConsole.logRecorder.length);
+		equals('log', 						fakeConsole.logRecorder[totalLogs-1].methodName);
 
 		//call
 		someObj.addNumbers([]);
 		//verify "Show Arguments = False"
 		totalLogs += 1;
 		equals(totalLogs, fakeConsole.logRecorder.length);
-		
+		equals('log', 						fakeConsole.logRecorder[totalLogs-1].methodName);
+
 		//call
 		someObj.addNumbers([1]);
 		//verify "Show Arguments = True"
 		totalLogs += 3;
+		equals('groupCollapsed', 	fakeConsole.logRecorder[totalLogs-3].methodName);
+		equals('log', 						fakeConsole.logRecorder[totalLogs-2].methodName);
+		equals('groupEnd', 				fakeConsole.logRecorder[totalLogs-1].methodName);
+
+
 		equals(totalLogs, fakeConsole.logRecorder.length);
 
 		//call
@@ -369,11 +378,17 @@ buster.testCase('Mogger:', {
 		//verify "Show Arguments = False"
 		totalLogs += 1;
 		equals(totalLogs, fakeConsole.logRecorder.length);
+		equals('log', 						fakeConsole.logRecorder[totalLogs-1].methodName);
 
 		//call
 		someObj.addNumbers("ABC");
 		//verify "Show Arguments = False"
 		totalLogs += 3;
+		equals('groupCollapsed', 	fakeConsole.logRecorder[totalLogs-3].methodName);
+		equals('log', 						fakeConsole.logRecorder[totalLogs-2].methodName);
+		equals('groupEnd', 				fakeConsole.logRecorder[totalLogs-1].methodName);
+
+
 		equals(totalLogs, fakeConsole.logRecorder.length);
 
 		//call
@@ -381,11 +396,17 @@ buster.testCase('Mogger:', {
 		//verify "Show Arguments = False"
 		totalLogs += 1;
 		equals(totalLogs, fakeConsole.logRecorder.length);
+		equals('log', 						fakeConsole.logRecorder[totalLogs-1].methodName);
 
 		//call
 		someObj.addNumbers({a: 1});
 		//verify "Show Arguments = True"
 		totalLogs += 3;
+		equals('groupCollapsed', 	fakeConsole.logRecorder[totalLogs-3].methodName);
+		equals('log', 						fakeConsole.logRecorder[totalLogs-2].methodName);
+		equals('groupEnd', 				fakeConsole.logRecorder[totalLogs-1].methodName);
+
+
 		equals(totalLogs, fakeConsole.logRecorder.length);
 
 		//call
@@ -393,7 +414,7 @@ buster.testCase('Mogger:', {
 		//verify "Show Arguments = False"
 		totalLogs += 1;
 		equals(totalLogs, fakeConsole.logRecorder.length);
-		
+		equals('log', 						fakeConsole.logRecorder[totalLogs-1].methodName);
 	},
 	/*
 		------------------------------------------------------------------------------------
