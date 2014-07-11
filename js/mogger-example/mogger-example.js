@@ -48,13 +48,14 @@ define([
 				//css: 'color: red',
 				size: 25
 			},
+			showArguments: true,
 
 			//-------------------------------------------------------
 			// interceptors
 			//-------------------------------------------------------
 			interceptors: [
 			{
-				filterRegex: /^(trigger|get|has|\$|setFilter|_on\w+|render)/i,
+				filterRegex: /^(trigger|get|has|\$|setFilter|_on\w+|render|sync|previous|_routeToRegExp|setElement)/i,
 				callback: function(info) {
 					return info.method + '("' + info.args[0] + '")';
 				}
@@ -70,7 +71,26 @@ define([
 				callback: function(info) {
 					return 'v ' + info.method + '("' + info.args[1] + '")';
 				}
-			}]
+			},
+			{
+				filterRegex: /^(route)/i,
+				callback: function(info) {
+					return info.method + '("' + info.args[1] + '")';
+				}
+			},
+			{
+				filterRegex: /^(set)/i,
+				callback: function(info) {
+					if(_.isString(info.args[0])){
+						return info.method + '("' + info.args[0] + '")';	
+					}
+					else{
+						return info.method;
+					}
+					
+				}
+			}
+			]
 
 		});
 	};

@@ -136,6 +136,38 @@
       return typeof a == 'undefined' ? b : a;
     });
 
+    var checkRelevantArguments = function(args) {
+      if(args.length === 0){
+        return false;
+      }
+
+      for (var i = 0; i < args.length; i++) {
+        var argument = args[i];
+        
+        var isString = _.isString(argument) && argument.length > 0;
+        var isNumber = _.isNumber(argument);
+        var isBoolean = _.isBoolean(argument);
+        var isArray = _.isArray(argument) && argument.length > 0;
+        var isEmpty = _.isEmpty(argument);
+        var isObject = _.isObject(argument);
+
+        // console.log('<', argument, '>',
+        //             '\nisString = ', isString,
+        //             '\nisNumber = ', isNumber,
+        //             '\nisBoolean = ', isBoolean,
+        //             '\nisArray = ', isArray,
+        //             '\nisEmpty = ', isEmpty,
+        //             '\nisObject = ', isObject
+        //             );
+        
+        var hasValues = isString || isNumber || isBoolean || isArray || (isObject && !isEmpty);
+        if(hasValues){
+          return true;
+        }
+      }
+      return false;
+    };
+
     var GetReporter = function (options) {
       this.onCall = function(info) {
         var logs = [],
@@ -145,39 +177,48 @@
             isIgnored = options.ignorePattern && options.ignorePattern.test(info.method),
             beforeConfig,
             targetConfig,
-            interceptorsObj
+            interceptorsObj,
+            wasModifiedByInterceptor,
+            willLogArguments,
+            showArguments = !_.isUndefined(options.showArguments) ? options.showArguments : config.showArguments
         ;
 
         if(isDisabled || isIgnored){
           return false;
         }
 
-        // local
+        /*
+            before (first column / namespace)
+        */
         beforeConfig = defaults(options.before, getGlobalConfig().before);
-
-        //before (first column / namespace)
         if(beforeConfig){
           logs.push(beforeConfig);
         }
         
-        // Interceptors
+        /*
+            Interceptors
+        */
         interceptorsObj = {
           globalInterceptors: config.interceptors,
           localInterceptors: options.interceptors,
           info: info
         };
-
-        // get target message
         mainMessage = checkApplyInterceptors(interceptorsObj);
-        
-        if(typeof getGlobalConfig().targetConfig != 'undefined' && typeof options.targetConfig == 'undefined'){
+        wasModifiedByInterceptor = (mainMessage !== info.method);
+
+        /*
+            targetConfig local or global
+        */
+        if(typeof getGlobalConfig().targetConfig !== 'undefined' && typeof options.targetConfig === 'undefined'){
           targetConfig = getGlobalConfig().targetConfig;
         }
         else{
           targetConfig = defaults(options.targetConfig, getGlobalConfig().targetConfig);
         }
         
-        //target (function)
+        /*
+            target (function)
+        */
         if(targetConfig){
           targetLog = targetConfig;
           targetLog.message = mainMessage;
@@ -190,8 +231,14 @@
         logs.push(targetLog);
 
 
-        //colorful-logger
-        if(options.showArguments){
+        /*
+            Function arguments in a groupCollapsed
+        */
+        willLogArguments = showArguments &&
+                           !wasModifiedByInterceptor &&
+                           checkRelevantArguments(info.args);
+        
+        if(willLogArguments){
           logs[0].logType = 'groupCollapsed';
           logger.log(logs);
 
@@ -203,13 +250,17 @@
           });
         }
         else{
+          logs[0].logType = 'log';
           logger.log(logs);
         }
 
+        /*
+            pause
+        */
         if(showPause){
           // cancel pause made before
           clearTimeout(globalTimeoutLogId);
-          // if is not canceled, shows line bellow
+          // if is not canceled, it shows the line bellow
           setParentTimeout(logger);
         }
 
@@ -231,9 +282,11 @@
     // ----------------------------
 		this.traceObj = function(opt) {
       var reporter = new GetReporter(opt);
-      var surrogateTargets = config.surrogateTargets;
       var target = opt.target;
-
+      
+      // gets target real object from surrogateTargets,
+      // only if its is an string
+      var surrogateTargets = config.surrogateTargets;
       if(surrogateTargets && _.isString(target)){
         target = surrogateTargets[target];
       }
