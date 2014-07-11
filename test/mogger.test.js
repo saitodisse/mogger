@@ -313,6 +313,88 @@ buster.testCase('Mogger:', {
 		
 	},
 
+
+	/*
+		------------------------------------------------------------------------------------
+		# checkRelevantArguments()
+		------------------------------------------------------------------------------------
+	*/
+	'only show relevant arguments': function() {
+		//trace
+		tracer.traceObj({
+			target: someObj,
+			targetConfig: {
+				css: 'color: red',
+				size: 15 
+			},
+			
+			before: {
+				message: 'SomeObj',
+				css: 'color: blue',
+				size: 10
+			},
+
+			showArguments: true
+			
+		});
+
+		var totalLogs = 0;
+
+		//call
+		someObj.addNumbers(1);
+		//verify "Show Arguments = True"
+		totalLogs += 3;
+		equals(totalLogs, fakeConsole.logRecorder.length);
+
+		//call
+		someObj.addNumbers();
+		//verify "Show Arguments = False"
+		totalLogs += 1;
+		equals(totalLogs, fakeConsole.logRecorder.length);
+
+		//call
+		someObj.addNumbers([]);
+		//verify "Show Arguments = False"
+		totalLogs += 1;
+		equals(totalLogs, fakeConsole.logRecorder.length);
+		
+		//call
+		someObj.addNumbers([1]);
+		//verify "Show Arguments = True"
+		totalLogs += 3;
+		equals(totalLogs, fakeConsole.logRecorder.length);
+
+		//call
+		someObj.addNumbers("");
+		//verify "Show Arguments = False"
+		totalLogs += 1;
+		equals(totalLogs, fakeConsole.logRecorder.length);
+
+		//call
+		someObj.addNumbers("ABC");
+		//verify "Show Arguments = False"
+		totalLogs += 3;
+		equals(totalLogs, fakeConsole.logRecorder.length);
+
+		//call
+		someObj.addNumbers({});
+		//verify "Show Arguments = False"
+		totalLogs += 1;
+		equals(totalLogs, fakeConsole.logRecorder.length);
+
+		//call
+		someObj.addNumbers({a: 1});
+		//verify "Show Arguments = True"
+		totalLogs += 3;
+		equals(totalLogs, fakeConsole.logRecorder.length);
+
+		//call
+		someObj.addNumbers( (function(){}) );
+		//verify "Show Arguments = False"
+		totalLogs += 1;
+		equals(totalLogs, fakeConsole.logRecorder.length);
+		
+	},
 	/*
 		------------------------------------------------------------------------------------
 		# tracer.showPause: true
