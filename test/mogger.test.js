@@ -226,18 +226,22 @@ buster.testCase('Mogger:', {
 			},
 
 			/////////////////////////
-			// global target config
+			// global targetConfig
 			targetConfig: {
 				css: 'color: red',
 				size: 15
 			},
 
 			/////////////////////////
-			// global before config
+			// global before
 			before: {
 				css: 'color: blue',
 				size: 10
 			},
+
+			/////////////////////////
+			// global showArguments
+			showArguments: true
 		});
 
 		//trace
@@ -253,8 +257,9 @@ buster.testCase('Mogger:', {
 		someObj.addNumbers(1, 2);
 
 		//verify
-		equals(1, fakeConsole.logRecorder.length);
+		equals(3, fakeConsole.logRecorder.length);
 
+		equals('groupCollapsed', fakeConsole.logRecorder[0].methodName);
 		equals('%cSomeObj   %caddNumbers     ', fakeConsole.logRecorder[0].message);
 		equals('color: blue', fakeConsole.logRecorder[0].cssList[0]);
 		equals('color: red', fakeConsole.logRecorder[0].cssList[1]);

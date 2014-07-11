@@ -145,7 +145,8 @@
             isIgnored = options.ignorePattern && options.ignorePattern.test(info.method),
             beforeConfig,
             targetConfig,
-            interceptorsObj
+            interceptorsObj,
+            showArguments = !_.isUndefined(options.showArguments) ? options.showArguments : config.showArguments
         ;
 
         if(isDisabled || isIgnored){
@@ -189,9 +190,8 @@
         }
         logs.push(targetLog);
 
-
         //colorful-logger
-        if(options.showArguments){
+        if(showArguments){
           logs[0].logType = 'groupCollapsed';
           logger.log(logs);
 
