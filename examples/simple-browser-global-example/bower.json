@@ -1,0 +1,21 @@
+{
+  "name": "simple-browser-global-example",
+  "version": "0.0.0",
+  "homepage": "https://github.com/saitodisse/mogger",
+  "authors": [
+    "Julio Makdisse Saito <saitodisse@gmail.com>"
+  ],
+  "keywords": [
+    "logger",
+    "AOP",
+    "meld",
+    "trace"
+  ],
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "bootstrap": "~3.2.0",
+    "mogger": "git@github.com:saitodisse/mogger.git",
+    "google-code-prettify": "~1.0.1"
+  }
+}

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Mogger :: Simple Browser Global Example</title>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css">
+	<link rel="stylesheet" type="text/css" href="css/site.css">
+	<link rel="stylesheet" type="text/css" href="css/prettify.css">
+</head>
+<body>
+
+	<!-- Title -->
+	<div class="container-fluid">
+
+		<div class="title-box">
+			<h1>Mogger</h1>
+			<h3>simple example</h3>
+			<h5>browser globals</h5>
+		</div>
+
+		<hr>
+		<h4>please, open your console (F12)</h4>
+		<hr>
+
+		<h3>simpleObj</h3>
+		<pre class="prettyprint lang-js">
+var simpleObj = {
+  methodA: function() {},
+  methodB: function() {}
+};</pre>
+
+		<h3>call functions</h3>
+		<input type="button" id="btnCallMethodA" value="call method A - with interceptor"></input>
+		<br>
+		<br>
+
+		<input type="button" id="btnCallMethodB" value="call method B - without interceptor"></input>
+		<br>
+
+		<h3>source-code</h3>
+		<a href="http://saitodisse.github.io/mogger/examples/simple-browser-global-example/js/simple-use-of-mogger.js">simple-use-of-mogger.js</a>
+  
+	</div>
+
+<!-- javascripts -->
+<script src="js/vendor/jquery.min.js"></script>
+<script src="js/vendor/bootstrap.min.js"></script>
+
+<script src="js/vendor/prettify.js"></script>
+<script src="js/vendor/lodash.min.js"></script>
+<script src="js/vendor/meld.js"></script>
+<script src="js/vendor/trace.js"></script>
+<script src="js/vendor/colorful-logger.js"></script>
+<script src="js/vendor/mogger.js"></script>
+
+<script src="js/simple-use-of-mogger.js"></script>
+<script src="js/jquery-start.js"></script>
+
+</body>
+</html>
