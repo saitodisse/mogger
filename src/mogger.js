@@ -38,7 +38,7 @@
     factory(root, exports, ColorfulLogger, meld, traceMeld, _);
   } else {
     // Browser globals
-    factory((root.Mogger = {}), root.ColorfulLogger, root.meld, root.traceMeld, root._);
+    factory(root, (root.Mogger = {}), root.ColorfulLogger, root.meld, root.traceMeld, root._);
   }
 }(this, function(root, Mogger, ColorfulLogger, meld, traceMeld, _) {
 
