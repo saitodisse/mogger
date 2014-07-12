@@ -1,0 +1,60 @@
+.title-box {
+	background-color: rgb(0, 0, 0);
+	background-image: linear-gradient(rgb(0, 0, 0) 0px, rgb(38, 38, 39) 100%);
+	background-repeat: repeat-x;
+	box-sizing: border-box;
+	display: block;
+	height: 256px;
+	margin-bottom: 40px;
+	padding-bottom: 60px;
+	padding-left: 32px;
+	padding-right: 15px;
+	padding-top: 46px;
+	position: relative;
+	text-align: left;
+	text-shadow: rgba(0, 0, 0, 0.0980392) 0px 1px 0px;
+
+	margin-left: -15px;
+	margin-top: -20px;
+}
+
+.title-box h1{
+	font-family: monospace, 'Courier New';
+	font-size: 64px;
+	color: #FFF;
+	margin-left: 30px;
+}
+
+.title-box p{
+	box-sizing: border-box;
+	margin-left: 30px;
+	color: #eee;
+	font-family: monospace, 'Courier New';
+	font-size: 24px;
+	font-weight: 300;
+}
+
+.colorful-01{
+	color: #f80c12;
+}
+.colorful-02{
+	color: #ee1100;
+}
+.colorful-03{
+	color: #ff3311;
+}
+.colorful-04{
+	color: #ff4422;
+}
+.colorful-05{
+	color: #ff6644;
+}
+.colorful-06{
+	color: #ff9933;
+}
+.colorful-07{
+	color: #feae2d;
+}
+.colorful-08{
+	color: #ccbb33;
+}

@@ -1,58 +1,75 @@
-<!doctype html>
-<html lang="en" data-framework="backbonejs">
-	<head>
-		<meta charset="utf-8">
-		<title>Backbone.js + RequireJS • TodoMVC</title>
-		<link rel="stylesheet" href="css/base.css">
-		<link rel="stylesheet" href="css/mogger-section.css">
-	</head>
-	<body>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Mogger</title>
+	<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" type="text/css" href="/css/site.css">
+</head>
+<body>
 
-		<section id="mogger-example">
-			<h1>Mogger.Tracer Example</h1>
-			<h2>
-				<a href="http://todomvc.com/dependency-examples/backbone_require/">
-					TodoMVC + Backbone.js + Require.js
-				</a>
-			</h2>
-			<p>
-				compatible with Google Chrome and Firebug
-			</p>
-			<p>
-				see <a href="https://github.com/saitodisse/mogger">Mogger</a> on Github
-			</p>
+	<!-- NAV -->
+	<nav class="navbar navbar-default" role="navigation">
+	  <div class="container-fluid">
+	    <!-- Brand and toggle get grouped for better mobile display -->
+	    <div class="navbar-header">
+	      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+	        <span class="sr-only">Toggle navigation</span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	      </button>
+	      <a class="navbar-brand" href="/">Mogger</a>
+	    </div>
+
+	    <!-- Collect the nav links, forms, and other content for toggling -->
+	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	      <ul class="nav navbar-nav">
+	      	<li><a href="https://github.com/saitodisse/mogger">source-code</a></li>
+	        <li class="dropdown">
+	          <a href="#" class="dropdown-toggle" data-toggle="dropdown">examples <span class="caret"></span></a>
+	          <ul class="dropdown-menu" role="menu">
+	            <li><a href="/examples/todo-mvc-backbone-require/index.html">TodoMVC + Backbone.js + Require.js</a></li>
+	          </ul>
+	        </li>
+	      </ul>
+	    </div><!-- /.navbar-collapse -->
+	  </div><!-- /.container-fluid -->
+	</nav>
 
 
-			<div class="centerThis">
-				<div class="pressButton">
-					Press <b>F12</b> to see the console messages
-				</div>
-			</div>
+
+	<!-- Title -->
+	<div class="container-fluid">
+
+		<div class="title-box">
+			<h1>Mogger</h1>
+			<p>automatic customizable 
+			<span class="colorful-01">c</span><span class="colorful-02">o</span><span class="colorful-03">l</span><span class="colorful-04">o</span><span class="colorful-05">r</span><span class="colorful-06">f</span><span class="colorful-07">u</span><span class="colorful-08">l</span>			 logger</p>
+		</div>
+
+		<p>"Creates an aspect that traces method and function calls, and 
+				to report when they are called, their parameters, and whether 
+				each returns successfully or throws an exception, with the 
+				associated return value or throw exception. By default, the
+				trace aspect uses a builtin reporter that simply logs
+				information using console.log"</p>
+
+		<a href="https://github.com/cujojs/meld/blob/master/docs/aspects.md">meld aspect/trace</a>
+		
+  
+	</div>
 
 
-			<section id="mogger-controls">
-			</section>
-		</section>
 
-		<hr>
 
-		<section id="todoapp">
-			<header id="header">
-				<h1>todos</h1>
-				<input id="new-todo" placeholder="What needs to be done?" autofocus>
-			</header>
-			<section id="main">
-				<input id="toggle-all" type="checkbox">
-				<label for="toggle-all">Mark all as complete</label>
-				<ul id="todo-list"></ul>
-			</section>
-			<footer id="footer"></footer>
-		</section>
-		<footer id="info">
-			<p>Double-click to edit a todo</p>
-			<p>Written by <a href="http://addyosmani.github.com/todomvc/">Addy Osmani</a></p>
-			<p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
-		</footer>
-		<script data-main="js/main" src="js/vendor/require.js"></script>
-	</body>
+
+
+
+<!-- javascripts -->
+<script src="/js/vendor/jquery.min.js"></script>
+<script src="/js/vendor/bootstrap.min.js"></script>
+
+</body>
 </html>

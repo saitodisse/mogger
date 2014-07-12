@@ -1,14 +1,16 @@
 {
-  "name": "todomvc-backbone-requirejs",
+  "name": "ghPagesMogger",
   "version": "0.0.0",
-  "dependencies": {
-    "backbone": "~1.1.0",
-    "underscore": "~1.5.0",
-    "jquery": "~2.0.0",
-    "todomvc-common": "~0.1.4",
-    "backbone.localStorage": "~1.1.0",
-    "requirejs": "~2.1.5",
-    "requirejs-text": "~2.0.5",
-    "mogger": "git@github.com:saitodisse/mogger.git"
-  }
+  "homepage": "https://github.com/saitodisse/mogger",
+  "authors": [
+    "Julio Makdisse Saito <saitodisse@gmail.com>"
+  ],
+  "keywords": [
+    "logger",
+    "AOP",
+    "meld",
+    "trace"
+  ],
+  "license": "MIT",
+  "private": true
 }
