@@ -11,10 +11,9 @@
  * @version 0.5.0
  */
 
- (function(root, factory) {
-
-  // AMD
+(function (root, factory) {
   if (typeof define === 'function' && define.amd) {
+    // AMD. Register as an anonymous module.
     define(['exports',
             'colorful-logger',
             'meld',
@@ -30,16 +29,17 @@
     ){
       factory(root, exports, ColorfulLogger, meld, meldTrace, _);
     });
-
-  // Node.js
-  } else if (typeof exports !== 'undefined') {
+  } else if (typeof exports === 'object') {
+    // CommonJS
     var ColorfulLogger = require('colorful-logger');
     var meld = require('meld');
     var meldTrace = require('meld/aspect/trace');
     var _ = require('lodash');
     factory(root, exports, ColorfulLogger, meld, meldTrace, _);
+  } else {
+    // Browser globals
+    factory((root.Mogger = {}), root.ColorfulLogger, root.meld, root.meldTrace, root._);
   }
-
 }(this, function(root, Mogger, ColorfulLogger, meld, meldTrace, _) {
 
   var globalTimeoutLogId = null;
