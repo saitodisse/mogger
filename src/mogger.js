@@ -17,30 +17,30 @@
     define(['exports',
             'colorful-logger',
             'meld',
-            'meldTrace',
+            'traceMeld',
             'lodash'
           ],
           function (
             exports,
             ColorfulLogger,
             meld,
-            meldTrace,
+            traceMeld,
             _
     ){
-      factory(root, exports, ColorfulLogger, meld, meldTrace, _);
+      factory(root, exports, ColorfulLogger, meld, traceMeld, _);
     });
   } else if (typeof exports === 'object') {
     // CommonJS
     var ColorfulLogger = require('colorful-logger');
     var meld = require('meld');
-    var meldTrace = require('meld/aspect/trace');
+    var traceMeld = require('meld/aspect/trace');
     var _ = require('lodash');
-    factory(root, exports, ColorfulLogger, meld, meldTrace, _);
+    factory(root, exports, ColorfulLogger, meld, traceMeld, _);
   } else {
     // Browser globals
-    factory((root.Mogger = {}), root.ColorfulLogger, root.meld, root.meldTrace, root._);
+    factory((root.Mogger = {}), root.ColorfulLogger, root.meld, root.traceMeld, root._);
   }
-}(this, function(root, Mogger, ColorfulLogger, meld, meldTrace, _) {
+}(this, function(root, Mogger, ColorfulLogger, meld, traceMeld, _) {
 
   var globalTimeoutLogId = null;
   var setParentTimeout = function(logger) {
@@ -292,7 +292,7 @@
       }
 
       this.targets.push({
-        meldRemover: meld(target, /./, meldTrace(reporter)),
+        meldRemover: meld(target, /./, traceMeld(reporter)),
         options: opt
       });
 		};
