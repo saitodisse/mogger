@@ -1,6 +1,6 @@
 {
   "name": "mogger",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "print colorful logs with AOP using meld",
   "main": "index.js",
   "repository": {
@@ -13,14 +13,19 @@
     "logger",
     "console.log"
   ],
-  "author": "Julio Saito",
+  "author": { 
+      "name" : "Julio Makdisse Saito"
+    , "email" : "saitodisse@gmail.com"
+    , "url" : "http://saitodisse.github.io/"
+  },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/saitodisse/mogger/issues"
+      "url": "https://github.com/saitodisse/mogger/issues"
+    , "email" : "saitodisse@gmail.com"
   },
   "homepage": "https://github.com/saitodisse/mogger",
   "dependencies": {
-    "colorful-logger": "saitodisse/colorful-logger",
+    "colorful-logger": "^0.1.1",
     "lodash": "^2.4.1",
     "meld": "saitodisse/meld"
   },
