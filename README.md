@@ -17,7 +17,7 @@ npm install mogger --save
 
 ##Configuring Mogger
 ###browser globals
-```
+```html
 <script src="bower_components/colorful-logger/src/colorful-logger.js"></script>
 <script src="bower_components/lodash/dist/lodash.min.js"></script>
 <script src="bower_components/meld/aspect/trace.js"></script>
@@ -26,18 +26,18 @@ npm install mogger --save
 ```
 
 ###AMD (require.js)
-```
+```javascript
 define(['Mogger'], function (Mogger) {
 });
 ```
 
 ###CommonJS (node.js)
-```
+```javascript
 var Mogger = require('Mogger');
 ```
 
 ##Usage
-```
+```javascript
 // get the tracer
 var tracer = new root.Mogger.Tracer({/* global configurations */});
 
