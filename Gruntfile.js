@@ -23,6 +23,16 @@ module.exports = function(grunt) {
             src: ['bower_components/bootstrap/dist/css/bootstrap.min.css'],
             dest: 'css/bootstrap.min.css'
           },
+
+          {
+            src: ['bower_components/google-code-prettify/src/prettify.css'],
+            dest: 'css/prettify.css'
+          },
+          {
+            src: ['bower_components/google-code-prettify/src/prettify.js'],
+            dest: 'js/vendor/prettify.js'
+          },
+
           {
             expand: true,
             cwd: 'bower_components/bootstrap/dist/fonts/',

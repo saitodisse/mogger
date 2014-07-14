@@ -12,5 +12,8 @@
     "trace"
   ],
   "license": "MIT",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "google-code-prettify": "~1.0.1"
+  }
 }

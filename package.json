@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "Mogger gh-pages",
   "main": "index.html",
-  "private": "true",
+  "private": true,
   "directories": {
     "example": "examples"
   },

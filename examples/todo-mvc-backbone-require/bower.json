@@ -1,6 +1,7 @@
 {
   "name": "todomvc-backbone-requirejs",
   "version": "0.0.0",
+  "private": true,
   "dependencies": {
     "backbone": "~1.1.0",
     "underscore": "~1.5.0",
@@ -9,6 +10,6 @@
     "backbone.localStorage": "~1.1.0",
     "requirejs": "~2.1.5",
     "requirejs-text": "~2.0.5",
-    "mogger": "git@github.com:saitodisse/mogger.git"
+    "mogger": "*"
   }
 }
