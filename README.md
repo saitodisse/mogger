@@ -1,46 +1,55 @@
 by: [saitodisse](http://saitodisse.github.io/)
 
-#mogger
-meld + trace + colorful logger
+#Mogger
+Mogger it is a way to log your app without change him. Uses AOP (Aspect-oriented programming) library named [meld.js](https://github.com/cujojs/meld) and other library that facilitates the print of colorful outputs in browser, the [colorful-logger](https://github.com/saitodisse/colorful-logger).
 
-version: 0.0.5
+The goal of this library is to be easy to configure and to help the programmer to understand the inner of some javascript codes.
 
-##install
-###node.js
+##Instalation
+###bower
 ```
-npm install saitodisse/mogger --save
+bower install mogger --save
+```
+###npm
+```
+npm install mogger --save
+```
+
+##Configuring Mogger
+###browser globals
+```
+<script src="bower_components/colorful-logger/src/colorful-logger.js"></script>
+<script src="bower_components/lodash/dist/lodash.min.js"></script>
+<script src="bower_components/meld/aspect/trace.js"></script>
+<script src="bower_components/meld/meld.js"></script>
+...
 ```
 
 ###AMD (require.js)
 ```
-bower install git@github.com:saitodisse/mogger.git --save
+define(['Mogger'], function (Mogger) {
+});
 ```
 
-##test
-####pre-requirements
+###CommonJS (node.js)
 ```
-sudo npm i jshint buster supervisor grunt-cli -g
-```
-
-####run buster
-```
-buster-test
+var Mogger = require('Mogger');
 ```
 
-####TDD
+##Usage
 ```
-buster-autotest
+// get the tracer
+var tracer = new root.Mogger.Tracer({/* global configurations */});
+
+// start watching some targets
+tracer.traceObj({
+  before: { message: 'SimpleObj -> ', css: 'color: #A42' },
+  target: simpleObj, targetConfig: {  css: 'color: #E42' }
+});
 ```
 
-####test + jshint
-```
-grunt
-```
 
-####watch for changes: test + jshint
-```
-grunt test
-```
+##Examples
+  - [simple example](http://saitodisse.github.io/mogger/examples/simple-browser-global-example/index.html)
+  - [todo mvc example](http://saitodisse.github.io/mogger/examples/todo-mvc-backbone-require/index.html)
 
-####buster-test live debug with node-inspector
-here: http://docs.busterjs.org/en/latest/developers/developing/#debugging-a-buster-js-run
