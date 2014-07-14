@@ -25,6 +25,7 @@
   ],
   "license": "MIT",
   "dependencies": {
+    "colorful-logger": "*",
     "meld": "git@github.com:saitodisse/meld.git#master"
   },
   "ignore": [
