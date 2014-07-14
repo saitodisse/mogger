@@ -8,10 +8,17 @@
     "url": "git://github.com/saitodisse/mogger.git"
   },
   "keywords": [
-    "meld",
-    "trace",
+    "console",
+    "console.log",
+    "log",
     "logger",
-    "console.log"
+    "trace",
+    "tracer",
+    "color",
+    "colorful",
+    "AOP",
+    "meld",
+    "meld.js"
   ],
   "author": { 
       "name" : "Julio Makdisse Saito"
