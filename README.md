@@ -39,7 +39,7 @@ var Mogger = require('Mogger');
 ##Usage
 ```javascript
 // get the tracer
-var tracer = new root.Mogger.Tracer({/* global configurations */});
+var tracer = new Mogger.Tracer({/* global configurations */});
 
 // start watching some targets
 tracer.traceObj({
