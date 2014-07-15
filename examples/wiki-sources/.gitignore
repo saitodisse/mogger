@@ -1,0 +1,5 @@
+!bower_components/lodash/dist/lodash.js
+!bower_components/meld/meld.js
+!bower_components/meld/aspect/trace.js
+!bower_components/colorful-logger/src/colorful-logger.js
+!bower_components/mogger/src/mogger.js
