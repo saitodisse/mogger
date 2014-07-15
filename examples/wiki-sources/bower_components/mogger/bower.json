@@ -1,0 +1,38 @@
+{
+  "name": "mogger",
+  "version": "0.0.6",
+  "homepage": "https://github.com/saitodisse/mogger",
+  "authors": [
+    "Julio Makdisse Saito <saitodisse@gmail.com>"
+  ],
+  "description": "print colorful logs with AOP using meld",
+  "main": "index.js",
+  "moduleType": [
+    "umd"
+  ],
+  "keywords": [
+    "console",
+    "console.log",
+    "log",
+    "logger",
+    "trace",
+    "tracer",
+    "color",
+    "colorful",
+    "AOP",
+    "meld",
+    "meld.js"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "colorful-logger": "*",
+    "meld": "git@github.com:saitodisse/meld.git#master"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "tests",
+    "example"
+  ]
+}

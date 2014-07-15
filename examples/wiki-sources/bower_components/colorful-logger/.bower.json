@@ -1,0 +1,37 @@
+{
+  "name": "colorful-logger",
+  "homepage": "https://github.com/saitodisse/colorful-logger",
+  "authors": [
+    "Julio Makdisse Saito <saitodisse@gmail.com>"
+  ],
+  "description": "colorful console.log",
+  "main": "index.js",
+  "moduleType": [
+    "amd"
+  ],
+  "keywords": [
+    "console",
+    "console.log",
+    "log",
+    "colorful"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "lodash": "*"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "tests"
+  ],
+  "_release": "68740f8069",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "68740f80693825fcec0cc50b9de03e1e4605b2aa"
+  },
+  "_source": "git://github.com/saitodisse/colorful-logger.git",
+  "_target": "*",
+  "_originalSource": "colorful-logger"
+}
