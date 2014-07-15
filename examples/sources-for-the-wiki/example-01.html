@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mogger - Example 01</title>
+</head>
+<body>
+  <h1>Mogger - Example 01</h1>
+  <p>open the console to see the messages (F12)</p>
+
+  <script src="bower_components/lodash/dist/lodash.js"></script>
+  <script src="bower_components/meld/meld.js"></script>
+  <script src="bower_components/meld/aspect/trace.js"></script>
+  <script src="bower_components/colorful-logger/src/colorful-logger.js"></script>
+  <script src="bower_components/mogger/src/mogger.js"></script>
+
+  <script>
+    var simpleObjA = {
+      method1: function() {},
+      method2: function() {}
+    };
+    var simpleObjB = {
+      method1: function() {},
+      method2: function() {}
+    };
+
+    var tracer = new Mogger.Tracer({
+      // ---------------------
+      // global configurations
+      // ---------------------
+      showPause: true,
+
+      showArguments: true,
+
+      before: {
+        size: 20
+      },
+
+      targetConfig: {
+        size: 20
+      }
+
+    });
+
+
+    // --------------------
+    // local configurations
+    // --------------------
+
+    // trace simpleObjA
+    tracer.traceObj({
+      before: { message: 'SimpleObj A', css: 'color: #228' },
+      target: simpleObjA, targetConfig: {    css: 'color: blue' }
+    });
+    // trace simpleObjB
+    tracer.traceObj({
+      before: { message: 'SimpleObj B', css: 'color: green' },
+      target: simpleObjB, targetConfig: {    css: 'color: #262; font-weight: bold' }
+    });
+    
+
+    // call functions
+    simpleObjA.method1();
+    simpleObjA.method2();
+
+    simpleObjB.method1(['A', 'B', 3]);
+    simpleObjB.method2(5, 5, 2, 4);
+
+  </script>
+
+</body>
+</html>

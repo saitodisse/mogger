@@ -1,0 +1,20 @@
+{
+  "name": "sources-for-the-wiki",
+  "version": "0.1.1",
+  "homepage": "https://github.com/saitodisse/mogger",
+  "authors": [
+    "Julio Makdisse Saito <saitodisse@gmail.com>"
+  ],
+  "description": "examples for the wiki",
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "mogger"
+  ],
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "mogger": "*"
+  }
+}
