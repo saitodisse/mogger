@@ -24,6 +24,9 @@ var Mogger = require('../src/mogger'),
 var someObj = {
 	addNumbers: function (arg1, arg2) {
 		return arg1 + arg2;
+	},
+	justReturn: function (arg1) {
+		return arg1;
 	}
 };
 
@@ -78,6 +81,26 @@ buster.testCase('Mogger:', {
 		equals('addNumbers', fakeConsole.logRecorder[0].message);
 		
 		
+	},
+
+	/*
+		------------------------------------------------------------------------------------
+		# traceObj({ target: someObj });
+		------------------------------------------------------------------------------------
+		:: regex filters can be applyed to meld
+		------------------------------------------------------------------------------------
+	*/
+	'trace only functions that I want': function() {
+		tracer.traceObj({
+			target: someObj,
+			pointcut: /addNumbers/
+		});
+
+		someObj.justReturn(1, 2);
+		someObj.addNumbers(1, 2);
+
+		equals('addNumbers', fakeConsole.logRecorder[0].message);
+		equals(true, fakeConsole.logRecorder.length === 1);
 	},
 
 	/*

@@ -291,8 +291,9 @@
         target = surrogateTargets[target];
       }
 
+      var pointcut = opt.pointcut || /./;
       this.targets.push({
-        meldRemover: meld(target, /./, traceMeld(reporter)),
+        meldRemover: meld(target, pointcut, traceMeld(reporter)),
         options: opt
       });
 		};
