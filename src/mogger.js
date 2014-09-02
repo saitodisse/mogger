@@ -291,6 +291,7 @@
         var surrogateTarget = _.first(surrogateTargets, function(surrogateTarget) {
           return surrogateTarget.title === target;
         });
+        var surrogateTarget = surrogateTarget[0];
         target = surrogateTarget.target;
       }
 

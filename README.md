@@ -49,6 +49,20 @@ tracer.traceObj({
 ```
 
 
+##Testing and debugging
+```javascript
+//instal tools
+sudo npm install -g mocha
+sudo npm install -g node-inspector
+
+// test + watch
+npm test
+
+// debug + watch
+npm debug
+```
+
+
 ##Examples
   - [simple example](http://saitodisse.github.io/mogger/examples/simple-browser-global-example/index.html)
   - [todo mvc example](http://saitodisse.github.io/mogger/examples/todo-mvc-backbone-require/index.html)

@@ -4,7 +4,13 @@
 
 	"predef": [
         "define",
-        "module"
+        "module",
+        "before",
+        "after",
+        "beforeEach",
+        "afterEach",
+        "describe",
+        "it"
     ],
 
 	"boss": true,
