@@ -284,15 +284,24 @@
       var reporter = new GetReporter(opt);
       var target = opt.target;
 
-      // gets target real object from surrogateTargets,
-      // only if it is a string
+      /**
+       * surrogateTargets
+       * gets target real object from surrogateTargets
+       */
+
+      // global surrogateTargets
       var surrogateTargets = config.surrogateTargets;
-      if(surrogateTargets && _.isArray(surrogateTargets) && _.isString(target)){
-        var surrogateTarget = _.first(surrogateTargets, function(surrogateTarget) {
-          return surrogateTarget.title === target;
-        });
-        var surrogateTarget = surrogateTarget[0];
-        target = surrogateTarget.target;
+
+      var isArraySurrogateTargets = surrogateTargets && _.isArray(surrogateTargets);
+      var isStringTarget = _.isString(target);
+
+      if(isArraySurrogateTargets && isStringTarget){
+        // find By Title
+        var surrogateTargetSelected = _.find(surrogateTargets, { 'title': target });
+        if(!surrogateTargetSelected){
+          throw new Error('cannot find surrogateTarget { title: \'' + target + '\' }' + ' on surrogateTargets list: \n' + JSON.stringify(surrogateTargets, ' ', 2));
+        }
+        target = surrogateTargetSelected.target;
       }
 
       var pointcut = opt.pointcut || /./;

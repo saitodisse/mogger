@@ -792,4 +792,33 @@ describe('Mogger', function(){
 		assert.equal('addNumbers', fakeConsole.logRecorder[0].message);
 	});
 
+	it('surrogateTargets can have multiples targets', function () {
+		var someObj2 = { addNumbers: function (arg1, arg2) { return arg1 + arg2; } };
+		var someObj3 = { addNumbers: function (arg1, arg2) { return arg1 + arg2; } };
+
+		var surrogateTargetsSource = [
+			{ title: 'someObj' , target: someObj  },
+			{ title: 'someObj2', target: someObj2 },
+			{ title: 'someObj3', target: someObj3 }
+		];
+
+		tracer = new Mogger.Tracer({
+			loggerConfig: {
+				output: fakeConsole
+			},
+			surrogateTargets: surrogateTargetsSource
+		});
+
+		tracer.traceObj({ target: 'someObj'	 });
+		tracer.traceObj({ target: 'someObj2' });
+		tracer.traceObj({ target: 'someObj3' });
+
+		someObj.addNumbers(1, 2);
+		someObj2.addNumbers(1, 2);
+		someObj3.addNumbers(1, 2);
+
+		assert.equal(3, fakeConsole.logRecorder.length);
+		assert.equal('addNumbers', fakeConsole.logRecorder[0].message);
+	});
+
 });
