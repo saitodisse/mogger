@@ -10,9 +10,12 @@ mogger
  - set color automatically (ok)
  - log inside groups: groupCollapsed(groupName, groupColor) and groupEnd (ok)
  - set ignore regex patterns (ok)
- 
-##MeldTraceLogger
- - onCall
+
+##Mogger
+ - onCall (ok)
+ - surrogateTargetsSource will be an array of objects
+
+
  - onReturn
  - onThrow
  - send a counter so that you will know what return have a corresponding call

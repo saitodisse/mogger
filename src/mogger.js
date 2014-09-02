@@ -118,7 +118,7 @@
       if(!checkExistingInterceptors(interceptorsObj)){
         return interceptorsObj.info.method;
       }
-      
+
       var interceptor = selectInterceptor(interceptorsObj.localInterceptors,  interceptorsObj.info.method);
       if (interceptor === false) {
         interceptor = selectInterceptor(interceptorsObj.globalInterceptors, interceptorsObj.info.method);
@@ -143,7 +143,7 @@
 
       for (var i = 0; i < args.length; i++) {
         var argument = args[i];
-        
+
         var isString = _.isString(argument) && argument.length > 0;
         var isNumber = _.isNumber(argument);
         var isBoolean = _.isBoolean(argument);
@@ -159,7 +159,7 @@
         //             '\nisEmpty = ', isEmpty,
         //             '\nisObject = ', isObject
         //             );
-        
+
         var hasValues = isString || isNumber || isBoolean || isArray || (isObject && !isEmpty);
         if(hasValues){
           return true;
@@ -194,7 +194,7 @@
         if(beforeConfig){
           logs.push(beforeConfig);
         }
-        
+
         /*
             Interceptors
         */
@@ -215,7 +215,7 @@
         else{
           targetConfig = defaults(options.targetConfig, getGlobalConfig().targetConfig);
         }
-        
+
         /*
             target (function)
         */
@@ -237,7 +237,7 @@
         willLogArguments = showArguments &&
                            !wasModifiedByInterceptor &&
                            checkRelevantArguments(info.args);
-        
+
         if(willLogArguments){
           logs[0].logType = 'groupCollapsed';
           logger.log(logs);
@@ -265,7 +265,7 @@
         }
 
       }.bind(this);
-      
+
       // other things that can be catch in the future
       //    onReturn:
       //    onThrow:
@@ -283,12 +283,15 @@
 		this.traceObj = function(opt) {
       var reporter = new GetReporter(opt);
       var target = opt.target;
-      
+
       // gets target real object from surrogateTargets,
-      // only if its is an string
+      // only if it is a string
       var surrogateTargets = config.surrogateTargets;
-      if(surrogateTargets && _.isString(target)){
-        target = surrogateTargets[target];
+      if(surrogateTargets && _.isArray(surrogateTargets) && _.isString(target)){
+        var surrogateTarget = _.first(surrogateTargets, function(surrogateTarget) {
+          return surrogateTarget.title === target;
+        });
+        target = surrogateTarget.target;
       }
 
       var pointcut = opt.pointcut || /./;

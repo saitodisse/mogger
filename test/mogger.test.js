@@ -79,8 +79,8 @@ buster.testCase('Mogger:', {
 		someObj.addNumbers(1, 2);
 
 		equals('addNumbers', fakeConsole.logRecorder[0].message);
-		
-		
+
+
 	},
 
 	/*
@@ -165,7 +165,7 @@ buster.testCase('Mogger:', {
 		tracer.globalConfig.enabled = false;
 
 		tracer.traceObj({ target: someObj });
-		
+
 		someObj.addNumbers(1, 2);
 		equals(0, fakeConsole.logRecorder.length);
 		// --------------------------------------------
@@ -174,7 +174,7 @@ buster.testCase('Mogger:', {
 		// --------------------------------------------
 		// enabling after traceObj
 		tracer.globalConfig.enabled = true;
-		
+
 		someObj.addNumbers(1, 2);
 		equals(1, fakeConsole.logRecorder.length);
 		// --------------------------------------------
@@ -209,15 +209,15 @@ buster.testCase('Mogger:', {
 			target: someObj,
 			targetConfig: {
 				css: 'color: red',
-				size: 15 
+				size: 15
 			},
-			
+
 			before: {
 				message: 'SomeObj',
 				css: 'color: blue',
 				size: 10
 			},
-			
+
 		});
 
 		//call
@@ -229,8 +229,8 @@ buster.testCase('Mogger:', {
 		equals('%cSomeObj   %caddNumbers     ', fakeConsole.logRecorder[0].message);
 		equals('color: blue', fakeConsole.logRecorder[0].cssList[0]);
 		equals('color: red', fakeConsole.logRecorder[0].cssList[1]);
-		
-		
+
+
 	},
 
 
@@ -286,8 +286,8 @@ buster.testCase('Mogger:', {
 		equals('%cSomeObj   %caddNumbers     ', fakeConsole.logRecorder[0].message);
 		equals('color: blue', fakeConsole.logRecorder[0].cssList[0]);
 		equals('color: red', fakeConsole.logRecorder[0].cssList[1]);
-		
-		
+
+
 	},
 
 	/*
@@ -303,9 +303,9 @@ buster.testCase('Mogger:', {
 			target: someObj,
 			targetConfig: {
 				css: 'color: red',
-				size: 15 
+				size: 15
 			},
-			
+
 			before: {
 				message: 'SomeObj',
 				css: 'color: blue',
@@ -313,7 +313,7 @@ buster.testCase('Mogger:', {
 			},
 
 			showArguments: true
-			
+
 		});
 
 		//call
@@ -332,8 +332,8 @@ buster.testCase('Mogger:', {
 		equals(2, fakeConsole.logRecorder[1].message[1]);
 		//(2) => groupEnd
 		equals('groupEnd', fakeConsole.logRecorder[2].methodName);
-		
-		
+
+
 	},
 
 
@@ -348,9 +348,9 @@ buster.testCase('Mogger:', {
 			target: someObj,
 			targetConfig: {
 				css: 'color: red',
-				size: 15 
+				size: 15
 			},
-			
+
 			before: {
 				message: 'SomeObj',
 				css: 'color: blue',
@@ -358,7 +358,7 @@ buster.testCase('Mogger:', {
 			},
 
 			showArguments: true
-			
+
 		});
 
 		var totalLogs = 0;
@@ -456,7 +456,7 @@ buster.testCase('Mogger:', {
 
 		//trace
 		tracer.traceObj({
-			target: someObj			
+			target: someObj
 		});
 
 		//call 3 times
@@ -473,7 +473,7 @@ buster.testCase('Mogger:', {
 		// after 90ms of the last log PAUSE is not showed yet
 		setTimeout(function() {
 			equals(3, fakeConsole.logRecorder.length);
-			
+
 		}, 170);
 
 		// after 110ms PAUSE is showed
@@ -518,10 +518,10 @@ buster.testCase('Mogger:', {
 
 		// after 110ms only one PAUSE is showed
 		setTimeout(function() {
- 			
+
  			//someObj2.addNumbers, someObj3.addNumbers and PAUSE
  			equals(3, fakeConsole.logRecorder.length);
- 			
+
  			done();
 		}, 110);
 
@@ -537,9 +537,9 @@ buster.testCase('Mogger:', {
 	*/
 	'will not log every function that starts with /ignore/': function() {
 		//trace someObj3
-		var someObj = { 
+		var someObj = {
 			addNumbers: function (arg1, arg2) { return arg1 + arg2; },
-			ignoredFunction: function (arg1, arg2) { return arg1 + arg2; } 
+			ignoredFunction: function (arg1, arg2) { return arg1 + arg2; }
 		};
 
 		//trace
@@ -568,7 +568,7 @@ buster.testCase('Mogger:', {
 	*/
 	'interceptors will log arguments': function() {
 		//the object and his function
-		var someObj = { 
+		var someObj = {
 			addNumbers: function (arg1, arg2) { return arg1 + arg2; },
 			otherFunction: function (arg1, arg2) { return arg1 + arg2; }
 		};
@@ -616,7 +616,7 @@ buster.testCase('Mogger:', {
 		});
 
 		//the object and his function
-		var someObj = { 
+		var someObj = {
 			addNumbers: function (arg1, arg2) { return arg1 + arg2; },
 			otherFunction: function (arg1, arg2) { return arg1 + arg2; }
 		};
@@ -661,7 +661,7 @@ buster.testCase('Mogger:', {
 		});
 
 		//the object and his function
-		var someObj = { 
+		var someObj = {
 			addNumbers: function (arg1, arg2) { return arg1 + arg2; },
 			otherFunction: function (arg1, arg2) { return arg1 + arg2; }
 		};
@@ -721,7 +721,7 @@ buster.testCase('Mogger:', {
 		});
 
 		//the object and his function
-		var someObj = { 
+		var someObj = {
 			aFunc: function (arg1, arg2) { return arg1 + arg2; },
 			bFunc: function (arg1, arg2) { return arg1 + arg2; },
 			cFunc: function (arg1, arg2) { return arg1 + arg2; }
@@ -766,15 +766,21 @@ buster.testCase('Mogger:', {
 		------------------------------------------------------------------------------------
 	*/
 	'global surrogateTargets allow strings to define local targets': function(){
-		var SurrogateTargetsSource = {
-			'someObj': someObj
-		}
+		var surrogateTargetsSource = [{
+
+			// we can find the object to trace by its title
+			title: 'someObj',
+
+			// this is the real object that we want to trace
+			target: someObj
+
+		}];
 
 		tracer = new Mogger.Tracer({
 			loggerConfig: {
 				output: fakeConsole
 			},
-			surrogateTargets: SurrogateTargetsSource
+			surrogateTargets: surrogateTargetsSource
 		});
 
 		tracer.traceObj({
