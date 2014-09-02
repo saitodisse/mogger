@@ -11,36 +11,36 @@
  * @version 0.5.0
  */
 
- (function(root, factory) {
-
-  // AMD
+(function (root, factory) {
   if (typeof define === 'function' && define.amd) {
+    // AMD. Register as an anonymous module.
     define(['exports',
             'colorful-logger',
             'meld',
-            'meldTrace',
+            'traceMeld',
             'lodash'
           ],
           function (
             exports,
             ColorfulLogger,
             meld,
-            meldTrace,
+            traceMeld,
             _
     ){
-      factory(root, exports, ColorfulLogger, meld, meldTrace, _);
+      factory(root, exports, ColorfulLogger, meld, traceMeld, _);
     });
-
-  // Node.js
-  } else if (typeof exports !== 'undefined') {
+  } else if (typeof exports === 'object') {
+    // CommonJS
     var ColorfulLogger = require('colorful-logger');
     var meld = require('meld');
-    var meldTrace = require('meld/aspect/trace');
+    var traceMeld = require('meld/aspect/trace');
     var _ = require('lodash');
-    factory(root, exports, ColorfulLogger, meld, meldTrace, _);
+    factory(root, exports, ColorfulLogger, meld, traceMeld, _);
+  } else {
+    // Browser globals
+    factory(root, (root.Mogger = {}), root.ColorfulLogger, root.meld, root.traceMeld, root._);
   }
-
-}(this, function(root, Mogger, ColorfulLogger, meld, meldTrace, _) {
+}(this, function(root, Mogger, ColorfulLogger, meld, traceMeld, _) {
 
   var globalTimeoutLogId = null;
   var setParentTimeout = function(logger) {
@@ -118,7 +118,7 @@
       if(!checkExistingInterceptors(interceptorsObj)){
         return interceptorsObj.info.method;
       }
-      
+
       var interceptor = selectInterceptor(interceptorsObj.localInterceptors,  interceptorsObj.info.method);
       if (interceptor === false) {
         interceptor = selectInterceptor(interceptorsObj.globalInterceptors, interceptorsObj.info.method);
@@ -143,7 +143,7 @@
 
       for (var i = 0; i < args.length; i++) {
         var argument = args[i];
-        
+
         var isString = _.isString(argument) && argument.length > 0;
         var isNumber = _.isNumber(argument);
         var isBoolean = _.isBoolean(argument);
@@ -159,7 +159,7 @@
         //             '\nisEmpty = ', isEmpty,
         //             '\nisObject = ', isObject
         //             );
-        
+
         var hasValues = isString || isNumber || isBoolean || isArray || (isObject && !isEmpty);
         if(hasValues){
           return true;
@@ -194,7 +194,7 @@
         if(beforeConfig){
           logs.push(beforeConfig);
         }
-        
+
         /*
             Interceptors
         */
@@ -215,7 +215,7 @@
         else{
           targetConfig = defaults(options.targetConfig, getGlobalConfig().targetConfig);
         }
-        
+
         /*
             target (function)
         */
@@ -237,7 +237,7 @@
         willLogArguments = showArguments &&
                            !wasModifiedByInterceptor &&
                            checkRelevantArguments(info.args);
-        
+
         if(willLogArguments){
           logs[0].logType = 'groupCollapsed';
           logger.log(logs);
@@ -265,7 +265,7 @@
         }
 
       }.bind(this);
-      
+
       // other things that can be catch in the future
       //    onReturn:
       //    onThrow:
@@ -283,16 +283,30 @@
 		this.traceObj = function(opt) {
       var reporter = new GetReporter(opt);
       var target = opt.target;
-      
-      // gets target real object from surrogateTargets,
-      // only if its is an string
+
+      /**
+       * surrogateTargets
+       * gets target real object from surrogateTargets
+       */
+
+      // global surrogateTargets
       var surrogateTargets = config.surrogateTargets;
-      if(surrogateTargets && _.isString(target)){
-        target = surrogateTargets[target];
+
+      var isArraySurrogateTargets = surrogateTargets && _.isArray(surrogateTargets);
+      var isStringTarget = _.isString(target);
+
+      if(isArraySurrogateTargets && isStringTarget){
+        // find By Title
+        var surrogateTargetSelected = _.find(surrogateTargets, { 'title': target });
+        if(!surrogateTargetSelected){
+          throw new Error('cannot find surrogateTarget { title: \'' + target + '\' }' + ' on surrogateTargets list: \n' + JSON.stringify(surrogateTargets, ' ', 2));
+        }
+        target = surrogateTargetSelected.target;
       }
 
+      var pointcut = opt.pointcut || /./;
       this.targets.push({
-        meldRemover: meld(target, /./, meldTrace(reporter)),
+        meldRemover: meld(target, pointcut, traceMeld(reporter)),
         options: opt
       });
 		};

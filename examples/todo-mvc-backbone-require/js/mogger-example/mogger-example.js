@@ -3,9 +3,8 @@ define([
 	'Mogger',
 	'backbone',
 	'mogger-example/surrogateTargetsSource',
-	'mogger-example/proxyConsole',
-	'jquery'
-], function (Mogger, Backbone, surrogateTargetsSource, proxyConsole, Targets, $) {
+	'mogger-example/proxyConsole'
+], function (Mogger, Backbone, surrogateTargetsSource, proxyConsole) {
 	'use strict';
 
 
@@ -82,12 +81,12 @@ define([
 				filterRegex: /^(set)/i,
 				callback: function(info) {
 					if(_.isString(info.args[0])){
-						return info.method + '("' + info.args[0] + '")';	
+						return info.method + '("' + info.args[0] + '")';
 					}
 					else{
 						return info.method;
 					}
-					
+
 				}
 			}
 			]

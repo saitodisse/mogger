@@ -21,7 +21,7 @@ returnExports UMD: https://github.com/umdjs/umd/blob/master/returnExports.js
       module.exports = factory(require('../meld'));
     } else {
       // Browser globals
-      root.returnExports = factory(root.meld);
+      root.traceMeld = factory(root.meld);
     }
 }(this, function (meld) {
   //use b in some fashion.

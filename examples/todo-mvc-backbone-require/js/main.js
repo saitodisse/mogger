@@ -37,7 +37,7 @@ require.config({
 
 		Mogger: 'vendor/mogger',
 		meld: 'vendor/meld',
-		meldTrace: 'vendor/trace',
+		traceMeld: 'vendor/trace',
 		lodash: 'vendor/lodash',
 		'colorful-logger': 'vendor/colorful-logger'
 	}
@@ -49,7 +49,7 @@ require([
 	'routers/router',
 	'mogger-example/mogger-example'
 ], function (Backbone, AppView, Workspace, MoggerExample) {
-	
+
 	new MoggerExample();
 
 	/*jshint nonew:false*/

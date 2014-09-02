@@ -1,6 +1,6 @@
 /**
  * Backbone localStorage Adapter
- * Version 1.1.9
+ * Version 1.1.13
  *
  * https://github.com/jeromegn/Backbone.localStorage
  */
@@ -34,6 +34,10 @@ function guid() {
    return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
 };
 
+function isObject(item) {
+  return item === Object(item);
+}
+
 function contains(array, item) {
   var i = array.length;
   while (i--) if (array[i] === item) return true;
@@ -55,7 +59,7 @@ Backbone.LocalStorage = window.Store = function(name, serializer) {
   this.name = name;
   this.serializer = serializer || {
     serialize: function(item) {
-      return _.isObject(item) ? JSON.stringify(item) : item;
+      return isObject(item) ? JSON.stringify(item) : item;
     },
     // fix for "illegal access" error on Android when JSON.parse is passed null
     deserialize: function (data) {

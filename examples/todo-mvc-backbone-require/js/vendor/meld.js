@@ -13,8 +13,22 @@
  * @author John Hann
  * @version 1.3.1
  */
-(function (define) {
-define(function () {
+(function(root, factory) {
+	'use strict';
+  if (typeof exports === 'object') {
+    // Node. Does not work with strict CommonJS, but
+    // only CommonJS-like enviroments that support module.exports,
+    // like Node.
+    module.exports = factory();
+  } else if (typeof define === 'function' && define.amd) {
+    // AMD. Register as an anonymous module.
+    define(factory);
+  } else {
+    // Browser globals (root is window)
+    root.meld = factory();
+  }
+}(this, function() {
+	'use strict';
 
 	//
 	// Public API
@@ -53,7 +67,7 @@ define(function () {
 	 *  aspect. If target is a function, returns the newly advised function.
 	 */
 	function meld(target, pointcut, aspect) {
-		var pointcutType, remove;
+		var pointcutType, remove, isFunction;
 
 		if(arguments.length < 3) {
 			return addAspectToFunction(target, pointcut);
@@ -64,7 +78,17 @@ define(function () {
 				pointcutType = typeof pointcut;
 
 				if (pointcutType === 'string') {
-					if (typeof target[pointcut] === 'function') {
+			
+					//saitodisse
+				  var propertyDescription = Object.getOwnPropertyDescriptor(target, pointcut);
+				  if( propertyDescription && propertyDescription.hasOwnProperty('get') ){
+						isFunction = typeof propertyDescription.get === 'function';
+				  }
+				  else{
+						isFunction = typeof target[pointcut] === 'function';
+				  }
+
+					if (isFunction) {
 						remove = addAspectToMethod(target, pointcut, aspect);
 					}
 
@@ -83,13 +107,22 @@ define(function () {
 
 	function Advisor(target, func) {
 
-		var orig, advisor, advised;
+		var orig, advisor, advised, propertyDescription, theFunction;
 
 		this.target = target;
 		this.func = func;
 		this.aspects = {};
 
-		orig = this.orig = target[func];
+		// saitodisse
+	  propertyDescription = Object.getOwnPropertyDescriptor(target, func);
+	  if( propertyDescription && propertyDescription.hasOwnProperty('get') ){
+			theFunction = propertyDescription.get;
+	  }
+	  else{
+			theFunction = target[func];
+	  }
+
+		orig = this.orig = theFunction;
 		advisor = this;
 
 		advised = this.advised = function() {
@@ -189,7 +222,9 @@ define(function () {
 
 			iterator(this.aspects[adviceType], function(aspect) {
 				var advice = aspect.advice;
-				advice && advice.apply(context, args);
+				if(advice){
+					advice.apply(context, args);
+				}
 			});
 		},
 
@@ -216,9 +251,7 @@ define(function () {
 			function callNext(i, args) {
 				// If we exhausted all aspects, finally call the original
 				// Otherwise, if we found another around, call it
-				return i < 0
-					? applyOriginal(args)
-					: callAround(aspects[i].advice, i, args);
+				return i < 0 ? applyOriginal(args) : callAround(aspects[i].advice, i, args);
 			}
 
 			function callAround(around, i, args) {
@@ -341,7 +374,15 @@ define(function () {
 
 		var advisor, advised;
 
-		advised = target[methodName];
+		// Check if is it a property defined with Object.defineProperty()
+	  // saitodisse
+	  var propertyDescription = Object.getOwnPropertyDescriptor(target, methodName);
+	  if( propertyDescription && propertyDescription.hasOwnProperty('get') ){
+			advised = propertyDescription.get;
+	  }
+	  else{
+			advised = target[methodName];
+	  }
 
 		if(typeof advised !== 'function') {
 			throw new Error('Advice can only be applied to functions: ' + methodName);
@@ -392,20 +433,32 @@ define(function () {
 
 		while((f = methodArray[i++])) {
 			added = addAspectToMethod(target, f, aspect);
-			added && removers.push(added);
+			if(added){
+				removers.push(added);
+			}
 		}
-
 		return createRemover(removers);
 	}
 
 	function addAspectToMatches(target, pointcut, aspect) {
-		var removers = [];
+		var removers = [], isFunction;
 		// Assume the pointcut is a an object with a .test() method
 		for (var p in target) {
 			// TODO: Decide whether hasOwnProperty is correct here
 			// Only apply to own properties that are functions, and match the pointcut regexp
-			if (typeof target[p] == 'function' && pointcut.test(p)) {
-				// if(object.hasOwnProperty(p) && typeof object[p] === 'function' && pointcut.test(p)) {
+			
+			// Check if is it a property defined with Object.defineProperty()
+		  // saitodisse
+		  var propertyDescription = Object.getOwnPropertyDescriptor(target, p);
+		  if( propertyDescription && propertyDescription.hasOwnProperty('get') ){
+		  	//isFunction = typeof propertyDescription.get == 'function';
+		  	isFunction = false;
+		  }
+		  else{
+		  	isFunction = typeof target[p] == 'function';
+		  }
+
+			if (pointcut.test(p) && isFunction) {
 				removers.push(addAspectToMethod(target, p, aspect));
 			}
 		}
@@ -528,9 +581,7 @@ define(function () {
 
 	// Check for a *working* Object.defineProperty, fallback to
 	// simple assignment.
-	defineProperty = definePropertyWorks()
-		? Object.defineProperty
-		: function(obj, prop, descriptor) {
+	defineProperty = definePropertyWorks() ? Object.defineProperty : function(obj, prop, descriptor) {
 		obj[prop] = descriptor.value;
 	};
 
@@ -554,11 +605,10 @@ define(function () {
 	// All other advice types use forward iteration
 	// Around is a special case that uses recursion rather than
 	// iteration.  See Advisor._callAroundAdvice
-	iterators.on
-		= iterators.afterReturning
-		= iterators.afterThrowing
-		= iterators.after
-		= forEach;
+	iterators.on = iterators.afterReturning = 
+		iterators.afterThrowing = 
+		iterators.after = 
+		forEach;
 
 	function forEach(array, func) {
 		for (var i = 0, len = array.length; i < len; i++) {
@@ -578,11 +628,13 @@ define(function () {
 
 	function pushJoinpoint(newJoinpoint) {
 		joinpointStack.push(currentJoinpoint);
-		return currentJoinpoint = newJoinpoint;
+		currentJoinpoint = newJoinpoint;
+		return currentJoinpoint;
 	}
 
 	function popJoinpoint() {
-		return currentJoinpoint = joinpointStack.pop();
+		currentJoinpoint = joinpointStack.pop();
+		return currentJoinpoint;
 	}
 
 	function definePropertyWorks() {
@@ -593,6 +645,4 @@ define(function () {
 
 	return meld;
 
-});
-})(typeof define == 'function' && define.amd ? define : function (factory) { module.exports = factory(); }
-);
+}));

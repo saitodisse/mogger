@@ -16,13 +16,34 @@ define([
  {
 	'use strict';
 
-	return {
-		'TodoRouter.prototype': TodoRouter.prototype,
-		'AppView.prototype': AppView.prototype,
-		'TodoView.prototype': TodoView.prototype,
-		'Backbone.View.prototype': Backbone.View.prototype,
-		'Todos': Todos,
-		'Todo.prototype': Todo.prototype,
-		'Todo': Todo
-	};
+	return [
+		{
+			title: 'TodoRouter.prototype',
+			target: TodoRouter.prototype
+		},
+		{
+			title: 'AppView.prototype',
+			target: AppView.prototype
+		},
+		{
+			title: 'TodoView.prototype',
+			target: TodoView.prototype
+		},
+		{
+			title: 'Backbone.View.prototype',
+			target: Backbone.View.prototype
+		},
+		{
+			title: 'Todos',
+			target: Todos
+		},
+		{
+			title: 'Todo.prototype',
+			target: Todo.prototype
+		},
+		{
+			title: 'Todo',
+			target: Todo
+		},
+	];
 });

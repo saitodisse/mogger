@@ -1,4 +1,15 @@
-(function(root, factory) {
+/** @license MIT License (c) Copyright (c) 2014 Julio Makdisse Saito */
+
+/**
+ * ColorfulLogger
+ *
+ * Licensed under the MIT License at:
+ * http://www.opensource.org/licenses/mit-license.php
+ *
+ * @author Julio Makdisse Saito (saitodisse@gmail.com)
+ */
+
+ (function(root, factory) {
 
   // AMD
   if (typeof define === 'function' && define.amd) {
@@ -7,9 +18,14 @@
     });
 
   // Node.js
-  } else if (typeof exports !== 'undefined') {
+  }
+  else if (typeof exports !== 'undefined') {
     var _ = require('lodash');
     factory(root, exports, _);
+  }
+  // Browser globals
+  else {
+    root.ColorfulLogger = factory(root, (root.ColorfulLogger = {}), root._);
   }
 
 }(this, function(root, ColorfulLogger, _) {
