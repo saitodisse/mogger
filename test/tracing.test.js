@@ -12,14 +12,13 @@
  */
 
 
-var assert = require('assert');
-var Mogger = require('../src/mogger'),
-		fakeConsole = require('./fake-console'),
-		tracer
+var assert      = require('assert');
+var Mogger      = require('../src/new-mogger'),
+	fakeConsole = require('./fake-console'),
+	tracer
 ;
 
 describe('Tracing', function(){
-
 
 	var someObj = {
 		addNumbers: function (arg1, arg2) {

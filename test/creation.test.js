@@ -13,49 +13,41 @@
 
 
 var assert = require('assert');
-var Mogger = require('../src/mogger'),
-		fakeConsole = require('./fake-console'),
-		tracer
-;
+var _ = require('lodash');
+var Mogger = require('../src/new-mogger');
+var ColorfulLogger = require('colorful-logger');
 
-describe('Creation', function(){
+describe('Creation:', function(){
 
-	beforeEach(function(){
-		tracer = new Mogger.Tracer({
-			loggerConfig: {
-				output: fakeConsole
-			}
+	// beforeEach(function(){
+ 	// });
+
+	it('\'Mogger\' is a function', function() {
+		assert.equal('function', typeof Mogger);
+	});
+
+	it('has options', function() {
+		var mogger = new Mogger();
+		var hasOptions = _.has(mogger, 'options');
+		assert.equal(true, hasOptions);
+	});
+
+	it('default stdout is console.log', function() {
+		var mogger = new Mogger();
+		assert.equal(console.log, mogger.options.stdout);
+	});
+
+	it('stdout is interchangeable', function() {
+		var otherLoggerOutputFunction = function() {};
+		var mogger = new Mogger({
+			stdout: otherLoggerOutputFunction
 		});
-		fakeConsole.logRecorder = [];
-    });
-
-	afterEach(function(){
-		tracer.removeAllTraces();
-    });
-
-
-
-	it('Tracer constructor must exist', function() {
-		assert.equal('function', typeof Mogger.Tracer);
-		assert.equal('object', typeof tracer);
-		assert.equal('function', typeof tracer.traceObj);
+		assert.notEqual(console.log, mogger.options.stdout);
 	});
 
-
-	it('ColorfulLogger dependency exists', function() {
-		assert.notEqual('undefined', typeof tracer.logger);
+	it('\'ColorfulLogger\' is the default logger', function() {
+		var mogger = new Mogger();
+		assert.equal(ColorfulLogger.Logger, mogger.options.logger);
 	});
-
-
-	it('can use other logger dependencies', function() {
-		var someLogger = {name: 'someLogger'};
-
-		tracer = new Mogger.Tracer({
-			logger: someLogger
-		});
-
-		assert.equal(someLogger, tracer.logger);
-	});
-
 
 });
