@@ -1,6 +1,6 @@
-#TODO
+# TODO
 
-[ ] break tests on many files
+- [ ] Break tests on many files
 
  * Creation
     + Tracer constructor must exist
