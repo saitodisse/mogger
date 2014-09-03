@@ -351,7 +351,7 @@ describe('Configuration', function(){
 
 	/*
 		------------------------------------------------------------------------------------
-		# tracer.ignorePattern
+		# tracer.ignoreRegexPattern
 		------------------------------------------------------------------------------------
 		:: do not log any ignored regex pattern
 		------------------------------------------------------------------------------------
@@ -366,7 +366,7 @@ describe('Configuration', function(){
 		//trace
 		tracer.traceObj({
 			target: someObj,
-			ignorePattern: /^ignore.*/i
+			ignoreRegexPattern: /^ignore.*/i
 		});
 
 		//call each one time

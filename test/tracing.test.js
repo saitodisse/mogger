@@ -47,17 +47,17 @@ describe('Tracing:', function(){
         :: each function that is called in someObj will generate a log output
         ------------------------------------------------------------------------------------
     */
-    it('can trace a function', function() {
-        tracer.traceObj({
-            target: someObj
-        });
+    // it('can trace a function', function() {
+    //     tracer.traceObj({
+    //         target: someObj
+    //     });
 
-        someObj.addNumbers(1, 2);
+    //     someObj.addNumbers(1, 2);
 
-        assert.equal(1, fakeConsole.logRecorder.length);
-        assert.equal('addNumbers', fakeConsole.logRecorder[0].message);
+    //     assert.equal(1, fakeConsole.logRecorder.length);
+    //     assert.equal('addNumbers', fakeConsole.logRecorder[0].message);
 
-    });
+    // });
 
     // /*
     //  ------------------------------------------------------------------------------------

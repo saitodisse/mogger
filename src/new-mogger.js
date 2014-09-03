@@ -13,7 +13,6 @@
 
 var meld = require('meld');
 var traceMeld = require('meld/aspect/trace');
-var ColorfulLogger = require('colorful-logger');
 var _ = require('lodash');
 var Reporter = require('./reporter');
 
@@ -24,8 +23,7 @@ var Mogger = function (options) {
     options = options || {};
 
     this.options = _.merge({
-        Logger: ColorfulLogger.Logger,
-        stdout: console.log
+        stdout: console
     }, options);
 
     this.initialize();
@@ -33,14 +31,13 @@ var Mogger = function (options) {
 
 Mogger.prototype.initialize = function() {
     this.targets = [];
-    this.Logger = this.options.Logger;
     this.stdout = this.options.stdout;
 };
 
 
 Mogger.prototype.traceObj = function(opt) {
     var reporter = new Reporter({
-        Logger: this.Logger
+        stdout: this.stdout
     });
     var target = opt.target;
 

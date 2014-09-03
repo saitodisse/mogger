@@ -15,7 +15,6 @@
 var assert = require('assert');
 var _ = require('lodash');
 var Mogger = require('../src/new-mogger');
-var ColorfulLogger = require('colorful-logger');
 
 describe('Creation:', function(){
 
@@ -34,7 +33,7 @@ describe('Creation:', function(){
 
     it('default stdout is console.log', function() {
         var mogger = new Mogger();
-        assert.equal(console.log, mogger.stdout);
+        assert.equal(console, mogger.stdout);
     });
 
     it('stdout is interchangeable', function() {
@@ -42,12 +41,7 @@ describe('Creation:', function(){
         var mogger = new Mogger({
             stdout: otherLoggerOutputFunction
         });
-        assert.notEqual(console.log, mogger.stdout);
-    });
-
-    it('\'ColorfulLogger\' is the default logger', function() {
-        var mogger = new Mogger();
-        assert.equal(ColorfulLogger.Logger, mogger.Logger);
+        assert.notEqual(console, mogger.stdout);
     });
 
 });

@@ -59,7 +59,7 @@ sudo npm install -g node-inspector
 npm test
 
 // debug + watch
-npm debug
+node-debug _mocha --watch
 ```
 
 

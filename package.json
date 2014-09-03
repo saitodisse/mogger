@@ -34,7 +34,8 @@
   "dependencies": {
     "colorful-logger": "^0.1.1",
     "lodash": "^2.4.1",
-    "meld": "saitodisse/meld"
+    "meld": "saitodisse/meld",
+    "sinon": "^1.10.3"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
@@ -43,7 +44,6 @@
     "jshint-stylish": "^0.2.0"
   },
   "scripts": {
-    "test": "mocha --watch",
-    "debug": "node-debug _mocha --watch"
+    "test": "mocha --watch"
   }
 }

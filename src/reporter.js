@@ -1,3 +1,4 @@
+var ColorfulLogger = require('colorful-logger');
 var _ = require('lodash');
 var checkApplyInterceptors = require('./check-interceptors');
 
@@ -5,15 +6,16 @@ var Reporter = function (options) {
     options = options || {};
 
     this.options = _.merge({
+        Logger              : ColorfulLogger.Logger,
         enabled             : true,
         ignoreRegexPattern  : /^$/,
         showArguments       : false,
         showPause           : true,
-        before              : undefined,
-        interceptors        : undefined,
+        before              : null,
+        interceptors        : null,
+        stdout              : null,
         targetConfig        : {},
-        defaultTargetConfig : {},
-        Logger              : undefined,
+        defaultTargetConfig : {}
     }, options);
 
     this.initialize();
@@ -22,6 +24,8 @@ var Reporter = function (options) {
 Reporter.prototype.initialize = function() {
     this.logs                = [];
 
+    this.Logger              = this.options.Logger;
+    this.stdout              = this.options.stdout;
     this.interceptors        = this.options.interceptors;
     this.enabled             = this.options.enabled;
     this.ignoreRegexPattern  = this.options.ignoreRegexPattern;
@@ -31,9 +35,104 @@ Reporter.prototype.initialize = function() {
     this.targetConfig        = this.options.targetConfig;
 
     // instantiate the logger
-    var logger  = new this.options.Logger();
+    var logger  = new this.Logger({
+        output: this.stdout
+    });
     this.logger = logger;
 };
+
+
+Reporter.prototype.onCall = function(info) {
+    var targetLog,
+        mainMessage = info.method,
+        isIgnored = this.ignoreRegexPattern && this.ignoreRegexPattern.test(info.method),
+        targetConfig,
+        interceptorsObj,
+        wasModifiedByInterceptor,
+        willLogArguments
+    ;
+
+    if(!this.enabled || isIgnored){
+        return false;
+    }
+
+    /*
+        before (first column / namespace)
+    */
+    if(this.before){
+        this.logs.push(this.before);
+    }
+
+    /*
+        Interceptors
+    */
+    interceptorsObj = {
+        globalInterceptors: this.interceptors,
+        localInterceptors: this.options.interceptors,
+        info: info
+    };
+    mainMessage = checkApplyInterceptors(interceptorsObj);
+    wasModifiedByInterceptor = (mainMessage !== info.method);
+
+    /*
+        targetConfig local or global
+    */
+    if(typeof this.targetConfig !== 'undefined' && typeof this.options.targetConfig === 'undefined'){
+        targetConfig = this.targetConfig;
+    }
+    else{
+        targetConfig = defaults(this.defaultTargetConfig, this.targetConfig);
+    }
+
+    /*
+        target (function)
+    */
+    if(targetConfig){
+        targetLog = targetConfig;
+        targetLog.message = mainMessage;
+    }
+    else{
+        targetLog = {
+            message: mainMessage
+        };
+    }
+    this.logs.push(targetLog);
+
+
+    /*
+        Function arguments in a groupCollapsed
+    */
+    willLogArguments = this.showArguments &&
+        !wasModifiedByInterceptor &&
+        checkRelevantArguments(info.args);
+
+    if(willLogArguments){
+        this.logs[0].logType = 'groupCollapsed';
+        this.logger.log(this.logs);
+
+        this.logger.log({
+            message: info.args
+        });
+        this.logger.log({
+            logType: 'groupEnd'
+        });
+    }
+    else{
+        this.logs[0].logType = 'log';
+        this.logger.log(this.logs);
+    }
+
+    /*
+        pause
+    */
+    if(this.showPause){
+        // cancel pause made before
+        clearTimeout(this.globalTimeoutLogId);
+        // if is not canceled, it shows the line bellow
+        setParentTimeout(this.logger);
+    }
+};
+
 
 var checkRelevantArguments = function(args) {
   if(args.length === 0){
@@ -66,100 +165,10 @@ var setParentTimeout = function(logger) {
     }.bind(this), 100);
 };
 
-Reporter.prototype.onCall = function(info) {
-    var targetLog,
-        mainMessage = info.method,
-        isIgnored = this.ignoreRegexPattern && this.ignoreRegexPattern.test(info.method),
-        targetConfig,
-        interceptorsObj,
-        wasModifiedByInterceptor,
-        willLogArguments
-    ;
-
-    var defaults = _.partialRight(_.assign, function(a, b) {
-      return typeof a == 'undefined' ? b : a;
-    });
+var defaults = _.partialRight(_.assign, function(a, b) {
+  return typeof a == 'undefined' ? b : a;
+});
 
 
-    if(!this.enabled || isIgnored){
-        return false;
-    }
-
-    /*
-            before (first column / namespace)
-    */
-    if(this.before){
-        this.logs.push(this.before);
-    }
-
-    /*
-            Interceptors
-    */
-    interceptorsObj = {
-        globalInterceptors: this.interceptors,
-        localInterceptors: this.options.interceptors,
-        info: info
-    };
-    mainMessage = checkApplyInterceptors(interceptorsObj);
-    wasModifiedByInterceptor = (mainMessage !== info.method);
-
-    /*
-            targetConfig local or global
-    */
-    if(typeof this.targetConfig !== 'undefined' && typeof this.options.targetConfig === 'undefined'){
-        targetConfig = this.targetConfig;
-    }
-    else{
-        targetConfig = defaults(this.defaultTargetConfig, this.targetConfig);
-    }
-
-    /*
-            target (function)
-    */
-    if(targetConfig){
-        targetLog = targetConfig;
-        targetLog.message = mainMessage;
-    }
-    else{
-        targetLog = {
-            message: mainMessage
-        };
-    }
-    this.logs.push(targetLog);
-
-
-    /*
-            Function arguments in a groupCollapsed
-    */
-    willLogArguments = this.showArguments &&
-        !wasModifiedByInterceptor &&
-        checkRelevantArguments(info.args);
-
-    if(willLogArguments){
-        this.logs[0].logType = 'groupCollapsed';
-        this.logger.log(this.logs);
-
-        this.logger.log({
-            message: info.args
-        });
-        this.logger.log({
-            logType: 'groupEnd'
-        });
-    }
-    else{
-        this.logs[0].logType = 'log';
-        this.logger.log(this.logs);
-    }
-
-    /*
-            pause
-    */
-    if(this.showPause){
-        // cancel pause made before
-        clearTimeout(this.globalTimeoutLogId);
-        // if is not canceled, it shows the line bellow
-        setParentTimeout(this.logger);
-    }
-};
 
 module.exports = Reporter;
