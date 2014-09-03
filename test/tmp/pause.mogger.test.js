@@ -31,10 +31,8 @@ describe('Pause', function(){
 	};
 
 	beforeEach(function(){
-		tracer = new Mogger.Tracer({
-			loggerConfig: {
-				output: fakeConsole
-			}
+		tracer = new Mogger({
+			stdout: fakeConsole,
 		});
 		fakeConsole.logRecorder = [];
     });
@@ -51,10 +49,8 @@ describe('Pause', function(){
 		------------------------------------------------------------------------------------
 	*/
 	it('show pause after some time', function() {
-		tracer = new Mogger.Tracer({
-			loggerConfig: {
-				output: fakeConsole
-			},
+		tracer = new Mogger({
+			stdout: fakeConsole,
 			showPause: true
 		});
 
@@ -98,10 +94,8 @@ describe('Pause', function(){
 		------------------------------------------------------------------------------------
 	*/
 	it('two logs but one pause only', function() {
-		tracer = new Mogger.Tracer({
-			loggerConfig: {
-				output: fakeConsole
-			},
+		tracer = new Mogger({
+			stdout: fakeConsole,
 			showPause: true
 		});
 

@@ -3,14 +3,14 @@ var slice = Array.prototype.slice;
 fakeConsole.logRecorder = [];
 
 fakeConsole.log = function() {
-	var args = slice.call(arguments);
-	var message = args.shift();
+    var args = slice.call(arguments);
+    var message = args.shift();
 
-	fakeConsole.logRecorder.push({
-		'methodName': 'log',
-		'message': message,
-		'cssList': args
-	});
+    fakeConsole.logRecorder.push({
+        'methodName': 'log',
+        'message': message,
+        'cssList': args
+    });
 };
 
 fakeConsole.info = function() {
@@ -38,25 +38,25 @@ fakeConsole.group = function() {
 };
 
 fakeConsole.groupCollapsed = function() {
-	var args = slice.call(arguments);
-	var message = args.shift();
+    var args = slice.call(arguments);
+    var message = args.shift();
 
-	fakeConsole.logRecorder.push({
-		'methodName': 'groupCollapsed',
-		'message': message,
-		'cssList': args
-	});
+    fakeConsole.logRecorder.push({
+        'methodName': 'groupCollapsed',
+        'message': message,
+        'cssList': args
+    });
 };
 
 fakeConsole.groupEnd = function() {
-	var args = slice.call(arguments);
-	var message = args.shift();
+    var args = slice.call(arguments);
+    var message = args.shift();
 
-	fakeConsole.logRecorder.push({
-		'methodName': 'groupEnd',
-		'message': message,
-		'cssList': args
-	});
+    fakeConsole.logRecorder.push({
+        'methodName': 'groupEnd',
+        'message': message,
+        'cssList': args
+    });
 };
 
 fakeConsole.time = function() {

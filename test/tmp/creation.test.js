@@ -21,10 +21,8 @@ var Mogger = require('../src/mogger'),
 describe('Creation', function(){
 
 	beforeEach(function(){
-		tracer = new Mogger.Tracer({
-			loggerConfig: {
-				output: fakeConsole
-			}
+		tracer = new Mogger({
+			stdout: fakeConsole,
 		});
 		fakeConsole.logRecorder = [];
     });
@@ -50,7 +48,7 @@ describe('Creation', function(){
 	it('can use other logger dependencies', function() {
 		var someLogger = {name: 'someLogger'};
 
-		tracer = new Mogger.Tracer({
+		tracer = new Mogger({
 			logger: someLogger
 		});
 

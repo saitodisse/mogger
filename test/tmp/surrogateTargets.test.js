@@ -31,10 +31,8 @@ describe('SurrogateTargets', function(){
 	};
 
 	beforeEach(function(){
-		tracer = new Mogger.Tracer({
-			loggerConfig: {
-				output: fakeConsole
-			}
+		tracer = new Mogger({
+			stdout: fakeConsole
 		});
 		fakeConsole.logRecorder = [];
     });
@@ -59,10 +57,8 @@ describe('SurrogateTargets', function(){
 
 		}];
 
-		tracer = new Mogger.Tracer({
-			loggerConfig: {
-				output: fakeConsole
-			},
+		tracer = new Mogger({
+			stdout: fakeConsole,
 			surrogateTargets: surrogateTargetsSource
 		});
 
@@ -86,10 +82,8 @@ describe('SurrogateTargets', function(){
 			{ title: 'someObj3', target: someObj3 }
 		];
 
-		tracer = new Mogger.Tracer({
-			loggerConfig: {
-				output: fakeConsole
-			},
+		tracer = new Mogger({
+			stdout: fakeConsole,
 			surrogateTargets: surrogateTargetsSource
 		});
 

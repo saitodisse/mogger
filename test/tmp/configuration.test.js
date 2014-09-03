@@ -31,10 +31,8 @@ describe('Configuration', function(){
 	};
 
 	beforeEach(function(){
-		tracer = new Mogger.Tracer({
-			loggerConfig: {
-				output: fakeConsole
-			}
+		tracer = new Mogger({
+			stdout: fakeConsole
 		});
 		fakeConsole.logRecorder = [];
     });
@@ -49,10 +47,8 @@ describe('Configuration', function(){
 		------------------------------------------------------------------------------------
 	*/
 	it('global disabled', function() {
-		tracer = new Mogger.Tracer({
-			loggerConfig: {
-				output: fakeConsole
-			},
+		tracer = new Mogger({
+			stdout: fakeConsole,
 			enabled: false
 		});
 
@@ -71,10 +67,8 @@ describe('Configuration', function(){
 		------------------------------------------------------------------------------------
 	*/
 	it('global disabled after', function() {
-		tracer = new Mogger.Tracer({
-			loggerConfig: {
-				output: fakeConsole
-			}
+		tracer = new Mogger({
+			stdout: fakeConsole,
 		});
 
 		// --------------------------------------------
@@ -160,10 +154,8 @@ describe('Configuration', function(){
 	*/
 	it('global configurations for css and size', function() {
 
-		tracer = new Mogger.Tracer({
-			loggerConfig: {
-				output: fakeConsole
-			},
+		tracer = new Mogger({
+			stdout: fakeConsole,
 
 			/////////////////////////
 			// global targetConfig

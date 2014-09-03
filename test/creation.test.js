@@ -19,35 +19,35 @@ var ColorfulLogger = require('colorful-logger');
 
 describe('Creation:', function(){
 
-	// beforeEach(function(){
- 	// });
+    // beforeEach(function(){
+    // });
 
-	it('\'Mogger\' is a function', function() {
-		assert.equal('function', typeof Mogger);
-	});
+    it('\'Mogger\' is a function', function() {
+        assert.equal('function', typeof Mogger);
+    });
 
-	it('has options', function() {
-		var mogger = new Mogger();
-		var hasOptions = _.has(mogger, 'options');
-		assert.equal(true, hasOptions);
-	});
+    it('has options', function() {
+        var mogger = new Mogger();
+        var hasOptions = _.has(mogger, 'options');
+        assert.equal(true, hasOptions);
+    });
 
-	it('default stdout is console.log', function() {
-		var mogger = new Mogger();
-		assert.equal(console.log, mogger.options.stdout);
-	});
+    it('default stdout is console.log', function() {
+        var mogger = new Mogger();
+        assert.equal(console.log, mogger.stdout);
+    });
 
-	it('stdout is interchangeable', function() {
-		var otherLoggerOutputFunction = function() {};
-		var mogger = new Mogger({
-			stdout: otherLoggerOutputFunction
-		});
-		assert.notEqual(console.log, mogger.options.stdout);
-	});
+    it('stdout is interchangeable', function() {
+        var otherLoggerOutputFunction = function() {};
+        var mogger = new Mogger({
+            stdout: otherLoggerOutputFunction
+        });
+        assert.notEqual(console.log, mogger.stdout);
+    });
 
-	it('\'ColorfulLogger\' is the default logger', function() {
-		var mogger = new Mogger();
-		assert.equal(ColorfulLogger.Logger, mogger.options.logger);
-	});
+    it('\'ColorfulLogger\' is the default logger', function() {
+        var mogger = new Mogger();
+        assert.equal(ColorfulLogger.Logger, mogger.Logger);
+    });
 
 });

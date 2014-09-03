@@ -21,10 +21,8 @@ var Mogger = require('../src/mogger'),
 describe('Interceptors', function(){
 
 	beforeEach(function(){
-		tracer = new Mogger.Tracer({
-			loggerConfig: {
-				output: fakeConsole
-			}
+		tracer = new Mogger({
+			stdout: fakeConsole,
 		});
 		fakeConsole.logRecorder = [];
     });
@@ -76,10 +74,8 @@ describe('Interceptors', function(){
 		------------------------------------------------------------------------------------
 	*/
 	it('global interceptors', function() {
-		tracer = new Mogger.Tracer({
-			loggerConfig: {
-				output: fakeConsole
-			},
+		tracer = new Mogger({
+			stdout: fakeConsole,
 			showPause: true,
 			interceptors: {
 				filterRegex: /.*/i,
@@ -118,10 +114,8 @@ describe('Interceptors', function(){
 		------------------------------------------------------------------------------------
 	*/
 	it('local interceptors wins/overlaps global interceptors', function() {
-		tracer = new Mogger.Tracer({
-			loggerConfig: {
-				output: fakeConsole
-			},
+		tracer = new Mogger({
+			stdout: fakeConsole,
 			showPause: true,
 
 			// GLOBAL INTERCEPTORS
@@ -171,10 +165,8 @@ describe('Interceptors', function(){
 		------------------------------------------------------------------------------------
 	*/
 	it('several interceptors can be configured', function() {
-		tracer = new Mogger.Tracer({
-			loggerConfig: {
-				output: fakeConsole
-			},
+		tracer = new Mogger({
+			stdout: fakeConsole,
 			showPause: true,
 
 			// GLOBAL INTERCEPTORS

@@ -31,5 +31,5 @@
 	"laxcomma": true,
 
 	"maxdepth": 4,
-	"maxcomplexity": 6
+	"maxcomplexity": 10
 }
