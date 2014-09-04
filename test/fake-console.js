@@ -2,6 +2,8 @@ var fakeConsole = {};
 var slice = Array.prototype.slice;
 fakeConsole.logRecorder = [];
 
+fakeConsole.THISiStHEfAKEcONSOLE = 'THISiStHEfAKEcONSOLE';
+
 fakeConsole.log = function() {
     var args = slice.call(arguments);
     var message = args.shift();
@@ -11,6 +13,7 @@ fakeConsole.log = function() {
         'message': message,
         'cssList': args
     });
+    console.log('fakeConsole.logRecorder:', fakeConsole.logRecorder);
 };
 
 fakeConsole.info = function() {

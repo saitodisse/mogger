@@ -7,15 +7,13 @@ var Reporter = function (options) {
 
     this.options = _.merge({
         Logger              : ColorfulLogger.Logger,
-        enabled             : true,
         ignoreRegexPattern  : /^$/,
-        showArguments       : false,
-        showPause           : true,
         before              : null,
         interceptors        : null,
         stdout              : null,
         targetConfig        : {},
-        defaultTargetConfig : {}
+        defaultTargetConfig : {},
+        enabled             : true
     }, options);
 
     this.initialize();
@@ -51,6 +49,8 @@ Reporter.prototype.onCall = function(info) {
         wasModifiedByInterceptor,
         willLogArguments
     ;
+
+    console.log('this.enabled:', this.enabled);
 
     if(!this.enabled || isIgnored){
         return false;

@@ -41,31 +41,31 @@ describe('Reporter OnCall:', function(){
         assert.equal(false, reporter.onCall({}));
     });
 
-    it('is has before, is attached to logs', function() {
-        var beforeConfig = {
-            message: 'before message:',
-            logType: 'log'
-        };
+    // it('if has before, is attached to logs', function() {
+    //     var beforeConfig = {
+    //         message: 'before message:',
+    //         logType: 'log'
+    //     };
 
-        reporter = new Reporter({
-            stdout: fakeConsole,
-            before: beforeConfig
-        });
+    //     reporter = new Reporter({
+    //         stdout: fakeConsole,
+    //         before: beforeConfig
+    //     });
 
-        // stub info
-        var info = sinon.stub({
-            method: 'someMethod',
-            args: ['arg1', 'arg2']
-        });
+    //     // stub info
+    //     var info = sinon.stub({
+    //         method: 'someMethod',
+    //         args: ['arg1', 'arg2']
+    //     });
 
-        reporter.onCall(info);
+    //     reporter.onCall(info);
 
-        assert.deepEqual(beforeConfig, reporter.logs[0]);
+    //     assert.deepEqual(beforeConfig, reporter.logs[0]);
 
-        // console
-        assert.equal(1, fakeConsole.logRecorder.length);
-        assert.equal('before message:someMethod', fakeConsole.logRecorder[0].message);
+    //     // console
+    //     assert.equal(1, fakeConsole.logRecorder.length);
+    //     assert.equal('before message:someMethod', fakeConsole.logRecorder[0].message);
 
-    });
+    // });
 
 });

@@ -12,7 +12,8 @@
  */
 
 var meld = require('meld');
-var traceMeld = require('meld/aspect/trace');
+// var traceMeld = require('meld/aspect/trace');
+var traceMeld = require('./trace-aspect');
 var _ = require('lodash');
 var Reporter = require('./reporter');
 
@@ -23,7 +24,10 @@ var Mogger = function (options) {
     options = options || {};
 
     this.options = _.merge({
-        stdout: console
+        stdout        : console,
+        enabled       : true,
+        showArguments : false,
+        showPause     : true,
     }, options);
 
     this.initialize();
@@ -35,11 +39,14 @@ Mogger.prototype.initialize = function() {
 };
 
 
-Mogger.prototype.traceObj = function(opt) {
-    var reporter = new Reporter({
-        stdout: this.stdout
-    });
-    var target = opt.target;
+Mogger.prototype.traceObj = function(localOptions) {
+
+    // all "globalOptions" (this.option) are merged with "localOptions"
+    var optionsMerged = _.merge(this.options, localOptions);
+
+    var reporter = new Reporter(optionsMerged);
+    var target = optionsMerged.target;
+
 
     // /**
     //  * surrogateTargets
@@ -61,13 +68,13 @@ Mogger.prototype.traceObj = function(opt) {
     //   target = surrogateTargetSelected.target;
     // }
 
-    // var pointcut = opt.pointcut || /./;
+    // var pointcut = optionsMerged.pointcut || /./;
     // this.targets.push({
     //   meldRemover: meld(target, pointcut, traceMeld(reporter)),
-    //   options: opt
+    //   options: optionsMerged
     // });
     //
-    var pointcut = opt.pointcut || /./;
+    var pointcut = optionsMerged.pointcut || /./;
     meld(target, pointcut, traceMeld(reporter));
 };
 
