@@ -15,25 +15,137 @@
 var assert = require('assert');
 var interceptorsHelpers = require('../src/interceptors-helpers');
 
-describe('Check Interceptors', function(){
+/**
+ * STUBS
+ */
+var interceptor_item_A = {
+	filterRegex: /^__a.*/i,
+	callback: function(info) {
+		return '__a:' + info.method;
+	}
+};
+var interceptor_item_B = {
+	filterRegex: /^__b.*/i,
+	callback: function(info) {
+		return '__b:' + info.method;
+	}
+};
+var interceptor_item_X = {
+	filterRegex: /^__x.*/i,
+	callback: function(info) {
+		return '__x:' + info.method;
+	}
+};
 
-	beforeEach(function(){
-    });
+var interceptors_list = [
+	interceptor_item_A,
+	interceptor_item_B,
+	interceptor_item_X
+];
 
-	afterEach(function(){
-    });
+var info_stub = {
+	globalInterceptors: interceptor_item_A,
+	localInterceptors: {},
+	info: {
+		method: 'METHOD_NAME'
+	}
+};
 
 
-	it('no interceptor, returns method name', function() {
-		var infoStub = {
-			globalInterceptors: undefined,
-        	localInterceptors: undefined,
-        	info: {
-        		method: 'METHOD_NAME'
-        	}
-		};
+describe('Interceptors', function(){
 
-		assert.equal(false, interceptorsHelpers.checkExistingInterceptors(infoStub));
+	// beforeEach(function(){
+	//    });
+
+	// afterEach(function(){
+	//    });
+
+
+	describe('checkExistingInterceptors()', function () {
+
+		it('no interceptor, returns false', function() {
+			var infoStub = {
+				globalInterceptors: undefined,
+	        	localInterceptors: undefined,
+	        	info: {
+	        		method: 'METHOD_NAME'
+	        	}
+			};
+
+			assert.equal(false, interceptorsHelpers.checkExistingInterceptors(infoStub));
+		});
+
+		it('only global, return true', function() {
+			var infoStub = {
+				globalInterceptors: {},
+	        	localInterceptors: undefined,
+	        	info: {
+	        		method: 'METHOD_NAME'
+	        	}
+			};
+
+			assert.equal(true, interceptorsHelpers.checkExistingInterceptors(infoStub));
+		});
+
+		it('only local, return true', function() {
+			var infoStub = {
+				globalInterceptors: undefined,
+	        	localInterceptors: {},
+	        	info: {
+	        		method: 'METHOD_NAME'
+	        	}
+			};
+
+			assert.equal(true, interceptorsHelpers.checkExistingInterceptors(infoStub));
+		});
+
+		it('local and global, return true', function() {
+			var infoStub = {
+				globalInterceptors: {},
+	        	localInterceptors: {},
+	        	info: {
+	        		method: 'METHOD_NAME'
+	        	}
+			};
+
+			assert.equal(true, interceptorsHelpers.checkExistingInterceptors(infoStub));
+		});
+	});
+
+
+	describe('matchInterceptor()', function () {
+		it('match a single interceptor', function() {
+			var result = interceptorsHelpers.matchInterceptor(interceptor_item_A, '__a_method');
+			assert.equal(interceptor_item_A, result);
+		});
+
+		it('false if do not match', function() {
+			var result = interceptorsHelpers.matchInterceptor(interceptor_item_A, '__b_method');
+			assert.equal(false, result);
+		});
+	});
+
+
+	describe('selectInterceptor()', function () {
+		// singles
+		it('can select a single interceptor', function() {
+			var result = interceptorsHelpers.selectInterceptor(interceptor_item_A, '__a_method');
+			assert.equal(interceptor_item_A, result);
+		});
+		it('false if do not match', function() {
+			var result = interceptorsHelpers.selectInterceptor(interceptor_item_A, '__ZZZ_method');
+			assert.equal(false, result);
+		});
+
+		// lists
+		it('can select in a list', function() {
+			var result = interceptorsHelpers.selectInterceptor(interceptors_list, '__a_method');
+			assert.equal(interceptor_item_A, result);
+		});
+		it('false if do not match in the list', function() {
+			var result = interceptorsHelpers.selectInterceptor(interceptors_list, '__ZZZ_method');
+			assert.equal(false, result);
+		});
 	});
 
 	// it('no interceptor, returns method name', function() {

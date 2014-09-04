@@ -21,31 +21,37 @@ var checkExistingInterceptors = function(interceptorsObj) {
     return (hasLocalInterceptors || hasGlobalInterceptors);
 };
 
+
+/**
+ * localInterceptor are prevalent among globalInterceptor
+ * @param  {object} interceptors interceptor to match
+ * @param  {string} methodName  name of method
+ * @return {depends} interceptor if match or false if not match
+ */
+var selectInterceptor = function(interceptors, methodName) {
+    // interceptors === Array
+    if(interceptors && _.isArray(interceptors)){
+        for (var i = 0; i < interceptors.length; i++) {
+            var interceptorItem = interceptors[i];
+            if( matchInterceptor(interceptorItem, methodName) ){
+                return interceptorItem;
+            }
+        }
+    }
+    // interceptors === single obj
+    else if(interceptors && !_.isArray(interceptors)){
+        return matchInterceptor(interceptors, methodName);
+    }
+
+    // no filter match
+    return false;
+};
 var matchInterceptor = function(interceptor, methodName) {
     var filterRegex = interceptor.filterRegex;
     var matchFilterResult = filterRegex.test(methodName);
     if(matchFilterResult){
         return interceptor;
     }
-    return false;
-};
-
-var selectInterceptor = function(interceptor, methodName) {
-    // interceptor Array
-    if(interceptor && _.isArray(interceptor)){
-        for (var i = 0; i < interceptor.length; i++) {
-            var interceptorItem = interceptor[i];
-            if( matchInterceptor(interceptorItem, methodName) ){
-                return interceptorItem;
-            }
-        }
-    }
-    // interceptor single obj
-    else if(interceptor && !_.isArray(interceptor)){
-        return matchInterceptor(interceptor, methodName);
-    }
-
-    // no filter match
     return false;
 };
 
@@ -75,8 +81,8 @@ var checkAndApplyInterceptor = function(interceptorsObj) {
 
 module.exports = {
     checkExistingInterceptors: checkExistingInterceptors,
-    matchInterceptor: matchInterceptor,
     selectInterceptor: selectInterceptor,
+    matchInterceptor: matchInterceptor,
     applyInterceptor: applyInterceptor,
     checkAndApplyInterceptor: checkAndApplyInterceptor,
 };
