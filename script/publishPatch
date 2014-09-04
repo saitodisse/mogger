@@ -12,7 +12,7 @@ done
 while true; do
     read -p "please, update version on bower.json. Did you do it? [y/n]: " yn
     case $yn in
-        [Yy]* ) git add .; git commit -m'bower updating version'; git push; sudo npm publish .; break;;
+        [Yy]* ) cd ..; git add .; git commit -m'bower updating version'; git push; sudo npm publish .; break;;
         [Nn]* ) exit;;
         * ) echo "Please answer yes or no.";;
     esac
