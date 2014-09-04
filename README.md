@@ -2,7 +2,7 @@ by: [saitodisse](http://saitodisse.github.io/)
 
 [![Build Status](https://travis-ci.org/saitodisse/mogger.svg?branch=0.1)](https://travis-ci.org/saitodisse/mogger)
 
-[![Coverage Status](https://coveralls.io/repos/saitodisse/mogger/badge.png)](https://coveralls.io/r/saitodisse/mogger)
+[![Coverage Status](https://coveralls.io/repos/saitodisse/mogger/badge.png?branch=0.1)](https://coveralls.io/r/saitodisse/mogger?branch=0.1)
 
 #Mogger
 Mogger it is a way to log your app without change him. Uses AOP (Aspect-oriented programming) library named [meld.js](https://github.com/cujojs/meld) and other library that facilitates the print of colorful outputs in browser, the [colorful-logger](https://github.com/saitodisse/colorful-logger).
