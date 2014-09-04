@@ -37,14 +37,18 @@
     "meld": "saitodisse/meld"
   },
   "devDependencies": {
+    "coveralls": "^2.11.1",
     "grunt": "^0.4.5",
     "grunt-contrib-jshint": "^0.10.0",
     "grunt-contrib-watch": "^0.6.1",
+    "istanbul": "^0.3.1",
     "jshint-stylish": "^0.2.0",
-    "sinon": "^1.10.3",
-    "mocha": "^1.21.4"
+    "mocha": "^1.21.4",
+    "mocha-istanbul": "^0.2.0",
+    "sinon": "^1.10.3"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "cover": "node ./node_modules/istanbul/lib/cli cover ./node_modules/mocha/bin/_mocha"
   }
 }
