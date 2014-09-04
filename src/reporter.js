@@ -1,6 +1,6 @@
 var ColorfulLogger = require('colorful-logger');
 var _ = require('lodash');
-var checkApplyInterceptors = require('./check-interceptors');
+var interceptorsHelpers = require('./interceptors-helpers');
 
 var Reporter = function (options) {
     options = options || {};
@@ -50,7 +50,8 @@ Reporter.prototype.onCall = function(info) {
         willLogArguments
     ;
 
-    console.log('this.enabled:', this.enabled);
+    // FIXME: why I had to declare this.options.enabled explicit?
+    // console.log('this.enabled:', this.enabled);
 
     if(!this.enabled || isIgnored){
         return false;
@@ -71,7 +72,7 @@ Reporter.prototype.onCall = function(info) {
         localInterceptors: this.options.interceptors,
         info: info
     };
-    mainMessage = checkApplyInterceptors(interceptorsObj);
+    mainMessage = interceptorsHelpers(interceptorsObj);
     wasModifiedByInterceptor = (mainMessage !== info.method);
 
     /*

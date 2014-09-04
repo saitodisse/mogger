@@ -8,6 +8,13 @@ var _ = require('lodash');
         info: info
     }
 */
+
+
+/**
+ * localInterceptor are prevalent among globalInterceptor
+ * @param  {object} interceptorsObj
+ * @return {boolean} false if does not have any interceptors
+ */
 var checkExistingInterceptors = function(interceptorsObj) {
     var hasLocalInterceptors = !_.isUndefined(interceptorsObj.localInterceptors);
     var hasGlobalInterceptors = !_.isUndefined(interceptorsObj.globalInterceptors);
@@ -47,7 +54,7 @@ var applyInterceptor = function(interceptorsObj, interceptor) {
 };
 
 
-module.exports = function(interceptorsObj) {
+var checkAndApplyInterceptor = function(interceptorsObj) {
     if(!checkExistingInterceptors(interceptorsObj)){
         return interceptorsObj.info.method;
     }
@@ -63,4 +70,13 @@ module.exports = function(interceptorsObj) {
     else {
         return interceptorsObj.info.method;
     }
+};
+
+
+module.exports = {
+    checkExistingInterceptors: checkExistingInterceptors,
+    matchInterceptor: matchInterceptor,
+    selectInterceptor: selectInterceptor,
+    applyInterceptor: applyInterceptor,
+    checkAndApplyInterceptor: checkAndApplyInterceptor,
 };

@@ -13,7 +13,6 @@ fakeConsole.log = function() {
         'message': message,
         'cssList': args
     });
-    console.log('fakeConsole.logRecorder:', fakeConsole.logRecorder);
 };
 
 fakeConsole.info = function() {

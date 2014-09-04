@@ -13,60 +13,40 @@
 
 
 var assert = require('assert');
-var Mogger = require('../src/new-mogger'),
-    sinon           = require('sinon'),
-		fakeConsole = require('./fake-console'),
-		tracer,
-		spyConsole
-;
+var interceptorsHelpers = require('../src/interceptors-helpers');
 
-describe('Interceptors', function(){
+describe('Check Interceptors', function(){
 
 	beforeEach(function(){
-		tracer = new Mogger({
-			stdout: fakeConsole
-		});
-		spyConsole = sinon.spy();
-		fakeConsole.logRecorder = [];
     });
 
 	afterEach(function(){
-		tracer.removeAllTraces();
     });
 
 
-	it('no interceptor, get method name', function() {
-		//the object and his function
-		var someObj = {
-			addNumbers: function (arg1, arg2) { return arg1 + arg2; }
+	it('no interceptor, returns method name', function() {
+		var infoStub = {
+			globalInterceptors: undefined,
+        	localInterceptors: undefined,
+        	info: {
+        		method: 'METHOD_NAME'
+        	}
 		};
 
-		tracer = new Mogger({
-			stdout: spyConsole
-		});
-
-		//trace
-		tracer.traceObj({
-			target: someObj
-		});
-
-		//call each one time
-		someObj.addNumbers(1, 2);
-
-
-		/**
-		 * called: false,
-		   notCalled: true,
-		   calledOnce: false,
-		   calledTwice: false,
-		   calledThrice: false,
-		   callCount: 0,
-		 */
-		assert.equal(true, spyConsole.called);
-		//someObj.addNumbers and someObj.addNumbers again
-		// assert.equal(1, fakeConsole.logRecorder.length);
-		// assert.equal('addNumbers', fakeConsole.logRecorder[0].message);
+		assert.equal(false, interceptorsHelpers.checkExistingInterceptors(infoStub));
 	});
+
+	// it('no interceptor, returns method name', function() {
+	// 	var infoStub = {
+	// 		globalInterceptors: undefined,
+ //        	localInterceptors: undefined,
+ //        	info: {
+ //        		method: 'METHOD_NAME'
+ //        	}
+	// 	};
+
+	// 	assert.equal('METHOD_NAME', checkInterceptors(infoStub));
+	// });
 
 	// /*
 	// 	------------------------------------------------------------------------------------

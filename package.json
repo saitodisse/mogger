@@ -44,6 +44,6 @@
     "jshint-stylish": "^0.2.0"
   },
   "scripts": {
-    "test": "mocha --watch"
+    "test": "mocha --watch -G"
   }
 }

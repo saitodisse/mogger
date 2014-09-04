@@ -13,9 +13,7 @@
 
 
 var assert          = require('assert'),
-    _               = require('lodash'),
     Reporter        = require('../src/reporter'),
-    ColorfulLogger  = require('colorful-logger'),
     fakeConsole     = require('./fake-console'),
     sinon           = require('sinon'),
     reporter
@@ -41,7 +39,7 @@ describe('Reporter OnCall:', function(){
         assert.equal(false, reporter.onCall({}));
     });
 
-    // it('if has before, is attached to logs', function() {
+    // it('before is attached to logs array', function() {
     //     var beforeConfig = {
     //         message: 'before message:',
     //         logType: 'log'
