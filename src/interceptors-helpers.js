@@ -55,8 +55,8 @@ var matchInterceptor = function(interceptor, methodName) {
     return false;
 };
 
-var applyInterceptor = function(interceptorsObj, interceptor) {
-    return interceptor.callback(interceptorsObj.info);
+var applyInfoToInterceptor = function(interceptor, infoObj) {
+    return interceptor.callback(infoObj);
 };
 
 
@@ -71,7 +71,7 @@ var checkAndApplyInterceptor = function(interceptorsObj) {
     }
 
     if (interceptor) {
-        return applyInterceptor(interceptorsObj, interceptor);
+        return applyInfoToInterceptor(interceptor, interceptorsObj.info);
     }
     else {
         return interceptorsObj.info.method;
@@ -83,6 +83,6 @@ module.exports = {
     checkExistingInterceptors: checkExistingInterceptors,
     selectInterceptor: selectInterceptor,
     matchInterceptor: matchInterceptor,
-    applyInterceptor: applyInterceptor,
+    applyInfoToInterceptor: applyInfoToInterceptor,
     checkAndApplyInterceptor: checkAndApplyInterceptor,
 };

@@ -44,11 +44,7 @@ var interceptors_list = [
 ];
 
 var info_stub = {
-	globalInterceptors: interceptor_item_A,
-	localInterceptors: {},
-	info: {
-		method: 'METHOD_NAME'
-	}
+	method: '__a_METHOD_NAME'
 };
 
 
@@ -64,7 +60,7 @@ describe('Interceptors', function(){
 	describe('checkExistingInterceptors()', function () {
 
 		it('no interceptor, returns false', function() {
-			var infoStub = {
+			var interceptorsObj = {
 				globalInterceptors: undefined,
 	        	localInterceptors: undefined,
 	        	info: {
@@ -72,11 +68,11 @@ describe('Interceptors', function(){
 	        	}
 			};
 
-			assert.equal(false, interceptorsHelpers.checkExistingInterceptors(infoStub));
+			assert.equal(false, interceptorsHelpers.checkExistingInterceptors(interceptorsObj));
 		});
 
 		it('only global, return true', function() {
-			var infoStub = {
+			var interceptorsObj = {
 				globalInterceptors: {},
 	        	localInterceptors: undefined,
 	        	info: {
@@ -84,11 +80,11 @@ describe('Interceptors', function(){
 	        	}
 			};
 
-			assert.equal(true, interceptorsHelpers.checkExistingInterceptors(infoStub));
+			assert.equal(true, interceptorsHelpers.checkExistingInterceptors(interceptorsObj));
 		});
 
 		it('only local, return true', function() {
-			var infoStub = {
+			var interceptorsObj = {
 				globalInterceptors: undefined,
 	        	localInterceptors: {},
 	        	info: {
@@ -96,11 +92,11 @@ describe('Interceptors', function(){
 	        	}
 			};
 
-			assert.equal(true, interceptorsHelpers.checkExistingInterceptors(infoStub));
+			assert.equal(true, interceptorsHelpers.checkExistingInterceptors(interceptorsObj));
 		});
 
 		it('local and global, return true', function() {
-			var infoStub = {
+			var interceptorsObj = {
 				globalInterceptors: {},
 	        	localInterceptors: {},
 	        	info: {
@@ -108,7 +104,7 @@ describe('Interceptors', function(){
 	        	}
 			};
 
-			assert.equal(true, interceptorsHelpers.checkExistingInterceptors(infoStub));
+			assert.equal(true, interceptorsHelpers.checkExistingInterceptors(interceptorsObj));
 		});
 	});
 
@@ -148,212 +144,58 @@ describe('Interceptors', function(){
 		});
 	});
 
-	// it('no interceptor, returns method name', function() {
-	// 	var infoStub = {
-	// 		globalInterceptors: undefined,
- //        	localInterceptors: undefined,
- //        	info: {
- //        		method: 'METHOD_NAME'
- //        	}
-	// 	};
-
-	// 	assert.equal('METHOD_NAME', checkInterceptors(infoStub));
-	// });
-
-	// /*
-	// 	------------------------------------------------------------------------------------
-	// 	# interceptors
-	// 	------------------------------------------------------------------------------------
-	// 	:: interceptors can modify the way that log is printed
-	// 	------------------------------------------------------------------------------------
-	// */
-	// it('interceptors will log arguments', function() {
-	// 	//the object and his function
-	// 	var someObj = {
-	// 		addNumbers: function (arg1, arg2) { return arg1 + arg2; },
-	// 		otherFunction: function (arg1, arg2) { return arg1 + arg2; }
-	// 	};
-
-	// 	//trace
-	// 	tracer.traceObj({
-	// 		target: someObj,
-	// 		interceptors: {
-	// 			filterRegex: /otherFunction/i,
-	// 			callback: function(info) {
-	// 				return info.method + '(' + info.args[0] + ', ' + info.args[1] + ')';
-	// 			}
-	// 		}
-	// 	});
-
-	// 	//call each one time
-	// 	someObj.addNumbers(1, 2);
-	// 	someObj.otherFunction(1, 2);
-
-	// 	//someObj.addNumbers and someObj.addNumbers again
-	// 	assert.equal(2, fakeConsole.logRecorder.length);
-	// 	assert.equal('addNumbers', fakeConsole.logRecorder[0].message);
-	// 	assert.equal('otherFunction(1, 2)', fakeConsole.logRecorder[1].message);
-	// });
-
-	// /*
-	// 	------------------------------------------------------------------------------------
-	// 	# global interceptors
-	// 	------------------------------------------------------------------------------------
-	// 	:: global interceptors can modify the way that all logs are printed
-	// 	------------------------------------------------------------------------------------
-	// */
-	// it('global interceptors', function() {
-	// 	tracer = new Mogger({
-	// 		stdout: fakeConsole,
-	// 		showPause: true,
-	// 		interceptors: {
-	// 			filterRegex: /.*/i,
-	// 			callback: function(info) {
-	// 				return info.method + '(' + info.args[0] + ', ' + info.args[1] + ')';
-	// 			}
-	// 		}
-	// 	});
-
-	// 	//the object and his function
-	// 	var someObj = {
-	// 		addNumbers: function (arg1, arg2) { return arg1 + arg2; },
-	// 		otherFunction: function (arg1, arg2) { return arg1 + arg2; }
-	// 	};
-
-	// 	//trace
-	// 	tracer.traceObj({
-	// 		target: someObj,
-	// 	});
-
-	// 	//call each one time
-	// 	someObj.addNumbers(1, 2);
-	// 	someObj.otherFunction(1, 2);
-
-	// 	//someObj.addNumbers and someObj.addNumbers again
-	// 	assert.equal(2, fakeConsole.logRecorder.length);
-	// 	assert.equal('addNumbers(1, 2)', fakeConsole.logRecorder[0].message);
-	// 	assert.equal('otherFunction(1, 2)', fakeConsole.logRecorder[1].message);
-	// });
+	describe('applyInfoToInterceptor()', function () {
+		it('apply infoObj to the interceptor', function() {
+			var result = interceptorsHelpers.applyInfoToInterceptor(interceptor_item_A, info_stub);
+			assert.equal('__a:' + '__a_METHOD_NAME', result);
+		});
+	});
 
 
-	// 	------------------------------------------------------------------------------------
-	// 	# global interceptors vs local interceptors
-	// 	------------------------------------------------------------------------------------
-	// 	:: global interceptors can modify the way that all logs are printed
-	// 	------------------------------------------------------------------------------------
+	describe('checkAndApplyInterceptor()', function () {
+		it('no interceptors, return method name', function() {
 
-	// it('local interceptors wins/overlaps global interceptors', function() {
-	// 	tracer = new Mogger({
-	// 		stdout: fakeConsole,
-	// 		showPause: true,
+			var interceptorsObj = {
+				globalInterceptors: undefined,
+	        	localInterceptors: undefined,
+	        	info: {
+	        		method: 'METHOD_NAME'
+	        	}
+	        };
 
-	// 		// GLOBAL INTERCEPTORS
-	// 		interceptors: {
-	// 			filterRegex: /.*/i,
-	// 			callback: function(info) {
-	// 				return '->' + info.method;
-	// 			}
-	// 		}
+			var result = interceptorsHelpers.checkAndApplyInterceptor(interceptorsObj);
 
-	// 	});
+			assert.equal('METHOD_NAME', result);
+		});
 
-	// 	//the object and his function
-	// 	var someObj = {
-	// 		addNumbers: function (arg1, arg2) { return arg1 + arg2; },
-	// 		otherFunction: function (arg1, arg2) { return arg1 + arg2; }
-	// 	};
+		it('with interceptors, return global', function() {
 
-	// 	//trace
-	// 	tracer.traceObj({
-	// 		target: someObj,
+			var interceptorsObj = {
+				globalInterceptors: interceptor_item_A,
+	        	localInterceptors: undefined,
+	        	info: {
+	        		method: '__a_METHOD_NAME'
+	        	}
+	        };
 
-	// 		// LOCAL INTERCEPTORS
-	// 		interceptors: {
-	// 			filterRegex: /addNumbers/i,
-	// 			callback: function(info) {
-	// 				return info.method + '(' + info.args[0] + ', ' + info.args[1] + ')';
-	// 			}
-	// 		}
+			var result = interceptorsHelpers.checkAndApplyInterceptor(interceptorsObj);
 
-	// 	});
+			assert.equal('__a:' + '__a_METHOD_NAME', result);
+		});
 
-	// 	//call each one time
-	// 	someObj.addNumbers(1, 2);
-	// 	someObj.otherFunction(1, 2);
+		it('no match interceptors, return info.method', function() {
 
-	// 	//someObj.addNumbers and someObj.addNumbers again
-	// 	assert.equal(2, fakeConsole.logRecorder.length);
-	// 	assert.equal('addNumbers(1, 2)', fakeConsole.logRecorder[0].message);
-	// 	assert.equal('->otherFunction', fakeConsole.logRecorder[1].message);
-	// });
+			var interceptorsObj = {
+				globalInterceptors: interceptor_item_B,
+	        	localInterceptors: undefined,
+	        	info: {
+	        		method: '__a_METHOD_NAME'
+	        	}
+	        };
 
+			var result = interceptorsHelpers.checkAndApplyInterceptor(interceptorsObj);
 
-	// /*
-	// 	------------------------------------------------------------------------------------
-	// 	# many interceptors
-	// 	------------------------------------------------------------------------------------
-	// */
-	// it('several interceptors can be configured', function() {
-	// 	tracer = new Mogger({
-	// 		stdout: fakeConsole,
-	// 		showPause: true,
-
-	// 		// GLOBAL INTERCEPTORS
-	// 		interceptors: [
-	// 		{
-	// 			filterRegex: /^a.*/i,
-	// 			callback: function(info) {
-	// 				return '[1] ' + info.method;
-	// 			}
-	// 		},
-	// 		{
-	// 			filterRegex: /^b.*/i,
-	// 			callback: function(info) {
-	// 				return '[2.1] ' + info.method;
-	// 			}
-	// 		}]
-
-	// 	});
-
-	// 	//the object and his function
-	// 	var someObj = {
-	// 		aFunc: function (arg1, arg2) { return arg1 + arg2; },
-	// 		bFunc: function (arg1, arg2) { return arg1 + arg2; },
-	// 		cFunc: function (arg1, arg2) { return arg1 + arg2; }
-	// 	};
-
-	// 	//trace
-	// 	tracer.traceObj({
-	// 		target: someObj,
-
-	// 		// LOCAL INTERCEPTORS
-	// 		interceptors: [
-	// 		{
-	// 			filterRegex: /^b.*/i,
-	// 			callback: function(info) {
-	// 				return '[2.2] ' + info.method;
-	// 			}
-	// 		},
-	// 		{
-	// 			filterRegex: /^c.*/i,
-	// 			callback: function(info) {
-	// 				return '[3] ' + info.method;
-	// 			}
-	// 		}]
-
-	// 	});
-
-	// 	//call each one time
-	// 	someObj.aFunc(1, 2);
-	// 	someObj.bFunc(1, 2);
-	// 	someObj.cFunc(1, 2);
-
-	// 	//someObj.addNumbers and someObj.addNumbers again
-	// 	assert.equal(3, fakeConsole.logRecorder.length);
-	// 	assert.equal('[1] aFunc', fakeConsole.logRecorder[0].message);
-	// 	assert.equal('[2.2] bFunc', fakeConsole.logRecorder[1].message);
-	// 	assert.equal('[3] cFunc', fakeConsole.logRecorder[2].message);
-	// });
-
-
+			assert.equal('__a_METHOD_NAME', result);
+		});
+	});
 });
