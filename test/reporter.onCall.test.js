@@ -13,6 +13,7 @@
 
 
 var assert          = require('assert'),
+    sinon           = require('sinon'),
     Reporter        = require('../src/reporter'),
     fakeConsole     = require('./fake-console'),
     reporter
@@ -30,7 +31,7 @@ describe('Reporter OnCall:', function(){
     afterEach(function(){
     });
 
-    it('when disabled return false', function() {
+    it('when disabled returns false', function() {
         reporter = new Reporter({
             stdout: fakeConsole,
             enabled: false
@@ -38,31 +39,47 @@ describe('Reporter OnCall:', function(){
         assert.equal(false, reporter.onCall({}));
     });
 
-    // it('before is attached to logs array', function() {
-    //     var beforeConfig = {
-    //         message: 'before message:',
-    //         logType: 'log'
-    //     };
+    it('when ignored returns false', function() {
 
-    //     reporter = new Reporter({
-    //         stdout: fakeConsole,
-    //         before: beforeConfig
-    //     });
+        reporter = new Reporter({
+            ignoreRegexPattern: /someMethod/i
+        });
 
-    //     // stub info
-    //     var info = sinon.stub({
-    //         method: 'someMethod',
-    //         args: ['arg1', 'arg2']
-    //     });
+        // stub info
+        var info = sinon.stub({
+            method: 'someMethod',
+            args: ['arg1', 'arg2']
+        });
 
-    //     reporter.onCall(info);
+        assert.equal(false, reporter.onCall( info ));
 
-    //     assert.deepEqual(beforeConfig, reporter.logs[0]);
+    });
 
-    //     // console
-    //     assert.equal(1, fakeConsole.logRecorder.length);
-    //     assert.equal('before message:someMethod', fakeConsole.logRecorder[0].message);
+    it('before is attached to logs array', function() {
+        var beforeConfig = {
+            message: 'before message:',
+            logType: 'log'
+        };
 
-    // });
+        reporter = new Reporter({
+            stdout: fakeConsole,
+            before: beforeConfig
+        });
+
+        // stub info
+        var info = sinon.stub({
+            method: 'someMethod',
+            args: ['arg1', 'arg2']
+        });
+
+        reporter.onCall(info);
+
+        assert.deepEqual(beforeConfig, reporter.logs[0]);
+
+        // console
+        assert.equal(1, fakeConsole.logRecorder.length);
+        assert.equal('before message:someMethod', fakeConsole.logRecorder[0].message);
+
+    });
 
 });

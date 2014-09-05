@@ -41,7 +41,7 @@ gulp.task('istanbul', function () {
         .on('finish', function () {
             //console.log = original;
             gulp.src(testSources)
-                .pipe( mocha({ reporter: 'min', growl: 'true' }) )
+                .pipe( mocha({ reporter: 'min' }) )
                 .on('error', gutil.log) // prevent error to stop watch
                 .pipe(istanbul.writeReports())
            ;

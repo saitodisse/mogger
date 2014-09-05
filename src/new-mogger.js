@@ -11,11 +11,11 @@
  * @version 0.5.0
  */
 
-var meld = require('meld');
-// var traceMeld = require('meld/aspect/trace');
+var meld      = require('meld');
+var _         = require('lodash');
 var traceMeld = require('./trace-aspect');
-var _ = require('lodash');
-var Reporter = require('./reporter');
+var helpers   = require('./helpers');
+var Reporter  = require('./reporter');
 
 ////////////////////
 // Mogger DEFINITION
@@ -42,7 +42,7 @@ Mogger.prototype.initialize = function() {
 Mogger.prototype.traceObj = function(localOptions) {
 
     // all "globalOptions" (this.option) are merged with "localOptions"
-    var optionsMerged = _.merge(this.options, localOptions);
+    var optionsMerged = helpers.merge(this.options, localOptions);
 
     var reporter = new Reporter(optionsMerged);
     var target = optionsMerged.target;
