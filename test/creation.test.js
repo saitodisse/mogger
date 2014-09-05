@@ -25,23 +25,17 @@ describe('Creation:', function(){
         assert.equal('function', typeof Mogger);
     });
 
-    it('has options', function() {
+    it('default defaultConsole is console.log', function() {
         var mogger = new Mogger();
-        var hasOptions = _.has(mogger, 'options');
-        assert.equal(true, hasOptions);
+        assert.equal(console, mogger.defaultConsole);
     });
 
-    it('default stdout is console.log', function() {
-        var mogger = new Mogger();
-        assert.equal(console, mogger.stdout);
-    });
-
-    it('stdout is interchangeable', function() {
+    it('defaultConsole is interchangeable', function() {
         var otherLoggerOutputFunction = function() {};
         var mogger = new Mogger({
-            stdout: otherLoggerOutputFunction
+            defaultConsole: otherLoggerOutputFunction
         });
-        assert.notEqual(console, mogger.stdout);
+        assert.notEqual(console, mogger.defaultConsole);
     });
 
 });

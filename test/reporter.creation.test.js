@@ -11,46 +11,32 @@
  * @version 0.5.0
  */
 
-
 var assert          = require('assert'),
-    _               = require('lodash'),
     Reporter        = require('../src/reporter'),
     ColorfulLogger  = require('colorful-logger')
 ;
 
 describe('Reporter Creation:', function(){
 
-    beforeEach(function(){
-    });
-
-    afterEach(function(){
-    });
-
     it('\'Reporter\' is a function', function() {
         assert.equal('function', typeof Reporter);
     });
 
-    it('has options', function() {
-        var reporter = new Reporter();
-        var hasOptions = _.has(reporter, 'options');
-        assert.equal(true, hasOptions);
-    });
-
-    it('default stdout is console.log', function() {
+    it('default defaultConsole is console.log', function() {
         var reporter = new Reporter({
-            stdout: console
+            defaultConsole: console
         });
 
-        assert.equal(console, reporter.stdout);
+        assert.equal(console, reporter.defaultConsole);
     });
 
-    it('stdout is interchangeable', function() {
+    it('defaultConsole is interchangeable', function() {
         var otherLoggerOutputFunction = function() {};
         var reporter = new Reporter({
-            stdout: otherLoggerOutputFunction
+            defaultConsole: otherLoggerOutputFunction
         });
 
-        assert.notEqual(console, reporter.stdout);
+        assert.notEqual(console, reporter.defaultConsole);
     });
 
     it('\'ColorfulLogger\' is the default logger', function() {

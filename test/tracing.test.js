@@ -31,7 +31,7 @@ describe('Tracing:', function(){
 
     beforeEach(function(){
         tracer = new Mogger({
-            stdout: fakeConsole
+            defaultConsole: fakeConsole
         });
         fakeConsole.logRecorder = [];
     });

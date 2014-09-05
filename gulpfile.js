@@ -10,7 +10,8 @@ gulp.task('default', ['test']);
 /**
  * mocha + watch
  */
-gulp.task('test', ['mocha'], function() {
+gulp.task('test', ['mocha', 'test-watch']);
+gulp.task('test-watch', function() {
     gulp.watch(allSources, ['mocha']);
 });
 gulp.task('mocha', function() {
@@ -28,7 +29,8 @@ gulp.task('mocha', function() {
 /**
  * instanbul + watch
  */
-gulp.task('cover', ['istanbul'], function() {
+gulp.task('cover', ['istanbul', 'cover-watch']);
+gulp.task('cover-watch', function() {
     gulp.watch(allSources, ['istanbul']);
 });
 gulp.task('istanbul', function () {

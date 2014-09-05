@@ -3,49 +3,33 @@ var _ = require('lodash');
 var interceptorsHelpers = require('./interceptors-helpers');
 var helpers = require('./helpers');
 
-var Reporter = function (options) {
-    options = options || {};
+var Reporter = function (mogger, localOptions) {
+    this.logs = [];
 
-    this.options = _.merge({
+    var defaults = _.merge({
         Logger              : ColorfulLogger.Logger,
-        ignoreRegexPattern  : /^$/,
         before              : null,
-        interceptors        : null,
-        stdout              : null,
-        targetConfig        : {},
-        defaultTargetConfig : {},
-        enabled             : true
-    }, options);
+        localTargetConfig   : null,
+        localInterceptors   : null,
+    }, mogger);
 
-    this.initialize();
-};
+    // merge global to this
+    helpers.merge(this, defaults);
+    // merge local to this
+    helpers.merge(this, localOptions);
 
-Reporter.prototype.initialize = function() {
-    this.logs                = [];
-
-    this.Logger              = this.options.Logger;
-    this.stdout              = this.options.stdout;
-    this.interceptors        = this.options.interceptors;
-    this.enabled             = this.options.enabled;
-    this.ignoreRegexPattern  = this.options.ignoreRegexPattern;
-    this.showArguments       = this.options.showArguments;
-    this.showPause           = this.options.showPause;
-    this.before              = this.options.before;
-    this.targetConfig        = this.options.targetConfig;
-
-    // instantiate the logger
     var logger  = new this.Logger({
-        output: this.stdout
+        output: this.defaultConsole
     });
     this.logger = logger;
 };
 
-
 Reporter.prototype.onCall = function(info) {
+
     var targetLog,
         mainMessage = info.method,
         isIgnored = this.ignoreRegexPattern && this.ignoreRegexPattern.test(info.method),
-        targetConfig,
+        localTargetConfig,
         interceptorsObj,
         wasModifiedByInterceptor,
         willLogArguments
@@ -54,7 +38,10 @@ Reporter.prototype.onCall = function(info) {
     // FIXME: why I had to declare this.options.enabled explicit?
     // console.log('this.enabled:', this.enabled);
 
-    if(!this.enabled || isIgnored){
+    if(!this.enabled){
+        return false;
+    }
+    if(isIgnored){
         return false;
     }
 
@@ -69,28 +56,28 @@ Reporter.prototype.onCall = function(info) {
         Interceptors
     */
     interceptorsObj = {
-        globalInterceptors: this.interceptors,
-        localInterceptors: this.options.interceptors,
+        globalInterceptors: this.globalInterceptors,
+        localInterceptors: this.localInterceptors,
         info: info
     };
     mainMessage = interceptorsHelpers.checkAndApplyInterceptor(interceptorsObj);
     wasModifiedByInterceptor = (mainMessage !== info.method);
 
     /*
-        targetConfig local or global
+        localTargetConfig local or global
     */
-    if(typeof this.targetConfig !== 'undefined' && typeof this.options.targetConfig === 'undefined'){
-        targetConfig = this.targetConfig;
+    if(typeof this.localTargetConfig !== 'undefined' && typeof this.localTargetConfig === 'undefined'){
+        localTargetConfig = this.localTargetConfig;
     }
     else{
-        targetConfig = defaults(this.defaultTargetConfig, this.targetConfig);
+        localTargetConfig = defaults(this.globalTargetConfig,  this.localTargetConfig);
     }
 
     /*
         target (function)
     */
-    if(targetConfig){
-        targetLog = targetConfig;
+    if(localTargetConfig){
+        targetLog = localTargetConfig;
         targetLog.message = mainMessage;
     }
     else{

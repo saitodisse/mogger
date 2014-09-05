@@ -16,6 +16,8 @@ var assert          = require('assert'),
     sinon           = require('sinon'),
     Reporter        = require('../src/reporter'),
     fakeConsole     = require('./fake-console'),
+    helpers         = require('../src/helpers'),
+    defaultConfig = require('../src/default-config'),
     reporter
 ;
 
@@ -23,9 +25,8 @@ describe('Reporter OnCall:', function(){
 
     beforeEach(function(){
         fakeConsole.logRecorder = [];
-        reporter = new Reporter({
-            stdout: fakeConsole
-        });
+        var defaults = helpers.merge(defaultConfig, { defaultConsole: fakeConsole });
+        reporter = new Reporter(defaults);
     });
 
     afterEach(function(){
@@ -33,7 +34,7 @@ describe('Reporter OnCall:', function(){
 
     it('when disabled returns false', function() {
         reporter = new Reporter({
-            stdout: fakeConsole,
+            defaultConsole: fakeConsole,
             enabled: false
         });
         assert.equal(false, reporter.onCall({}));
@@ -62,7 +63,7 @@ describe('Reporter OnCall:', function(){
         };
 
         reporter = new Reporter({
-            stdout: fakeConsole,
+            defaultConsole: fakeConsole,
             before: beforeConfig
         });
 
@@ -73,6 +74,7 @@ describe('Reporter OnCall:', function(){
         });
 
         reporter.onCall(info);
+
 
         assert.deepEqual(beforeConfig, reporter.logs[0]);
 

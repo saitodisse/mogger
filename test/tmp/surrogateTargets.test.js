@@ -32,7 +32,7 @@ describe('SurrogateTargets', function(){
 
 	beforeEach(function(){
 		tracer = new Mogger({
-			stdout: fakeConsole
+			defaultConsole: fakeConsole
 		});
 		fakeConsole.logRecorder = [];
     });
@@ -58,7 +58,7 @@ describe('SurrogateTargets', function(){
 		}];
 
 		tracer = new Mogger({
-			stdout: fakeConsole,
+			defaultConsole: fakeConsole,
 			surrogateTargets: surrogateTargetsSource
 		});
 
@@ -83,7 +83,7 @@ describe('SurrogateTargets', function(){
 		];
 
 		tracer = new Mogger({
-			stdout: fakeConsole,
+			defaultConsole: fakeConsole,
 			surrogateTargets: surrogateTargetsSource
 		});
 

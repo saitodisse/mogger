@@ -11,41 +11,30 @@
  * @version 0.5.0
  */
 
-var meld      = require('meld');
-var _         = require('lodash');
-var traceMeld = require('./trace-aspect');
-var helpers   = require('./helpers');
-var Reporter  = require('./reporter');
+var meld          = require('meld');
+var _             = require('lodash');
+var traceMeld     = require('./trace-aspect');
+var helpers       = require('./helpers');
+var Reporter      = require('./reporter');
+var defaultConfig = require('./default-config');
 
 ////////////////////
 // Mogger DEFINITION
 ////////////////////
 var Mogger = function (options) {
-    options = options || {};
 
-    this.options = _.merge({
-        stdout        : console,
-        enabled       : true,
-        showArguments : false,
-        showPause     : true,
-    }, options);
+    var defaults = _.merge(defaultConfig, options);
 
-    this.initialize();
+    // merge all options to this
+    helpers.merge(this, defaults);
 };
-
-Mogger.prototype.initialize = function() {
-    this.targets = [];
-    this.stdout = this.options.stdout;
-};
-
 
 Mogger.prototype.traceObj = function(localOptions) {
 
     // all "globalOptions" (this.option) are merged with "localOptions"
-    var optionsMerged = helpers.merge(this.options, localOptions);
 
-    var reporter = new Reporter(optionsMerged);
-    var target = optionsMerged.target;
+    var reporter = new Reporter(this, localOptions);
+    var target = this.target;
 
 
     // /**
@@ -74,7 +63,7 @@ Mogger.prototype.traceObj = function(localOptions) {
     //   options: optionsMerged
     // });
     //
-    var pointcut = optionsMerged.pointcut || /./;
+    var pointcut = this.pointcut || /./;
     meld(target, pointcut, traceMeld(reporter));
 };
 
