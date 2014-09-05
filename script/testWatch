@@ -1,2 +1,4 @@
 #!/usr/bin/env bash
+
+# ALERT: run gulp instead
 mocha --watch -G
