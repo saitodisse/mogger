@@ -33,6 +33,9 @@ Mogger.prototype.traceObj = function(localOptions) {
 
     // all "globalOptions" (this.option) are merged with "localOptions"
 
+    // console.log('this=', this);
+    // console.log('localOptions=', localOptions);
+
     var reporter = new Reporter(this, localOptions);
     var target = this.target;
 

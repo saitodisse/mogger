@@ -23,17 +23,19 @@ var assert          = require('assert'),
 
 describe('Reporter OnCall:', function(){
 
+    var defaultGlobalConfig;
+
     beforeEach(function(){
         fakeConsole.logRecorder = [];
-        var defaults = helpers.merge(defaultConfig, { defaultConsole: fakeConsole });
-        reporter = new Reporter(defaults);
+        defaultGlobalConfig = helpers.merge(defaultConfig, { defaultConsole: fakeConsole });
+        reporter = new Reporter(defaultGlobalConfig);
     });
 
     afterEach(function(){
     });
 
     it('when disabled returns false', function() {
-        reporter = new Reporter({
+        reporter = new Reporter(defaultGlobalConfig, {
             defaultConsole: fakeConsole,
             enabled: false
         });
@@ -42,7 +44,7 @@ describe('Reporter OnCall:', function(){
 
     it('when ignored returns false', function() {
 
-        reporter = new Reporter({
+        reporter = new Reporter(defaultGlobalConfig, {
             ignoreRegexPattern: /someMethod/i
         });
 
@@ -62,7 +64,7 @@ describe('Reporter OnCall:', function(){
             logType: 'log'
         };
 
-        reporter = new Reporter({
+        reporter = new Reporter(defaultGlobalConfig, {
             defaultConsole: fakeConsole,
             before: beforeConfig
         });

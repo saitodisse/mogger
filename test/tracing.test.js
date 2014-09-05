@@ -46,7 +46,7 @@ describe('Tracing:', function(){
         ------------------------------------------------------------------------------------
         :: each function that is called in someObj will generate a log output
         ------------------------------------------------------------------------------------
-    // */
+    */
     // it('can trace a function', function() {
     //     tracer.traceObj({
     //         target: someObj

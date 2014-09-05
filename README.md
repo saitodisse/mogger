@@ -63,6 +63,21 @@ node-debug _mocha --watch
 ```
 
 
+## Improving coverage
+```shell
+# tab 1: start tests + watch
+gulp
+
+# tab 2: start coverage + watch
+gulp coverage
+
+# tab 3: open "Code coverage report"
+#     : open Sublime (or VIM)
+google-chrome coverage/lcov-report/src/index.html
+subl .
+```
+
+
 ##Examples
   - [simple example](http://saitodisse.github.io/mogger/examples/simple-browser-global-example/index.html)
   - [todo mvc example](http://saitodisse.github.io/mogger/examples/todo-mvc-backbone-require/index.html)
