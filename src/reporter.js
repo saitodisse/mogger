@@ -3,7 +3,7 @@ var _ = require('lodash');
 var interceptorsHelpers = require('./interceptors-helpers');
 var helpers = require('./helpers');
 
-var Reporter = function (mogger, localOptions) {
+var Reporter = function (globalOptions, localOptions) {
     this.logs = [];
 
     var defaults = _.merge({
@@ -11,12 +11,13 @@ var Reporter = function (mogger, localOptions) {
         before              : null,
         localTargetConfig   : null,
         localInterceptors   : null,
-    }, mogger);
+    }, globalOptions);
 
     // merge global to this
     helpers.merge(this, defaults);
     // merge local to this
     helpers.merge(this, localOptions);
+
 
     var logger  = new this.Logger({
         output: this.defaultConsole
@@ -24,29 +25,17 @@ var Reporter = function (mogger, localOptions) {
     this.logger = logger;
 };
 
-Reporter.prototype.onCall = function(info) {
-
+Reporter.prototype.renderLogs = function(info) {
     var targetLog,
         mainMessage = info.method,
-        isIgnored = this.ignoreRegexPattern && this.ignoreRegexPattern.test(info.method),
         localTargetConfig,
         interceptorsObj,
         wasModifiedByInterceptor,
         willLogArguments
     ;
 
-    // FIXME: why I had to declare this.options.enabled explicit?
-    // console.log('this.enabled:', this.enabled);
-
-    if(!this.enabled){
-        return false;
-    }
-    if(isIgnored){
-        return false;
-    }
-
     /*
-        before (first column / namespace)
+        title (first column / namespace)
     */
     if(this.before){
         this.logs.push(this.before);
@@ -87,7 +76,6 @@ Reporter.prototype.onCall = function(info) {
     }
     this.logs.push(targetLog);
 
-
     /*
         Function arguments in a groupCollapsed
     */
@@ -110,24 +98,41 @@ Reporter.prototype.onCall = function(info) {
         this.logs[0].logType = 'log';
         this.logger.log(this.logs);
     }
+};
 
-    /*
-        pause
-    */
+
+Reporter.prototype.onCall = function(info) {
+    if(!this.enabled){
+        return false;
+    }
+
+    // Regex Filter
+    if(this.ignoreRegexPattern && this.ignoreRegexPattern.test(info.method)){
+        return false;
+    }
+
+    // Render Logs
+    this.renderLogs(info);
+
+    // Pause
     if(this.showPause){
-        // cancel pause made before
+        // cancel last setTimeout because is processing
         clearTimeout(this.globalTimeoutLogId);
-        // if is not canceled, it shows the line bellow
-        setParentTimeout(this.logger);
+        // if not canceled, it shows the line bellow
+
+        setParentTimeout(this.logger, this.waitForPause, this.pauseCallBack);
     }
 };
 
 var globalTimeoutLogId = null;
 
-var setParentTimeout = function(logger) {
+var setParentTimeout = function(logger, wait, pauseCallBack) {
     globalTimeoutLogId = setTimeout(function (){
         logger.log('----------------------------------pause--------------------------');
-    }.bind(this), 100);
+        if(pauseCallBack){
+            pauseCallBack();
+        }
+    }.bind(this), wait);
 };
 
 var defaults = _.partialRight(_.assign, function(a, b) {

@@ -6,5 +6,7 @@ module.exports = {
     ignoreRegexPattern : null,
     globalInterceptors : null,
     globalTargetConfig : null,
+    waitForPause       : 100,
     targets            : [],
+    pauseCallBack	   : null
 };

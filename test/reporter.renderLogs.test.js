@@ -34,18 +34,15 @@ describe('Reporter OnCall:', function(){
     afterEach(function(){
     });
 
-    it('when disabled returns false', function() {
+    it('before is attached to logs array', function() {
+        var beforeConfig = {
+            message: 'before message:',
+            logType: 'log'
+        };
+
         reporter = new Reporter(defaultGlobalConfig, {
             defaultConsole: fakeConsole,
-            enabled: false
-        });
-        assert.equal(false, reporter.onCall({}));
-    });
-
-    it('when ignored returns false', function() {
-
-        reporter = new Reporter(defaultGlobalConfig, {
-            ignoreRegexPattern: /someMethod/i
+            before: beforeConfig
         });
 
         // stub info
@@ -54,31 +51,15 @@ describe('Reporter OnCall:', function(){
             args: ['arg1', 'arg2']
         });
 
-        assert.equal(false, reporter.onCall( info ));
-
-    });
-
-    it('showPause will render a pause', function(done) {
-
-        var pauseCallBack = function() {
-            assert.equal(1, fakeConsole.logRecorder.length);
-            assert.equal('----------------------------------pause--------------------------',
-                fakeConsole.logRecorder[0].message);
-            done();
-        };
-
-        reporter = new Reporter(defaultGlobalConfig, {
-            defaultConsole: fakeConsole,
-            waitForPause: 0,
-            showPause: true,
-            pauseCallBack: pauseCallBack
-        });
-
-        // mock render logs
-        reporter.renderLogs = function() {};
+        reporter.onCall(info);
 
 
-        reporter.onCall();
+        assert.deepEqual(beforeConfig, reporter.logs[0]);
+
+        // console
+        assert.equal(1, fakeConsole.logRecorder.length);
+        assert.equal('before message:someMethod', fakeConsole.logRecorder[0].message);
+
     });
 
 });
