@@ -46,17 +46,17 @@ describe('Trace Aspect (meld)', function (){
 		assert.equal(true, _.isObject(traceAspectFunction));
 	});
 
-	it('before', function() {
+	it('before meld function call', function() {
 		traceAspectFunction.before();
 		assert.equal(true, onCallSpy.called);
 	});
 
-	it('afterReturning', function() {
+	it('afterReturning meld function call', function() {
 		traceAspectFunction.afterReturning({result: null});
 		assert.equal(true, onReturnSpy.called);
 	});
 
-	it('afterThrowing', function() {
+	it('afterThrowing meld function call', function() {
 		traceAspectFunction.afterThrowing({exception: null});
 		assert.equal(true, onThrowSpy.called);
 	});
