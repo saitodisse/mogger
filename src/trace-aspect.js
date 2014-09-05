@@ -1,25 +1,11 @@
 var meld = require('meld');
-var joinpoint, depth, padding, simpleReporter;
-
-joinpoint = meld.joinpoint;
+var depth, padding;
 
 // Call stack depth tracking for the default reporter
 depth = 0;
 
 // Padding characters for indenting traces. This will get expanded as needed
 padding =  '................................';
-
-simpleReporter = {
-	onCall: function(info) {
-		console.log(indent(++depth) + info.method + ' CALL ', info.args);
-	},
-	onReturn: function(info) {
-		console.log(indent(depth--) + info.method + ' RETURN ', info.result);
-	},
-	onThrow: function(info) {
-		console.log(indent(depth--) + info.method + ' THROW ' + info.exception);
-	}
-};
 
 /**
  * Creates an aspect that traces method/function calls and reports them
@@ -31,16 +17,16 @@ simpleReporter = {
  * @param {function} [reporter.onThrow] invoked when a method throws an exception
  * @return {object} a tracing aspect that can be added with meld.add
  */
-module.exports = function createTraceAspect(reporter) {
+module.exports = function createTraceAspect(reporter, joinpoint) {
 
-	if(!reporter) {
-		reporter = simpleReporter;
+	if(!joinpoint){
+		joinpoint = meld.joinpoint;
 	}
 
 	return {
 		before: function() {
 			var jp = joinpoint();
-			reporter.onCall && reporter.onCall({ method: jp.method, target: jp.target, args: jp.args.slice() }).bind(reporter);
+			reporter.onCall && reporter.onCall({ method: jp.method, target: jp.target, args: jp.args.slice() });
 		},
 
 		afterReturning: function(result) {
@@ -54,16 +40,3 @@ module.exports = function createTraceAspect(reporter) {
 		}
 	};
 };
-
-/**
- * Create indentation padding for tracing info based on the supplied call stack depth
- * @param {number} depth call stack depth
- * @return {String} padding that can be used to indent tracing output
- */
-function indent(depth) {
-	if(depth > padding.length) {
-		padding += padding;
-	}
-
-	return padding.slice(0, depth-1);
-}

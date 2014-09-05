@@ -15,7 +15,6 @@
 var assert          = require('assert'),
     Reporter        = require('../src/reporter'),
     fakeConsole     = require('./fake-console'),
-    sinon           = require('sinon'),
     reporter
 ;
 
