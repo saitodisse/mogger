@@ -14,7 +14,7 @@
 
 var assert = require('assert');
 var _ = require('lodash');
-var Mogger = require('../src/new-mogger');
+var Mogger = require('../src/mogger');
 
 describe('Creation:', function(){
 

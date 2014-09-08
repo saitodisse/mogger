@@ -28,25 +28,43 @@ describe('Reporter OnCall:', function(){
     beforeEach(function(){
         fakeConsole.logRecorder = [];
         defaultGlobalConfig = helpers.merge(defaultConfig, { defaultConsole: fakeConsole });
-        reporter = new Reporter(defaultGlobalConfig);
+        reporter = new Reporter({
+            globalConfig: defaultGlobalConfig
+        });
+
     });
 
     afterEach(function(){
     });
 
-    it('_addTitle()', function() {
+    it('_addTitle() adds the first log', function() {
         var beforeConfig = {
             message: 'before message:',
             logType: 'log'
         };
 
         reporter = new Reporter({
-            before: beforeConfig
+            globalConfig: {
+                before: beforeConfig
+            }
         });
 
         reporter._addTitle();
 
         assert.deepEqual(beforeConfig, reporter.logs[0]);
     });
+
+    // it('_applyInterceptors() adds the first log', function() {
+    //     var interceptorsHelpersSpy = sinon.spy();
+
+    //     reporter = new Reporter({
+    //         globalConfig: defaultConfig,
+    //         localConfig: null,
+    //         interceptorsHelpers: interceptorsHelpersSpy
+    //     });
+
+    // });
+
+
 
 });

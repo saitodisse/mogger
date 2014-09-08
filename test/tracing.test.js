@@ -13,7 +13,7 @@
 
 
 var assert      = require('assert');
-var Mogger      = require('../src/new-mogger'),
+var Mogger      = require('../src/mogger'),
     fakeConsole = require('./fake-console'),
     tracer
 ;

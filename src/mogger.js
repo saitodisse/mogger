@@ -11,12 +11,13 @@
  * @version 0.5.0
  */
 
-var meld          = require('meld');
-var _             = require('lodash');
-var traceMeld     = require('./trace-aspect');
-var helpers       = require('./helpers');
-var Reporter      = require('./reporter');
-var defaultConfig = require('./default-config');
+var meld                = require('meld');
+var _                   = require('lodash');
+var traceMeld           = require('./trace-aspect');
+var helpers             = require('./helpers');
+var Reporter            = require('./reporter');
+var defaultConfig       = require('./default-config');
+var interceptorsHelpers = require('./interceptors-helpers');
 
 ////////////////////
 // Mogger DEFINITION
@@ -36,7 +37,11 @@ Mogger.prototype.traceObj = function(localOptions) {
     // console.log('this=', this);
     // console.log('localOptions=', localOptions);
 
-    var reporter = new Reporter(this, localOptions);
+    var reporter = new Reporter({
+        globalConfig: this,
+        localConfig: localOptions,
+        interceptorsHelpers: interceptorsHelpers
+    });
     var target = this.target;
 
 

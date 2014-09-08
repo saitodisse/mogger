@@ -28,24 +28,33 @@ describe('Reporter OnCall:', function(){
     beforeEach(function(){
         fakeConsole.logRecorder = [];
         defaultGlobalConfig = helpers.merge(defaultConfig, { defaultConsole: fakeConsole });
-        reporter = new Reporter(defaultGlobalConfig);
+        reporter = new Reporter({
+            globalConfig: defaultGlobalConfig
+        });
     });
 
     afterEach(function(){
     });
 
     it('when disabled returns false', function() {
-        reporter = new Reporter(defaultGlobalConfig, {
-            defaultConsole: fakeConsole,
-            enabled: false
+        reporter = new Reporter({
+            globalConfig: defaultGlobalConfig,
+            localConfig: {
+                defaultConsole: fakeConsole,
+                enabled: false
+            }
         });
+
         assert.equal(false, reporter.onCall({}));
     });
 
     it('when ignored returns false', function() {
 
-        reporter = new Reporter(defaultGlobalConfig, {
-            ignoreRegexPattern: /someMethod/i
+       reporter = new Reporter({
+            globalConfig: defaultGlobalConfig,
+            localConfig: {
+                ignoreRegexPattern: /someMethod/i
+            }
         });
 
         // stub info
@@ -67,11 +76,14 @@ describe('Reporter OnCall:', function(){
             done();
         };
 
-        reporter = new Reporter(defaultGlobalConfig, {
-            defaultConsole: fakeConsole,
-            waitForPause: 0,
-            showPause: true,
-            pauseCallBack: pauseCallBack
+        reporter = new Reporter({
+            globalConfig: defaultGlobalConfig,
+            localConfig: {
+                defaultConsole: fakeConsole,
+                waitForPause: 0,
+                showPause: true,
+                pauseCallBack: pauseCallBack
+            }
         });
 
         // mock render logs

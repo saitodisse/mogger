@@ -1,22 +1,33 @@
 var ColorfulLogger = require('colorful-logger');
 var _ = require('lodash');
-var interceptorsHelpers = require('./interceptors-helpers');
 var helpers = require('./helpers');
 
-var Reporter = function (globalOptions, localOptions) {
+/**
+ * Create and print logs to logger
+ * @param {[object]} options [{
+        globalConfig: this,
+        localConfig: localOptions,
+        interceptorsHelpers: interceptorsHelpers
+    }]
+ */
+var Reporter = function (options) {
+
+    options = options || {};
+    this.interceptorsHelpers = options.interceptorsHelpers || {};
+
     this.logs = [];
 
     var defaults = _.merge({
-        Logger              : ColorfulLogger.Logger,
-        before              : null,
+        Logger                 : ColorfulLogger.Logger,
+        before                 : null,
         selectedTargetConfig   : null,
-        localInterceptors   : null,
-    }, globalOptions);
+        localInterceptors      : null,
+    }, options.globalConfig);
 
     // merge global to this
     helpers.merge(this, defaults);
     // merge local to this
-    helpers.merge(this, localOptions);
+    helpers.merge(this, options.localConfig);
 
 
     var logger  = new this.Logger({
@@ -24,9 +35,6 @@ var Reporter = function (globalOptions, localOptions) {
     });
     this.logger = logger;
 };
-
-
-
 
 
 Reporter.prototype.onCall = function(info) {
@@ -86,7 +94,7 @@ Reporter.prototype._applyInterceptors = function(info) {
         localInterceptors: this.localInterceptors,
         info: info
     };
-    return interceptorsHelpers.checkAndApplyInterceptor(interceptorsObj);
+    return this.interceptorsHelpers.checkAndApplyInterceptor(interceptorsObj);
 };
 
 Reporter.prototype._addMainLog = function(mainMessage) {

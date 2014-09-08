@@ -22,18 +22,10 @@ describe('Reporter Creation:', function(){
         assert.equal('function', typeof Reporter);
     });
 
-    it('default defaultConsole is console.log', function() {
-        var reporter = new Reporter({
-            defaultConsole: console
-        });
-
-        assert.equal(console, reporter.defaultConsole);
-    });
-
     it('defaultConsole is interchangeable', function() {
         var otherLoggerOutputFunction = function() {};
         var reporter = new Reporter({
-            defaultConsole: otherLoggerOutputFunction
+            globalConfig: { defaultConsole: otherLoggerOutputFunction }
         });
 
         assert.notEqual(console, reporter.defaultConsole);
