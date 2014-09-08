@@ -1,6 +1,6 @@
 {
   "name": "mogger",
-  "version": "0.1.1",
+  "version": "0.1.01",
   "description": "print colorful logs with AOP using meld",
   "main": "index.js",
   "repository": {
