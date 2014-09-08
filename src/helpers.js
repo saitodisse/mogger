@@ -4,10 +4,6 @@ var merge = function(object, sources) {
     return _.merge(object, sources);
 };
 
-var defaults = _.partialRight(_.assign, function(a, b) {
-  return typeof a == 'undefined' ? b : a;
-});
-
 var checkRelevantArguments = function(args) {
 
 
@@ -35,6 +31,5 @@ var checkRelevantArguments = function(args) {
 
 module.exports = {
     merge: merge,
-    defaults: defaults,
     checkRelevantArguments: checkRelevantArguments,
 };

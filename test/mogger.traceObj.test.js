@@ -94,7 +94,7 @@ describe('Mogger.traceObj:', function(){
     it('_selectTargetFromSurrogateTargets() selects a target', function () {
 
         var someObj2 = {someMethod: function() {}};
-        var surrogateTargetItem = {title: 'someObj2', target: someObj2 }
+        var surrogateTargetItem = {title: 'someObj2', target: someObj2 };
 
         mogger = new Mogger({
             defaultConsole: fakeConsole,
@@ -107,94 +107,28 @@ describe('Mogger.traceObj:', function(){
         assert.deepEqual(selected, surrogateTargetItem);
     });
 
-    // it('_selectTargetFromSurrogateTargets() must be defined', function () {
+    it('_trace() adds a target to _targets', function () {
+        var someObj2 = {someMethod: function() {}};
+        var surrogateTargetItem = {title: 'someObj2', target: someObj2 };
 
-    //     assert.throws(function() {
-    //         mogger = new Mogger({
-    //             defaultConsole: fakeConsole
-    //         });
-    //         mogger._selectTargetFromSurrogateTargets();
-    //     }, Error, 'Error thrown');
+        mogger._trace(surrogateTargetItem, /./, null);
 
-    //     // var someObj2 = { addNumbers: function (arg1, arg2) { return arg1 + arg2; } };
-    //     // var someObj3 = { addNumbers: function (arg1, arg2) { return arg1 + arg2; } };
+        assert.equal(1, mogger._targets.length);
+    });
 
-    //     // var surrogateTargetsSource = [
-    //     //     { title: 'someObj2', target: someObj2 },
-    //     //     { title: 'someObj3', target: someObj3 }
-    //     // ];
+    it('traceObj()', function () {
 
+        mogger = new Mogger();
+        mogger._selectTargetFromSurrogateTargets = sinon.spy();
+        mogger._createReporter = sinon.spy();
+        mogger._trace = sinon.spy();
 
+        mogger.traceObj();
 
-    //     // mogger = new Mogger({
-    //     //     defaultConsole: fakeConsole,
-    //     //     surrogateTargets: surrogateTargetsSource
-    //     // });
+        assert.equal(true, mogger._selectTargetFromSurrogateTargets.called);
+        assert.equal(true, mogger._createReporter.called);
+        assert.equal(true, mogger._trace.called);
 
-    //     // mogger.traceObj({ target: 'someObj2' });
-    //     // mogger.traceObj({ target: 'someObj3' });
-
-    //     // someObj2.addNumbers(1, 2);
-    //     // someObj3.addNumbers(1, 2);
-
-    //     // assert.equal(3, fakeConsole.logRecorder.length);
-    //     // assert.equal('addNumbers', fakeConsole.logRecorder[0].message);
-    // });
-
-    // it('can trace a function', function() {
-
-
-    //     mogger.traceObj();
-
-    //     someObj.addNumbers(1, 2);
-
-    //     assert.equal(1, fakeConsole.logRecorder.length);
-    //     assert.equal('addNumbers', fakeConsole.logRecorder[0].message);
-
-    // });
-
-    // /*
-    //  ------------------------------------------------------------------------------------
-    //  # traceObj({ target: someObj });
-    //  ------------------------------------------------------------------------------------
-    //  :: regex filters can be applied to meld
-    //  ------------------------------------------------------------------------------------
-    // */
-    // it('trace only functions that I want', function() {
-    //  mogger.traceObj({
-    //      target: someObj,
-    //      pointcut: /addNumbers/
-    //  });
-
-    //  someObj.justReturn(1, 2);
-    //  someObj.addNumbers(1, 2);
-
-    //  assert.equal('addNumbers', fakeConsole.logRecorder[0].message);
-    //  assert.equal(true, fakeConsole.logRecorder.length === 1);
-    // });
-
-
-    //  ------------------------------------------------------------------------------------
-    //  # trace.targets === []
-    //  ------------------------------------------------------------------------------------
-    //  :: each logged function will be stored in targets array
-    //  ------------------------------------------------------------------------------------
-
-    // it('store each traced function on targets', function() {
-
-    //  //trace someObj1
-    //  mogger.traceObj({ target: someObj   });
-
-    //  //trace someObj2
-    //  var someObj2 = { addNumbers: function (arg1, arg2) { return arg1 + arg2; } };
-    //  mogger.traceObj({ target: someObj2 });
-
-    //  //trace someObj3
-    //  var someObj3 = { addNumbers: function (arg1, arg2) { return arg1 + arg2; } };
-    //  mogger.traceObj({ target: someObj3 });
-
-    //  assert.equal(3, mogger.targets.length);
-    // });
-
+    });
 
 });

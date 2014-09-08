@@ -17,7 +17,7 @@ var Reporter = function (options) {
 
     this._logs = [];
 
-    var defaults = _.merge({
+    var mergedWithGlobals = _.merge({
         Logger                 : ColorfulLogger.Logger,
         before                 : null,
         selectedTargetConfig   : null,
@@ -25,7 +25,7 @@ var Reporter = function (options) {
     }, options.globalConfig);
 
     // merge global to this
-    helpers.merge(this, defaults);
+    helpers.merge(this, mergedWithGlobals);
     // merge local to this
     helpers.merge(this, options.localConfig);
 

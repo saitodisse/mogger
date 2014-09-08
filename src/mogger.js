@@ -25,26 +25,21 @@ var Mogger = function (options) {
 
     this._targets = [];
 
-    var defaults = _.merge(defaultConfig, options);
+    var mergedConfig = _.merge(defaultConfig, options);
 
     // merge all options to this
-    helpers.merge(this, defaults);
+    helpers.merge(this, mergedConfig);
 };
 
 Mogger.prototype.traceObj = function(localOptions) {
 
     var surrogateTargetItem = this._selectTargetFromSurrogateTargets();
-    var targetObject = surrogateTargetItem.target;
 
     var pointcut = this.pointcut || /./;
 
     var reporter = this._createReporter(localOptions);
 
-    // add targetObject to _targets list
-    this._targets.push({
-        target: targetObject,
-        meldRemover: meld(targetObject, pointcut, traceMeld(reporter))
-    });
+    this._trace(surrogateTargetItem, pointcut, reporter);
 };
 
 Mogger.prototype._createReporter = function(localOptions) {
@@ -52,6 +47,20 @@ Mogger.prototype._createReporter = function(localOptions) {
         globalConfig: this,
         localConfig: localOptions,
         interceptorsHelpers: interceptorsHelpers
+    });
+};
+
+/**
+ * trace a target object and adds to _targets list
+ * @param  {object} surrogateTargetItem
+ * @param  {regex} pointcut
+ * @param  {instance} reporter
+ */
+Mogger.prototype._trace = function(surrogateTargetItem, pointcut, reporter) {
+    // add targetObject to _targets list
+    this._targets.push({
+        surrogateTargetItem: surrogateTargetItem,
+        meldRemover: meld(surrogateTargetItem.targetObject, pointcut, traceMeld(reporter))
     });
 };
 
