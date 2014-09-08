@@ -9,7 +9,7 @@ var Reporter = function (globalOptions, localOptions) {
     var defaults = _.merge({
         Logger              : ColorfulLogger.Logger,
         before              : null,
-        localTargetConfig   : null,
+        selectedTargetConfig   : null,
         localInterceptors   : null,
     }, globalOptions);
 
@@ -25,80 +25,8 @@ var Reporter = function (globalOptions, localOptions) {
     this.logger = logger;
 };
 
-Reporter.prototype.renderLogs = function(info) {
-    var targetLog,
-        mainMessage = info.method,
-        localTargetConfig,
-        interceptorsObj,
-        wasModifiedByInterceptor,
-        willLogArguments
-    ;
 
-    /*
-        title (first column / namespace)
-    */
-    if(this.before){
-        this.logs.push(this.before);
-    }
 
-    /*
-        Interceptors
-    */
-    interceptorsObj = {
-        globalInterceptors: this.globalInterceptors,
-        localInterceptors: this.localInterceptors,
-        info: info
-    };
-    mainMessage = interceptorsHelpers.checkAndApplyInterceptor(interceptorsObj);
-    wasModifiedByInterceptor = (mainMessage !== info.method);
-
-    /*
-        localTargetConfig local or global
-    */
-    if(typeof this.localTargetConfig !== 'undefined' && typeof this.localTargetConfig === 'undefined'){
-        localTargetConfig = this.localTargetConfig;
-    }
-    else{
-        localTargetConfig = defaults(this.globalTargetConfig,  this.localTargetConfig);
-    }
-
-    /*
-        target (function)
-    */
-    if(localTargetConfig){
-        targetLog = localTargetConfig;
-        targetLog.message = mainMessage;
-    }
-    else{
-        targetLog = {
-            message: mainMessage
-        };
-    }
-    this.logs.push(targetLog);
-
-    /*
-        Function arguments in a groupCollapsed
-    */
-    willLogArguments = this.showArguments &&
-        !wasModifiedByInterceptor &&
-        helpers.checkRelevantArguments(info.args);
-
-    if(willLogArguments){
-        this.logs[0].logType = 'groupCollapsed';
-        this.logger.log(this.logs);
-
-        this.logger.log({
-            message: info.args
-        });
-        this.logger.log({
-            logType: 'groupEnd'
-        });
-    }
-    else{
-        this.logs[0].logType = 'log';
-        this.logger.log(this.logs);
-    }
-};
 
 
 Reporter.prototype.onCall = function(info) {
@@ -121,6 +49,98 @@ Reporter.prototype.onCall = function(info) {
         // if not canceled, it shows the line bellow
 
         setParentTimeout(this.logger, this.waitForPause, this.pauseCallBack);
+    }
+};
+
+
+
+
+
+Reporter.prototype.renderLogs = function(info) {
+    var mainMessage = info.method;
+
+    this._addTitle();
+
+    mainMessage = this._applyInterceptors();
+
+    this._addMainLog(mainMessage);
+
+    this._renderToConsole(info, mainMessage);
+};
+
+Reporter.prototype._addTitle = function() {
+    /*
+        title (first column / namespace)
+    */
+    if(this.before){
+        this.logs.push(this.before);
+    }
+};
+
+Reporter.prototype._applyInterceptors = function(info) {
+    /*
+        Interceptors
+    */
+    var interceptorsObj = {
+        globalInterceptors: this.globalInterceptors,
+        localInterceptors: this.localInterceptors,
+        info: info
+    };
+    return interceptorsHelpers.checkAndApplyInterceptor(interceptorsObj);
+};
+
+Reporter.prototype._addMainLog = function(mainMessage) {
+    var selectedTargetConfig, targetLog;
+    /*
+        selectedTargetConfig local or global
+    */
+    if(typeof this.localTargetConfig !== 'undefined' && typeof this.localTargetConfig === 'undefined'){
+        selectedTargetConfig = this.localTargetConfig;
+    }
+    else{
+        selectedTargetConfig = defaults(this.globalTargetConfig,  this.localTargetConfig);
+    }
+
+    /*
+        target (function)
+    */
+    if(selectedTargetConfig){
+        targetLog = selectedTargetConfig;
+        targetLog.message = mainMessage;
+    }
+    else{
+        targetLog = {
+            message: mainMessage
+        };
+    }
+    this.logs.push(targetLog);
+};
+
+
+Reporter.prototype._renderToConsole = function(info, mainMessage) {
+    /*
+        Function arguments in a groupCollapsed
+    */
+    var wasModifiedByInterceptor = (mainMessage !== info.method);
+
+    var willLogArguments = this.showArguments &&
+        !wasModifiedByInterceptor &&
+        helpers.checkRelevantArguments(info.args);
+
+    if(willLogArguments){
+        this.logs[0].logType = 'groupCollapsed';
+        this.logger.log(this.logs);
+
+        this.logger.log({
+            message: info.args
+        });
+        this.logger.log({
+            logType: 'groupEnd'
+        });
+    }
+    else{
+        this.logs[0].logType = 'log';
+        this.logger.log(this.logs);
     }
 };
 
