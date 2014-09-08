@@ -17,7 +17,7 @@ var helpers = require('../src/helpers');
 var _ = require('lodash');
 
 
-describe('Helpers', function(){
+describe('Helpers Functions', function(){
 
 	describe('merge()', function () {
 

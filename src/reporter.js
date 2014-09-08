@@ -15,7 +15,7 @@ var Reporter = function (options) {
     options = options || {};
     this.interceptorsHelpers = options.interceptorsHelpers || {};
 
-    this.logs = [];
+    this._logs = [];
 
     var defaults = _.merge({
         Logger                 : ColorfulLogger.Logger,
@@ -81,7 +81,7 @@ Reporter.prototype._addTitle = function() {
         title (first column / namespace)
     */
     if(this.before){
-        this.logs.push(this.before);
+        this._logs.push(this.before);
     }
 };
 
@@ -102,11 +102,14 @@ Reporter.prototype._addMainLog = function(mainMessage) {
     /*
         selectedTargetConfig local or global
     */
-    if(typeof this.localTargetConfig !== 'undefined' && typeof this.localTargetConfig === 'undefined'){
-        selectedTargetConfig = this.localTargetConfig;
-    }
-    else{
-        selectedTargetConfig = defaults(this.globalTargetConfig,  this.localTargetConfig);
+    var hasLocal = this.localTargetConfig !== null;
+    var hasGlobal = this.globalTargetConfig !== null;
+
+    selectedTargetConfig = this.localTargetConfig || this.globalTargetConfig;
+
+    // merge both
+    if(hasLocal && hasGlobal){
+        selectedTargetConfig = helpers.merge(this.globalTargetConfig,  this.localTargetConfig);
     }
 
     /*
@@ -121,7 +124,7 @@ Reporter.prototype._addMainLog = function(mainMessage) {
             message: mainMessage
         };
     }
-    this.logs.push(targetLog);
+    this._logs.push(targetLog);
 };
 
 
@@ -136,8 +139,8 @@ Reporter.prototype._renderToConsole = function(info, mainMessage) {
         helpers.checkRelevantArguments(info.args);
 
     if(willLogArguments){
-        this.logs[0].logType = 'groupCollapsed';
-        this.logger.log(this.logs);
+        this._logs[0].logType = 'groupCollapsed';
+        this.logger.log(this._logs);
 
         this.logger.log({
             message: info.args
@@ -147,8 +150,8 @@ Reporter.prototype._renderToConsole = function(info, mainMessage) {
         });
     }
     else{
-        this.logs[0].logType = 'log';
-        this.logger.log(this.logs);
+        this._logs[0].logType = 'log';
+        this.logger.log(this._logs);
     }
 };
 
@@ -162,11 +165,5 @@ var setParentTimeout = function(logger, wait, pauseCallBack) {
         }
     }.bind(this), wait);
 };
-
-var defaults = _.partialRight(_.assign, function(a, b) {
-  return typeof a == 'undefined' ? b : a;
-});
-
-
 
 module.exports = Reporter;

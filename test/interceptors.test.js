@@ -48,7 +48,7 @@ var info_stub = {
 };
 
 
-describe('Interceptors', function(){
+describe('Interceptors Helpers', function(){
 
 	// beforeEach(function(){
 	//    });

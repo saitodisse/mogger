@@ -13,10 +13,9 @@
 
 
 var assert = require('assert');
-var _ = require('lodash');
 var Mogger = require('../src/mogger');
 
-describe('Creation:', function(){
+describe('Mogger.Creation:', function(){
 
     // beforeEach(function(){
     // });

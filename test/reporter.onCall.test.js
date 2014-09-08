@@ -93,4 +93,27 @@ describe('Reporter OnCall:', function(){
         reporter.onCall();
     });
 
+    it('showPause will be ignored if showPause is false', function(done) {
+
+        var pauseCallBack = function() {
+            done('pauseCallBack should not have been called');
+        };
+
+        reporter = new Reporter({
+            globalConfig: defaultGlobalConfig,
+            localConfig: {
+                defaultConsole: fakeConsole,
+                waitForPause: 0,
+                showPause: false,
+                pauseCallBack: pauseCallBack
+            }
+        });
+
+        // mock render logs
+        reporter.renderLogs = function() {};
+
+        reporter.onCall();
+        done();
+    });
+
 });

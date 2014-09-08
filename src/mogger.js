@@ -15,7 +15,6 @@ var meld                = require('meld');
 var _                   = require('lodash');
 var traceMeld           = require('./trace-aspect');
 var helpers             = require('./helpers');
-var Reporter            = require('./reporter');
 var defaultConfig       = require('./default-config');
 var interceptorsHelpers = require('./interceptors-helpers');
 
@@ -23,6 +22,8 @@ var interceptorsHelpers = require('./interceptors-helpers');
 // Mogger DEFINITION
 ////////////////////
 var Mogger = function (options) {
+
+    this._targets = [];
 
     var defaults = _.merge(defaultConfig, options);
 
@@ -32,47 +33,48 @@ var Mogger = function (options) {
 
 Mogger.prototype.traceObj = function(localOptions) {
 
-    // all "globalOptions" (this.option) are merged with "localOptions"
+    var surrogateTargetItem = this._selectTargetFromSurrogateTargets();
+    var targetObject = surrogateTargetItem.target;
 
-    // console.log('this=', this);
-    // console.log('localOptions=', localOptions);
+    var pointcut = this.pointcut || /./;
 
-    var reporter = new Reporter({
+    var reporter = this._createReporter(localOptions);
+
+    // add targetObject to _targets list
+    this._targets.push({
+        target: targetObject,
+        meldRemover: meld(targetObject, pointcut, traceMeld(reporter))
+    });
+};
+
+Mogger.prototype._createReporter = function(localOptions) {
+    return new this.Reporter({
         globalConfig: this,
         localConfig: localOptions,
         interceptorsHelpers: interceptorsHelpers
     });
-    var target = this.target;
+};
 
+/**
+ * [gets target real object from surrogateTargets]
+ * @return {[object]}              [selected target object]
+ */
+Mogger.prototype._selectTargetFromSurrogateTargets = function() {
+    var isArray = _.isArray(this.surrogateTargets);
+    var isEmpty = _.isEmpty(this.surrogateTargets);
 
-    // /**
-    //  * surrogateTargets
-    //  * gets target real object from surrogateTargets
-    //  */
+    if(!isArray || isEmpty){
+        throw new Error('cannot find target \'' + this._target + '\'');
+    }
 
-    // // global surrogateTargets
-    // var surrogateTargets = config.surrogateTargets;
+    var isStringTarget = _.isString(this._target);
+    if(!isStringTarget){
+        throw new Error('the target must be a string');
+    }
 
-    // var isArraySurrogateTargets = surrogateTargets && _.isArray(surrogateTargets);
-    // var isStringTarget = _.isString(target);
-
-    // if(isArraySurrogateTargets && isStringTarget){
-    //   // find By Title
-    //   var surrogateTargetSelected = _.find(surrogateTargets, { 'title': target });
-    //   if(!surrogateTargetSelected){
-    //     throw new Error('cannot find surrogateTarget { title: \'' + target + '\' }' + ' on surrogateTargets list: \n' + JSON.stringify(surrogateTargets, ' ', 2));
-    //   }
-    //   target = surrogateTargetSelected.target;
-    // }
-
-    // var pointcut = optionsMerged.pointcut || /./;
-    // this.targets.push({
-    //   meldRemover: meld(target, pointcut, traceMeld(reporter)),
-    //   options: optionsMerged
-    // });
-    //
-    var pointcut = this.pointcut || /./;
-    meld(target, pointcut, traceMeld(reporter));
+    // find By Title
+    var surrogateTargetSelected = _.find(this.surrogateTargets, { 'title': this._target });
+    return surrogateTargetSelected;
 };
 
 
@@ -80,7 +82,7 @@ Mogger.prototype.traceObj = function(localOptions) {
  * loop over all target and remove them from meld AOP tracer
  */
 Mogger.prototype.removeAllTraces = function() {
-    this.targets.forEach(function(target) {
+    this._targets.forEach(function(target) {
         target.meldRemover && target.meldRemover.remove();
     });
 };
