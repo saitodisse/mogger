@@ -1,24 +1,48 @@
 <div>
-	<h1>
-		<span class="glyphicon glyphicon-asterisk"></span>
-		Home Page
-	</h1>
+    <div class="title-box text-center">
+      <h1>Mogger</h1>
+      <p>automatic customizable
+      <span class="colorful-01">c</span><span class="colorful-02">o</span><span class="colorful-03">l</span><span class="colorful-04">o</span><span class="colorful-05">r</span><span class="colorful-06">f</span><span class="colorful-07">u</span><span class="colorful-08">l</span>       logger</p>
+    </div>
 
-	<p>
-	  Welcome
-	</p>
+    <div class="row">
+      <div class="col-xs-10 col-xs-offset-1">
 
-	<ul>
-		<li>Browserify-shim</li>
-		<li>Browserify / Watchify</li>
-		<li>BrowserSync</li>
-		<li>Compass</li>
-		<li>SASS</li>
-		<li>Handlebars</li>
-		<li>Image optimization</li>
-		<li>Non common-js jquery plugin</li>
-		<li>Npm backbone</li>
-		<li>Npm jquery</li>
-	</ul>
-	<img src="{{rootDir}}images/gulp.png" alt="" />
+        <h3>What is Mogger?</h3>
+        <p>
+          Mogger it is a way to log your app without change him.
+          Uses AOP (Aspect-oriented programming) library named <a href="https://github.com/cujojs/meld">meld.js</a>
+          and other library that facilitates the print
+          of colorful outputs in browser, the <a href="https://github.com/saitodisse/colorful-logger">colorful-logger</a>.
+        </p>
+        <p>
+          The goal of this library is to be easy to configure and to help
+          the programmer to understand the inner of some javascript codes.
+        </p>
+
+
+        <hr>
+        <h3>Instalation</h3>
+        <pre>npm install mogger --save</pre>
+
+        <hr>
+        <h3>Configuring Mogger</h3>
+        <pre class="prettyprint lang-js">var Mogger = require('Mogger');</pre>
+
+        <hr>
+        <h3>Usage</h3>
+        <pre class="prettyprint lang-js">// get the tracer
+var tracer = new Mogger({/* global configurations */});
+
+// start watching some targets
+tracer.traceObj({
+  before: { message: 'SimpleObj -> ', css: 'color: #A42' },
+  target: simpleObj, targetConfig: {  css: 'color: #E42' }
+});</pre>
+
+		<img src="{{rootDir}}images/gulp.png" alt="" />
+
+      </div>
+    </div>
+
 </div>
