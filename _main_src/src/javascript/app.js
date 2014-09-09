@@ -8,7 +8,6 @@ var $ = require('jquery');
 module.exports = {
     // this is the the whole app initter
     blastoff: function () {
-
         var self = window.app = this;
 
         // init our URL handlers and the history tracker

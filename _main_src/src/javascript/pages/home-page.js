@@ -1,6 +1,7 @@
 'use strict';
 
 var BasePage = require('./base-page');
+var configuration = require('../configuration');
 
 /*
 
@@ -12,5 +13,5 @@ instance: homePage
 
 module.exports = BasePage.extend({
     pageTitle: 'home',
-    template: require('../templates/home')
+    template: require('../templates/home')(configuration)
 });
