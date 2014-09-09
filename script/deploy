@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+cd _main_src
+gulp deploy
+
+cd ..
+git add . -A
+git commit -m"gh-pages deploy"
+git push origin gh-pages
