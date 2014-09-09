@@ -2,10 +2,12 @@
 
 var Router = require('ampersand-router');
 var HomePage = require('./pages/home-page');
+var Example01 = require('./pages/examples/ex-01');
 
 module.exports = Router.extend({
     routes: {
-        'mogger'            : 'load_home',
+        ''            : 'load_home',
+        'ex-01'      : 'example_01',
         '(*path)'           : 'catchAll'
     },
 
@@ -14,7 +16,12 @@ module.exports = Router.extend({
         this.trigger('page', new HomePage());
     },
 
+    example_01: function () {
+        this.trigger('page', new Example01());
+    },
+
     catchAll: function () {
-        this.redirectTo('mogger');
+        console.log(arguments)
+        this.redirectTo('');
     }
 });
