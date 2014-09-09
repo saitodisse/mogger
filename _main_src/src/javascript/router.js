@@ -5,7 +5,7 @@ var HomePage = require('./pages/home-page');
 
 module.exports = Router.extend({
     routes: {
-        ''                  : 'load_home',
+        'mogger'            : 'load_home',
         '(*path)'           : 'catchAll'
     },
 
@@ -15,6 +15,6 @@ module.exports = Router.extend({
     },
 
     catchAll: function () {
-        this.redirectTo('');
+        this.redirectTo('mogger');
     }
 });
