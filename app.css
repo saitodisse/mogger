@@ -7,6 +7,29 @@ body {
   color: #555555;
   font-family: sans-serif; }
 
+.title-box {
+  font-family: monospace, 'Courier New'; }
+  .title-box h1 {
+    font-size: 64px; }
+  .title-box p {
+    font-size: 24px; }
+  .title-box .colorful-01 {
+    color: #f80c12; }
+  .title-box .colorful-02 {
+    color: #ee1100; }
+  .title-box .colorful-03 {
+    color: #ff3311; }
+  .title-box .colorful-04 {
+    color: #ff4422; }
+  .title-box .colorful-05 {
+    color: #ff6644; }
+  .title-box .colorful-06 {
+    color: #ff9933; }
+  .title-box .colorful-07 {
+    color: #feae2d; }
+  .title-box .colorful-08 {
+    color: #ccbb33; }
+
 /*! normalize.css v3.0.1 | MIT License | git.io/normalize */
 html {
   font-family: sans-serif;
@@ -5299,7 +5322,5 @@ button.close {
     display: none !important; } }
 #main-container {
   padding-top: 50px; }
-  #main-container .glyphicon-asterisk {
-    font-size: 30px; }
 
 /*# sourceMappingURL=app.css.map */
