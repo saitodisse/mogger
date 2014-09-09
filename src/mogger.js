@@ -33,6 +33,16 @@ var Mogger = function (options) {
 
 Mogger.prototype.traceObj = function(localOptions) {
 
+    if(!localOptions){
+        throw new Error('you must provide options on traceObj');
+    }
+
+    if(!_.isString(localOptions.target)){
+        throw new Error('localOptions.target must be a string');
+    }
+
+    this._target = localOptions.target;
+
     var surrogateTargetItem = this._selectTargetFromSurrogateTargets();
 
     var pointcut = this.pointcut || /./;

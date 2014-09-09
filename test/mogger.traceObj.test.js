@@ -116,6 +116,34 @@ describe('Mogger.traceObj:', function(){
         assert.equal(1, mogger._targets.length);
     });
 
+    it('traceObj() must have options', function () {
+
+        mogger = new Mogger();
+        mogger._selectTargetFromSurrogateTargets = sinon.spy();
+        mogger._createReporter = sinon.spy();
+        mogger._trace = sinon.spy();
+
+        expectError(function() {
+
+            mogger.traceObj();
+
+        }, 'you must provide options on traceObj');
+    });
+
+    it('traceObj() must have a string target', function () {
+
+        mogger = new Mogger();
+        mogger._selectTargetFromSurrogateTargets = sinon.spy();
+        mogger._createReporter = sinon.spy();
+        mogger._trace = sinon.spy();
+
+        expectError(function() {
+
+            mogger.traceObj({target: {}});
+
+        }, 'localOptions.target must be a string');
+    });
+
     it('traceObj()', function () {
 
         mogger = new Mogger();
@@ -123,7 +151,7 @@ describe('Mogger.traceObj:', function(){
         mogger._createReporter = sinon.spy();
         mogger._trace = sinon.spy();
 
-        mogger.traceObj();
+        mogger.traceObj({target: 'someTarget'});
 
         assert.equal(true, mogger._selectTargetFromSurrogateTargets.called);
         assert.equal(true, mogger._createReporter.called);
