@@ -30,15 +30,6 @@ var expectError = function(fn, message){
 
 describe('Mogger.traceObj:', function(){
 
-    // var someObj = {
-    //     addNumbers: function (arg1, arg2) {
-    //         return arg1 + arg2;
-    //     },
-    //     justReturn: function (arg1) {
-    //         return arg1;
-    //     }
-    // };
-
     beforeEach(function(){
         mogger = new Mogger({
             defaultConsole: fakeConsole
@@ -48,6 +39,7 @@ describe('Mogger.traceObj:', function(){
 
     afterEach(function(){
         mogger.removeAllTraces();
+        mogger.surrogateTargets = null;
     });
 
     it('_createReporter()', function () {
@@ -62,21 +54,23 @@ describe('Mogger.traceObj:', function(){
         assert.equal(true, ReporterSpy.calledWithNew());
     });
 
-    it('_selectTargetFromSurrogateTargets() must be defined', function () {
+    it('_selectTargetFromSurrogateTargets() surrogateTargets can\'t be empty', function () {
 
         expectError(function() {
 
             mogger = new Mogger({
                 defaultConsole: fakeConsole
             });
+
+            mogger.surrogateTargets = null;
             mogger._target = 'someObj';
             mogger._selectTargetFromSurrogateTargets();
 
-        }, 'cannot find target \'someObj\'');
+        }, 'surrogateTargets can\'t be empty');
 
     });
 
-    it('_selectTargetFromSurrogateTargets() must be defined', function () {
+    it('_selectTargetFromSurrogateTargets() the target must be a string', function () {
 
         expectError(function() {
 
@@ -97,9 +91,10 @@ describe('Mogger.traceObj:', function(){
         var surrogateTargetItem = {title: 'someObj2', target: someObj2 };
 
         mogger = new Mogger({
-            defaultConsole: fakeConsole,
-            surrogateTargets: [surrogateTargetItem]
+            defaultConsole: fakeConsole
         });
+
+        mogger.surrogateTargets = [surrogateTargetItem];
 
         mogger._target = 'someObj2';
         var selected = mogger._selectTargetFromSurrogateTargets();

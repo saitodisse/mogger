@@ -82,8 +82,10 @@ Mogger.prototype._selectTargetFromSurrogateTargets = function() {
     var isArray = _.isArray(this.surrogateTargets);
     var isEmpty = _.isEmpty(this.surrogateTargets);
 
+    console.log('this.surrogateTargets', this.surrogateTargets);
+
     if(!isArray || isEmpty){
-        throw new Error('cannot find target \'' + this._target + '\'');
+        throw new Error('surrogateTargets can\'t be empty');
     }
 
     var isStringTarget = _.isString(this._target);
