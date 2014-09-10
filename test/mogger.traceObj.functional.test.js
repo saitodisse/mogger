@@ -14,34 +14,64 @@
 
 var assert      = require('assert'),
     Mogger      = require('../src/mogger'),
-    fakeConsole = require('./fake-console')
+    fakeConsole = require('./fake-console'),
+    mogger
 ;
 
-describe('Mogger.traceObj() functional:', function(){
+describe('traceObj() Functional Tests', function(){
 
+    var sample_obj = {
+        addNumbers: function (arg1, arg2) {
+            return arg1 + arg2;
+        },
+        justReturn: function (arg1) {
+            return arg1;
+        }
+    };
 
-    it('traceObj() will trace', function () {
-
-        var someObj = {
-            addNumbers: function (arg1, arg2) {
-                return arg1 + arg2;
-            },
-            justReturn: function (arg1) {
-                return arg1;
-            }
-        };
-
-        var mogger = new Mogger({
+    beforeEach(function () {
+        mogger = new Mogger({
             defaultConsole: fakeConsole,
-            surrogateTargets: [{ title: 'SOME_OBJ', target: someObj }]
+            surrogateTargets: [{ title: 'SAMPLE_OBJ', target: sample_obj }]
         });
+    });
 
-        mogger.traceObj({ targetTitle: 'SOME_OBJ' });
+    afterEach(function () {
+        fakeConsole.logRecorder = [];
+        mogger.removeAllTraces();
+        mogger.surrogateTargets = null;
+    });
 
-        someObj.addNumbers(1, 2);
+    it('only method name', function () {
+        mogger.traceObj({ targetTitle: 'SAMPLE_OBJ' });
+
+        sample_obj.addNumbers(1, 2);
 
         assert.equal(1, fakeConsole.logRecorder.length);
-        //assert.equal('someObj', fakeConsole.logRecorder[0].message);
+        assert.equal('addNumbers', fakeConsole.logRecorder[0].message);
+    });
+
+    it('two logs', function () {
+        mogger.traceObj({ targetTitle: 'SAMPLE_OBJ' });
+
+        sample_obj.addNumbers(1, 2);
+        sample_obj.addNumbers(1, 2);
+
+        assert.equal(2, fakeConsole.logRecorder.length);
+        assert.equal('addNumbers', fakeConsole.logRecorder[0].message);
+        assert.equal('addNumbers', fakeConsole.logRecorder[1].message);
+    });
+
+    it('before shows title before method name', function () {
+        mogger.traceObj({
+            before: { message: 'Sample OBJ: ' },
+            targetTitle: 'SAMPLE_OBJ'
+        });
+
+        sample_obj.addNumbers(1, 2);
+
+        assert.equal(1, fakeConsole.logRecorder.length);
+        assert.equal('Sample OBJ: addNumbers', fakeConsole.logRecorder[0].message);
     });
 
 });

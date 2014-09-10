@@ -47,6 +47,9 @@ Reporter.prototype.onCall = function(info) {
         return false;
     }
 
+    // clean all logs
+    this._logs = [];
+
     // Render Logs
     this.renderLogs(info);
 

@@ -25,7 +25,7 @@ var tracer = new Mogger({
 // start watching some targets
 tracer.traceObj({
   before: { message: 'SimpleObj -> ', css: 'color: #A42' },
-  targetTitle: 'SIMPLE_OBJ', targetConfig: {  css: 'color: #E42' }
+  targetTitle: 'SIMPLE_OBJ', targetConfig: { css: 'color: #E42' }
 });
 ```
 
