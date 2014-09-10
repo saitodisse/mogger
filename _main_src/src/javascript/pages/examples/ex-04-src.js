@@ -30,17 +30,14 @@ module.exports = function() {
      */
     var mogger = new Mogger({
         surrogateTargets: [
-
-        {
-            title: 'SIMPLE_OBJ_1',
-            target: simple_obj_1
-        },
-
-        {
-            title: 'SIMPLE_OBJ_2',
-            target: simple_obj_2
-        }
-
+            {
+                title: 'SIMPLE_OBJ_1',
+                target: simple_obj_1
+            },
+            {
+                title: 'SIMPLE_OBJ_2',
+                target: simple_obj_2
+            }
         ]
     });
 
@@ -48,12 +45,14 @@ module.exports = function() {
      * tracing all methods from simple_obj_1
      */
     mogger.traceObj({
-        before: { message: 'Simple Obj 1: ', css: 'color: #266; font-size: 10px' },
+        before: { message: 'Simple Obj 1: ' },
+        localBeforeConfig: { css: 'color: #266; font-size: 10px' },
         targetTitle: 'SIMPLE_OBJ_1'
     });
 
     mogger.traceObj({
-        before: { message: 'Simple Obj 2: ', css: 'color: #626; font-size: 14px'  },
+        before: { message: 'Simple Obj 2: ' },
+        localBeforeConfig: { css: 'color: #626; font-size: 14px' },
         targetTitle: 'SIMPLE_OBJ_2'
     });
 

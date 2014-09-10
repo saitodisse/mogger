@@ -4,9 +4,9 @@ var Mogger = require('mogger');
 
 /*
 
-file:     ex-05-src.js
-class:    Example05Src
-instance: example05Src
+file:     ex-07-src.js
+class:    Example07Src
+instance: example07Src
 
 */
 
@@ -38,7 +38,11 @@ module.exports = function() {
                 title: 'SIMPLE_OBJ_2',
                 target: simple_obj_2
             }
-        ]
+        ],
+        globalBeforeConfig: {
+            css: 'color: #933; font-size: 14px',
+            size: 16
+        }
     });
 
     /**
@@ -46,13 +50,11 @@ module.exports = function() {
      */
     mogger.traceObj({
         before: { message: 'Simple Obj 1' },
-        localBeforeConfig: { css: 'color: #266;', size: 16 },
         targetTitle: 'SIMPLE_OBJ_1'
     });
 
     mogger.traceObj({
         before: { message: 'Obj 2' },
-        localBeforeConfig: { css: 'color: #626;', size: 16 },
         targetTitle: 'SIMPLE_OBJ_2'
     });
 

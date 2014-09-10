@@ -4,9 +4,9 @@ var Mogger = require('mogger');
 
 /*
 
-file:     ex-05-src.js
-class:    Example05Src
-instance: example05Src
+file:     ex-06-src.js
+class:    Example06Src
+instance: example06Src
 
 */
 
@@ -30,17 +30,14 @@ module.exports = function() {
      */
     var mogger = new Mogger({
         surrogateTargets: [
-
-        {
-            title: 'SIMPLE_OBJ_1',
-            target: simple_obj_1
-        },
-
-        {
-            title: 'SIMPLE_OBJ_2',
-            target: simple_obj_2
-        }
-
+            {
+                title: 'SIMPLE_OBJ_1',
+                target: simple_obj_1
+            },
+            {
+                title: 'SIMPLE_OBJ_2',
+                target: simple_obj_2
+            }
         ]
     });
 
@@ -48,13 +45,17 @@ module.exports = function() {
      * tracing all methods from simple_obj_1
      */
     mogger.traceObj({
-        before: { message: 'Simple Obj 1', css: 'color: #266;', size: 16 },
+        before: { message: 'Simple Obj 1' },
+        localBeforeConfig: { css: 'color: #266;', size: 16 },
+
         targetTitle: 'SIMPLE_OBJ_1',
         localTargetConfig: { css: 'color: #299;' }
     });
 
     mogger.traceObj({
-        before: { message: 'Obj 2', css: 'color: #626;', size: 16 },
+        before: { message: 'Obj 2', },
+        localBeforeConfig: { css: 'color: #626;', size: 16 },
+
         targetTitle: 'SIMPLE_OBJ_2',
         localTargetConfig: { css: 'color: #929;' }
     });

@@ -1,7 +1,6 @@
 'use strict';
 
 var Mogger = require('mogger');
-
 /*
 
 file:     ex-02-src.js
