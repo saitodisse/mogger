@@ -33,10 +33,10 @@ describe('Mogger.traceObj() functional:', function(){
 
         var mogger = new Mogger({
             defaultConsole: fakeConsole,
-            surrogateTargets: [{ title: 'someObj', target: someObj }]
+            surrogateTargets: [{ title: 'SOME_OBJ', target: someObj }]
         });
 
-        mogger.traceObj({target: 'someObj'});
+        mogger.traceObj({ targetTitle: 'SOME_OBJ' });
 
         someObj.addNumbers(1, 2);
 

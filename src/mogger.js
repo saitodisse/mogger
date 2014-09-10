@@ -13,7 +13,7 @@
 
 var meld                = require('meld');
 var _                   = require('lodash');
-var traceMeld           = require('./trace-aspect');
+var traceAspect           = require('./trace-aspect');
 var helpers             = require('./helpers');
 var defaultConfig       = require('./default-config');
 var interceptorsHelpers = require('./interceptors-helpers');
@@ -40,11 +40,11 @@ Mogger.prototype.traceObj = function(localOptions) {
         throw new Error('you must provide options on traceObj');
     }
 
-    if(!_.isString(localOptions.target)){
-        throw new Error('localOptions.target must be a string');
+    if(!_.isString(localOptions.targetTitle)){
+        throw new Error('localOptions.targetTitle must be a string');
     }
 
-    this._targetTitle = localOptions.target;
+    this._targetTitle = localOptions.targetTitle;
 
     var surrogateTargetItem = this._selectTargetFromSurrogateTargets();
 
@@ -70,10 +70,11 @@ Mogger.prototype._createReporter = function(localOptions) {
  * @param  {instance} reporter
  */
 Mogger.prototype._trace = function(surrogateTargetItem, pointcut, reporter) {
+    var toRemove = meld(surrogateTargetItem.target, pointcut, traceAspect(reporter));
     // add targetObject to _targets list
     this._targets.push({
         surrogateTargetItem: surrogateTargetItem,
-        meldRemover: meld(surrogateTargetItem.targetObject, pointcut, traceMeld(reporter))
+        meldRemover: toRemove
     });
 };
 
@@ -85,15 +86,13 @@ Mogger.prototype._selectTargetFromSurrogateTargets = function() {
     var isArray = _.isArray(this.surrogateTargets);
     var isEmpty = _.isEmpty(this.surrogateTargets);
 
-    console.log('this.surrogateTargets', this.surrogateTargets);
-
     if(!isArray || isEmpty){
         throw new Error('surrogateTargets can\'t be empty');
     }
 
     var isStringTarget = _.isString(this._targetTitle);
     if(!isStringTarget){
-        throw new Error('the target must be a string');
+        throw new Error('the targetTitle must be a string');
     }
 
     // find By Title

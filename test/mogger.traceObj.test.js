@@ -79,7 +79,7 @@ describe('Mogger.traceObj:', function(){
 
             mogger._selectTargetFromSurrogateTargets();
 
-        }, 'the target must be a string');
+        }, 'the targetTitle must be a string');
 
     });
 
@@ -137,9 +137,9 @@ describe('Mogger.traceObj:', function(){
 
         expectError(function() {
 
-            mogger.traceObj({target: {}});
+            mogger.traceObj({targetTitle: {}});
 
-        }, 'localOptions.target must be a string');
+        }, 'localOptions.targetTitle must be a string');
     });
 
     it('traceObj()', function () {
@@ -151,7 +151,7 @@ describe('Mogger.traceObj:', function(){
         mogger._createReporter = sinon.spy();
         mogger._trace = sinon.spy();
 
-        mogger.traceObj({target: 'someTarget'});
+        mogger.traceObj({targetTitle: 'someTarget'});
 
         assert.equal(true, mogger._selectTargetFromSurrogateTargets.called);
         assert.equal(true, mogger._createReporter.called);

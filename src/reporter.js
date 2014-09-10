@@ -69,7 +69,7 @@ Reporter.prototype.renderLogs = function(info) {
 
     this._addTitle();
 
-    mainMessage = this._applyInterceptors();
+    mainMessage = this._applyInterceptors(info);
 
     this._addMainLog(mainMessage);
 

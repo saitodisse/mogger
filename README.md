@@ -39,12 +39,17 @@ var Mogger = require('Mogger');
 ##Usage
 ```javascript
 // get the tracer
-var tracer = new Mogger({/* global configurations */});
+var tracer = new Mogger({
+    surrogateTargets: [{
+        title: 'simpleObj',
+        target: simpleObj
+    }]
+});
 
 // start watching some targets
 tracer.traceObj({
   before: { message: 'SimpleObj -> ', css: 'color: #A42' },
-  target: simpleObj, targetConfig: {  css: 'color: #E42' }
+  targetTitle: 'simpleObj', targetConfig: {  css: 'color: #E42' }
 });
 ```
 
