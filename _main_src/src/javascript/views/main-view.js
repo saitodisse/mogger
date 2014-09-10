@@ -7,6 +7,7 @@
 var View = require('ampersand-view');
 var ViewSwitcher = require('ampersand-view-switcher');
 var $ = require('jquery');
+var _ = require('lodash');
 // var tracking = require('../helpers/metrics');
 
 /*
@@ -34,7 +35,7 @@ module.exports = View.extend({
         this.pageSwitcher = new ViewSwitcher(this.getByRole('page-container'), {
             show: function (newView/*, oldView*/) {
                 // it's inserted and rendered for me
-                // document.title = _.result(newView, 'pageTitle');
+                document.title = 'Mogger :: ' + _.result(newView, 'pageTitle');
                 document.scrollTop = 0;
 
                 // add a class specifying it's active

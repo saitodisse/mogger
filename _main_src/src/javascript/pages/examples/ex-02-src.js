@@ -4,9 +4,9 @@ var Mogger = require('mogger');
 
 /*
 
-file:     ex-01-src.js
-class:    Example01Src
-instance: example01Src
+file:     ex-02-src.js
+class:    Example02Src
+instance: example02Src
 
 */
 
@@ -35,6 +35,7 @@ module.exports = function() {
 	 * tracing all methods from simple_obj
 	 */
 	mogger.traceObj({
+    	before: { message: 'Simple Obj: ' },
     	targetTitle: 'SIMPLE_OBJ'
   	});
 
