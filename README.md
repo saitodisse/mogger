@@ -5,86 +5,67 @@ Mogger it is a way to log your app without change him. Uses AOP (Aspect-oriented
 
 The goal of this library is to be easy to configure and to help the programmer to understand the inner of some javascript codes.
 
-##Instalation
-###bower
-```
-bower install mogger --save
-```
-###npm
+## Instalation
 ```
 npm install mogger --save
 ```
 
-##Configuring Mogger
-###browser globals
-```html
-<script src="bower_components/colorful-logger/src/colorful-logger.js"></script>
-<script src="bower_components/lodash/dist/lodash.min.js"></script>
-<script src="bower_components/meld/aspect/trace.js"></script>
-<script src="bower_components/meld/meld.js"></script>
-...
-```
-
-###AMD (require.js)
-```javascript
-define(['Mogger'], function (Mogger) {
-});
-```
-
-###CommonJS (node.js)
+## Usage
 ```javascript
 var Mogger = require('Mogger');
-```
 
-##Usage
-```javascript
 // get the tracer
 var tracer = new Mogger({
-    surrogateTargets: [{
-        title: 'simpleObj',
-        target: simpleObj
-    }]
+    // list of targets
+    surrogateTargets: [
+        { title: 'SIMPLE_OBJ', target: simpleObj }
+    ]
 });
 
 // start watching some targets
 tracer.traceObj({
   before: { message: 'SimpleObj -> ', css: 'color: #A42' },
-  targetTitle: 'simpleObj', targetConfig: {  css: 'color: #E42' }
+  targetTitle: 'SIMPLE_OBJ', targetConfig: {  css: 'color: #E42' }
 });
 ```
 
 
-##Testing and debugging
+## Testing
 ```javascript
+// test all + watch
+gulp
+
+// test something(grep) + watch
+mocha --watch -g 'REGEX_NAME_OF_TEST' -G
+```
+
+## Testing and debugging
+```javascript
+// test + watch
+gulp
+
 //instal tools
 sudo npm install -g mocha
 sudo npm install -g node-inspector
 
-// test + watch
-npm test
-
 // debug + watch
 node-debug _mocha --watch
+// debug something(grep) + watch
+node-debug _mocha --watch -g 'REGEX_NAME_OF_TEST'
 ```
 
 
-## Improving coverage
+## Test coverage
 ```shell
-# tab 1: start tests + watch
-gulp
-
-# tab 2: start coverage + watch
+# start coverage + watch
 gulp coverage
 
-# tab 3: open "Code coverage report"
-#     : open Sublime (or VIM)
+# open "Code coverage report"
 google-chrome coverage/lcov-report/src/index.html
-subl .
 ```
 
 
-##Examples
-  - [simple example](http://saitodisse.github.io/mogger/examples/simple-browser-global-example/index.html)
-  - [todo mvc example](http://saitodisse.github.io/mogger/examples/todo-mvc-backbone-require/index.html)
+## Examples
+  - [here](http://saitodisse.github.io/mogger/)
 
 by: [saitodisse](http://saitodisse.github.io/)
