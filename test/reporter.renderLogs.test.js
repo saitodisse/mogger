@@ -82,8 +82,7 @@ describe('Reporter RenderLogs:', function(){
                 };
 
                 reporter.globalBeforeConfig = BEFORE_CONFIGURATION;
-                reporter.before = {};
-                reporter.before.message = 'SOME BEFORE MESSAGE';
+                reporter.before = { message: 'SOME BEFORE MESSAGE'};
 
                 reporter._addBefore();
 
