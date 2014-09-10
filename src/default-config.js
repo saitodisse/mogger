@@ -1,8 +1,5 @@
-var Reporter            = require('./reporter');
-
 module.exports = {
     defaultConsole     : console,
-    Reporter           : Reporter,
     enabled            : true,
     showPause          : true,
     showArguments      : false,

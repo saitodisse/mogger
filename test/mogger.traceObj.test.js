@@ -43,15 +43,13 @@ describe('Mogger.traceObj:', function(){
     });
 
     it('_createReporter()', function () {
-        var ReporterSpy = sinon.spy();
         mogger = new Mogger({
-            defaultConsole: fakeConsole,
-            Reporter: ReporterSpy
+            defaultConsole: fakeConsole
         });
 
-        mogger._createReporter({});
+        var reporter = mogger._createReporter({});
 
-        assert.equal(true, ReporterSpy.calledWithNew());
+        assert.equal(true, reporter.enabled);
     });
 
     it('_selectTargetFromSurrogateTargets() surrogateTargets can\'t be empty', function () {
@@ -63,7 +61,7 @@ describe('Mogger.traceObj:', function(){
             });
 
             mogger.surrogateTargets = null;
-            mogger._target = 'someObj';
+            mogger._targetTitle = 'someObj';
             mogger._selectTargetFromSurrogateTargets();
 
         }, 'surrogateTargets can\'t be empty');
@@ -96,14 +94,14 @@ describe('Mogger.traceObj:', function(){
 
         mogger.surrogateTargets = [surrogateTargetItem];
 
-        mogger._target = 'someObj2';
+        mogger._targetTitle = 'someObj2';
         var selected = mogger._selectTargetFromSurrogateTargets();
 
         assert.deepEqual(selected, surrogateTargetItem);
     });
 
     it('_trace() adds a target to _targets', function () {
-        var someObj2 = {someMethod: function() {}};
+        var someObj2 = { someMethod: function() {} };
         var surrogateTargetItem = {title: 'someObj2', target: someObj2 };
 
         mogger._trace(surrogateTargetItem, /./, null);
@@ -113,7 +111,10 @@ describe('Mogger.traceObj:', function(){
 
     it('traceObj() must have options', function () {
 
-        mogger = new Mogger();
+        mogger = new Mogger({
+            surrogateTargets: []
+        });
+
         mogger._selectTargetFromSurrogateTargets = sinon.spy();
         mogger._createReporter = sinon.spy();
         mogger._trace = sinon.spy();
@@ -127,7 +128,9 @@ describe('Mogger.traceObj:', function(){
 
     it('traceObj() must have a string target', function () {
 
-        mogger = new Mogger();
+        mogger = new Mogger({
+            surrogateTargets: []
+        });
         mogger._selectTargetFromSurrogateTargets = sinon.spy();
         mogger._createReporter = sinon.spy();
         mogger._trace = sinon.spy();
@@ -141,7 +144,9 @@ describe('Mogger.traceObj:', function(){
 
     it('traceObj()', function () {
 
-        mogger = new Mogger();
+        mogger = new Mogger({
+            surrogateTargets: []
+        });
         mogger._selectTargetFromSurrogateTargets = sinon.spy();
         mogger._createReporter = sinon.spy();
         mogger._trace = sinon.spy();

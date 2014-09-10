@@ -25,7 +25,10 @@ describe('Mogger.Creation:', function(){
     });
 
     it('default defaultConsole is console.log', function() {
-        var mogger = new Mogger();
+        var mogger = new Mogger({
+            surrogateTargets: []
+        });
+
         assert.equal(console, mogger.defaultConsole);
     });
 

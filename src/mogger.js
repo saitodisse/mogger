@@ -17,6 +17,7 @@ var traceMeld           = require('./trace-aspect');
 var helpers             = require('./helpers');
 var defaultConfig       = require('./default-config');
 var interceptorsHelpers = require('./interceptors-helpers');
+var Reporter            = require('./reporter');
 
 ////////////////////
 // Mogger DEFINITION
@@ -29,6 +30,8 @@ var Mogger = function (options) {
 
     // merge all options to this
     helpers.merge(this, mergedConfig);
+
+    this.surrogateTargets = options.surrogateTargets;
 };
 
 Mogger.prototype.traceObj = function(localOptions) {
@@ -41,7 +44,7 @@ Mogger.prototype.traceObj = function(localOptions) {
         throw new Error('localOptions.target must be a string');
     }
 
-    this._target = localOptions.target;
+    this._targetTitle = localOptions.target;
 
     var surrogateTargetItem = this._selectTargetFromSurrogateTargets();
 
@@ -53,7 +56,7 @@ Mogger.prototype.traceObj = function(localOptions) {
 };
 
 Mogger.prototype._createReporter = function(localOptions) {
-    return new this.Reporter({
+    return new Reporter({
         globalConfig: this,
         localConfig: localOptions,
         interceptorsHelpers: interceptorsHelpers
@@ -88,13 +91,13 @@ Mogger.prototype._selectTargetFromSurrogateTargets = function() {
         throw new Error('surrogateTargets can\'t be empty');
     }
 
-    var isStringTarget = _.isString(this._target);
+    var isStringTarget = _.isString(this._targetTitle);
     if(!isStringTarget){
         throw new Error('the target must be a string');
     }
 
     // find By Title
-    var surrogateTargetSelected = _.find(this.surrogateTargets, { 'title': this._target });
+    var surrogateTargetSelected = _.find(this.surrogateTargets, { 'title': this._targetTitle });
     return surrogateTargetSelected;
 };
 
