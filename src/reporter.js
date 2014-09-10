@@ -70,7 +70,7 @@ Reporter.prototype.onCall = function(info) {
 Reporter.prototype.renderLogs = function(info) {
     var mainMessage = info.method;
 
-    this._addTitle();
+    this._addBefore();
 
     mainMessage = this._applyInterceptors(info);
 
@@ -79,13 +79,29 @@ Reporter.prototype.renderLogs = function(info) {
     this._renderToConsole(info, mainMessage);
 };
 
-Reporter.prototype._addTitle = function() {
-    /*
-        title (first column / namespace)
-    */
-    if(this.before){
-        this._logs.push(this.before);
+Reporter.prototype._addBefore = function() {
+    var selectedBeforeConfig, beforeLog;
+
+    if(!this.before){
+        return;
     }
+
+    selectedBeforeConfig = this._getOrMergeLogConfiguration(
+        this.globalBeforeConfig,
+        this.localBeforeConfig
+    );
+
+    /*
+        target (function)
+    */
+    if(selectedBeforeConfig){
+        beforeLog = selectedBeforeConfig;
+        beforeLog.message = this.before.message;
+    }
+    else{
+        beforeLog = this.before;
+    }
+    this._logs.push(beforeLog);
 };
 
 Reporter.prototype._applyInterceptors = function(info) {
@@ -102,18 +118,11 @@ Reporter.prototype._applyInterceptors = function(info) {
 
 Reporter.prototype._addMainLog = function(mainMessage) {
     var selectedTargetConfig, targetLog;
-    /*
-        selectedTargetConfig local or global
-    */
-    var hasLocal = this.localTargetConfig !== null;
-    var hasGlobal = this.globalTargetConfig !== null;
 
-    selectedTargetConfig = this.localTargetConfig || this.globalTargetConfig;
-
-    // merge both
-    if(hasLocal && hasGlobal){
-        selectedTargetConfig = helpers.merge(this.globalTargetConfig,  this.localTargetConfig);
-    }
+    selectedTargetConfig = this._getOrMergeLogConfiguration(
+        this.globalTargetConfig,
+        this.localTargetConfig
+    );
 
     /*
         target (function)
@@ -130,6 +139,20 @@ Reporter.prototype._addMainLog = function(mainMessage) {
     this._logs.push(targetLog);
 };
 
+Reporter.prototype._getOrMergeLogConfiguration = function(globalConfig, localConfig) {
+
+    var hasGlobal = globalConfig !== null;
+    var hasLocal = localConfig !== null;
+
+    var selectedConfig = localConfig || globalConfig;
+
+    // merge both
+    if(hasLocal && hasGlobal){
+        selectedConfig = helpers.merge(globalConfig, localConfig);
+    }
+
+    return selectedConfig;
+};
 
 Reporter.prototype._renderToConsole = function(info, mainMessage) {
     /*

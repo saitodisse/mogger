@@ -43,13 +43,13 @@ describe('Reporter RenderLogs:', function(){
     afterEach(function(){
     });
 
-    describe('_addTitle()', function () {
+    describe('_addBefore()', function () {
         it('do not add nothing if no before config is passed', function() {
             reporter = new Reporter({
                 globalConfig: {}
             });
 
-            reporter._addTitle();
+            reporter._addBefore();
 
             assert.deepEqual(0, reporter._logs.length);
         });
@@ -66,10 +66,34 @@ describe('Reporter RenderLogs:', function(){
                 }
             });
 
-            reporter._addTitle();
+            reporter._addBefore();
 
             assert.deepEqual(beforeConfig, reporter._logs[0]);
         });
+
+        describe('before configs', function () {
+
+            it('global target configuration only', function () {
+
+                var SOME_BEFORE_MESSAGE = 'SOME BEFORE MESSAGE';
+                var BEFORE_CONFIGURATION = {
+                    css: 'color: red',
+                    size: 15
+                };
+
+                reporter.globalBeforeConfig = BEFORE_CONFIGURATION;
+                reporter.before = {};
+                reporter.before.message = 'SOME BEFORE MESSAGE';
+
+                reporter._addBefore();
+
+                assert.equal(1, reporter._logs.length);
+                assert.equal(SOME_BEFORE_MESSAGE, reporter._logs[0].message);
+                assert.equal('color: red', reporter._logs[0].css);
+                assert.equal(15, reporter._logs[0].size);
+            });
+        });
+
     });
 
 
@@ -108,74 +132,79 @@ describe('Reporter RenderLogs:', function(){
     });
 
     describe('_addMainLog()', function () {
-        it('if does not have a target configuration creates a simple message log', function () {
 
-            var LOG_MESSAGE = 'LOG_MESSAGE';
+        describe('target configs', function () {
 
-            reporter._addMainLog(LOG_MESSAGE);
+            it('if does not have a target configuration creates a simple message log', function () {
 
-            assert.equal(1, reporter._logs.length);
-            assert.equal(LOG_MESSAGE, reporter._logs[0].message);
-        });
+                var LOG_MESSAGE = 'LOG_MESSAGE';
 
-        it('global target configuration only', function () {
+                reporter._addMainLog(LOG_MESSAGE);
 
-            var LOG_MESSAGE = 'LOG_MESSAGE';
-            var TARGET_CONFIGURATION = {
-                css: 'color: red',
-                size: 15
-            };
+                assert.equal(1, reporter._logs.length);
+                assert.equal(LOG_MESSAGE, reporter._logs[0].message);
+            });
 
-            reporter.globalTargetConfig = TARGET_CONFIGURATION;
+            it('global target configuration only', function () {
 
-            reporter._addMainLog(LOG_MESSAGE);
+                var LOG_MESSAGE = 'LOG_MESSAGE';
+                var TARGET_CONFIGURATION = {
+                    css: 'color: red',
+                    size: 15
+                };
 
-            assert.equal(1, reporter._logs.length);
-            assert.equal(LOG_MESSAGE, reporter._logs[0].message);
-            assert.equal('color: red', reporter._logs[0].css);
-            assert.equal(15, reporter._logs[0].size);
-        });
+                reporter.globalTargetConfig = TARGET_CONFIGURATION;
 
-        it('local target configuration only', function () {
+                reporter._addMainLog(LOG_MESSAGE);
 
-            var LOG_MESSAGE = 'LOG_MESSAGE';
-            var TARGET_CONFIGURATION = {
-                css: 'color: red',
-                size: 15
-            };
+                assert.equal(1, reporter._logs.length);
+                assert.equal(LOG_MESSAGE, reporter._logs[0].message);
+                assert.equal('color: red', reporter._logs[0].css);
+                assert.equal(15, reporter._logs[0].size);
+            });
 
-            reporter.localTargetConfig = TARGET_CONFIGURATION;
+            it('local target configuration only', function () {
 
-            reporter._addMainLog(LOG_MESSAGE);
+                var LOG_MESSAGE = 'LOG_MESSAGE';
+                var TARGET_CONFIGURATION = {
+                    css: 'color: red',
+                    size: 15
+                };
 
-            assert.equal(1, reporter._logs.length);
-            assert.equal(LOG_MESSAGE, reporter._logs[0].message);
-            assert.equal('color: red', reporter._logs[0].css);
-            assert.equal(15, reporter._logs[0].size);
-        });
+                reporter.localTargetConfig = TARGET_CONFIGURATION;
 
-        it('global and local target configuration, local must win', function () {
+                reporter._addMainLog(LOG_MESSAGE);
 
-            var LOG_MESSAGE = 'LOG_MESSAGE';
+                assert.equal(1, reporter._logs.length);
+                assert.equal(LOG_MESSAGE, reporter._logs[0].message);
+                assert.equal('color: red', reporter._logs[0].css);
+                assert.equal(15, reporter._logs[0].size);
+            });
 
-            reporter.globalTargetConfig = {
-                css: 'color: blue',
-                size: 10
-            };
+            it('global and local target configuration, local must win', function () {
 
-            reporter.localTargetConfig = {
-                css: 'color: red',
-                size: 15
-            };
+                var LOG_MESSAGE = 'LOG_MESSAGE';
 
-            reporter._addMainLog(LOG_MESSAGE);
+                reporter.globalTargetConfig = {
+                    css: 'color: blue',
+                    size: 10
+                };
 
-            assert.equal(1, reporter._logs.length);
-            assert.equal(LOG_MESSAGE, reporter._logs[0].message);
+                reporter.localTargetConfig = {
+                    css: 'color: red',
+                    size: 15
+                };
 
-            // locals wins
-            assert.equal('color: red', reporter._logs[0].css);
-            assert.equal(15, reporter._logs[0].size);
+                reporter._addMainLog(LOG_MESSAGE);
+
+                assert.equal(1, reporter._logs.length);
+                assert.equal(LOG_MESSAGE, reporter._logs[0].message);
+
+                // locals wins
+                assert.equal('color: red', reporter._logs[0].css);
+                assert.equal(15, reporter._logs[0].size);
+            });
+
         });
     });
 
@@ -220,14 +249,14 @@ describe('Reporter RenderLogs:', function(){
     describe('renderLogs()', function () {
         it('should be calling all "internal" methods', function () {
 
-            reporter._addTitle = sinon.spy();
+            reporter._addBefore = sinon.spy();
             reporter._applyInterceptors = sinon.spy();
             reporter._addMainLog = sinon.spy();
             reporter._renderToConsole = sinon.spy();
 
             reporter.renderLogs(fakeInfo);
 
-            assert.equal(true, reporter._addTitle.called);
+            assert.equal(true, reporter._addBefore.called);
             assert.equal(true, reporter._applyInterceptors.called);
             assert.equal(true, reporter._addMainLog.called);
             assert.equal(true, reporter._renderToConsole.called);
