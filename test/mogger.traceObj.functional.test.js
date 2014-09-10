@@ -42,36 +42,124 @@ describe('traceObj() Functional Tests', function(){
         mogger.surrogateTargets = null;
     });
 
-    it('only method name', function () {
-        mogger.traceObj({ targetTitle: 'SAMPLE_OBJ' });
+    describe('method name', function () {
+        it('only method name', function () {
+            mogger.traceObj({ targetTitle: 'SAMPLE_OBJ' });
 
-        sample_obj.addNumbers(1, 2);
+            sample_obj.addNumbers();
 
-        assert.equal(1, fakeConsole.logRecorder.length);
-        assert.equal('addNumbers', fakeConsole.logRecorder[0].message);
-    });
-
-    it('two logs', function () {
-        mogger.traceObj({ targetTitle: 'SAMPLE_OBJ' });
-
-        sample_obj.addNumbers(1, 2);
-        sample_obj.addNumbers(1, 2);
-
-        assert.equal(2, fakeConsole.logRecorder.length);
-        assert.equal('addNumbers', fakeConsole.logRecorder[0].message);
-        assert.equal('addNumbers', fakeConsole.logRecorder[1].message);
-    });
-
-    it('before shows title before method name', function () {
-        mogger.traceObj({
-            before: { message: 'Sample OBJ: ' },
-            targetTitle: 'SAMPLE_OBJ'
+            assert.equal(1, fakeConsole.logRecorder.length);
+            assert.equal('addNumbers', fakeConsole.logRecorder[0].message);
         });
 
-        sample_obj.addNumbers(1, 2);
+        it('two logs', function () {
+            mogger.traceObj({ targetTitle: 'SAMPLE_OBJ' });
 
-        assert.equal(1, fakeConsole.logRecorder.length);
-        assert.equal('Sample OBJ: addNumbers', fakeConsole.logRecorder[0].message);
+            sample_obj.addNumbers();
+            sample_obj.addNumbers();
+
+            assert.equal(2, fakeConsole.logRecorder.length);
+            assert.equal('addNumbers', fakeConsole.logRecorder[0].message);
+            assert.equal('addNumbers', fakeConsole.logRecorder[1].message);
+        });
+
+        it('two different logs', function () {
+            mogger.traceObj({ targetTitle: 'SAMPLE_OBJ' });
+
+            sample_obj.addNumbers();
+            sample_obj.justReturn();
+
+            assert.equal(2, fakeConsole.logRecorder.length);
+            assert.equal('addNumbers', fakeConsole.logRecorder[0].message);
+            assert.equal('justReturn', fakeConsole.logRecorder[1].message);
+        });
     });
+
+    describe('css', function () {
+        it('only method name', function () {
+            mogger.traceObj({
+                targetTitle: 'SAMPLE_OBJ',
+                localTargetConfig: {
+                    css: 'color: red'
+                }
+            });
+
+            sample_obj.addNumbers();
+
+            assert.equal(1, fakeConsole.logRecorder.length);
+            assert.equal('%caddNumbers', fakeConsole.logRecorder[0].message);
+            assert.equal('color: red', fakeConsole.logRecorder[0].cssList[0]);
+        });
+
+        it('with before', function () {
+            mogger.traceObj({
+                before: {
+                    message: 'Sample OBJ: ',
+                    css: 'color: blue'
+                },
+                targetTitle: 'SAMPLE_OBJ',
+                localTargetConfig: {
+                    css: 'color: red'
+                }
+            });
+
+            sample_obj.addNumbers();
+
+            assert.equal(1, fakeConsole.logRecorder.length);
+            assert.equal('%cSample OBJ: %caddNumbers', fakeConsole.logRecorder[0].message);
+            assert.equal('color: blue', fakeConsole.logRecorder[0].cssList[0]);
+            assert.equal('color: red', fakeConsole.logRecorder[0].cssList[1]);
+        });
+    });
+
+    describe('size', function () {
+        it('only method name', function () {
+            mogger.traceObj({
+                targetTitle: 'SAMPLE_OBJ',
+                localTargetConfig: {
+                    size: 15
+                }
+            });
+
+            sample_obj.addNumbers();
+
+            assert.equal(1, fakeConsole.logRecorder.length);
+            assert.equal('addNumbers     ', fakeConsole.logRecorder[0].message);
+        });
+
+        it('with before', function () {
+            mogger.traceObj({
+                before: {
+                    message: 'Sample OBJ: ',
+                    size: 15
+                },
+                targetTitle: 'SAMPLE_OBJ',
+                localTargetConfig: {
+                    size: 15
+                }
+            });
+
+            sample_obj.addNumbers();
+
+            assert.equal(1, fakeConsole.logRecorder.length);
+            assert.equal('Sample OBJ:    addNumbers     ', fakeConsole.logRecorder[0].message);
+        });
+    });
+
+    describe('before, the title', function () {
+        it('before shows title before method name', function () {
+            mogger.traceObj({
+                before: { message: 'Sample OBJ: ' },
+                targetTitle: 'SAMPLE_OBJ'
+            });
+
+            sample_obj.addNumbers();
+
+            assert.equal(1, fakeConsole.logRecorder.length);
+            assert.equal('Sample OBJ: addNumbers', fakeConsole.logRecorder[0].message);
+        });
+    });
+
+
 
 });
