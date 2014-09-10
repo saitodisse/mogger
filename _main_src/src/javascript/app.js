@@ -13,6 +13,13 @@ module.exports = {
         // init our URL handlers and the history tracker
         this.router = new Router();
 
+        // load all examples
+        var data = require('./data/all-examples')();
+        var ExampleCollection = require('./models/example-collection');
+        var exampleCollection = new ExampleCollection(data);
+        window.app.exampleCollection = exampleCollection;
+
+
         // wait for document ready to render our main view
         // this ensures the document has a body, etc.
         $(function () {

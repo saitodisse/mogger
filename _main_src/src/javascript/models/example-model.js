@@ -9,17 +9,8 @@ instance: exampleModel
 
 */
 
-////
-// PersonModel
 module.exports = Model.extend({
-    //urlRoot: '/api/persons',
 
-    // initialize: function () {
-    //     this.fetch();
-    // },
-
-    // Aqui declaramos explicitamente as propriedades
-    // serve como um documentação
     props: {
         id: 'string',
         title: 'string',
@@ -33,6 +24,12 @@ module.exports = Model.extend({
             fn: function () {
                 return 'https://github.com/saitodisse/mogger/blob/gh-pages/_main_src/src/javascript/pages/examples/' + this.id + '-src.js';
             }
-        }
+        },
+        hashUrl: {
+            deps: ['id'],
+            fn: function () {
+                return '#' + this.id;
+            }
+        },
     }
 });

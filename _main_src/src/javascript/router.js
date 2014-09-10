@@ -32,14 +32,7 @@ module.exports = Router.extend({
 
         var ExamplesPage = require('./pages/examples-page');
 
-        var data = require('./data/all-examples')();
-        var ExampleCollection = require('./models/example-collection');
-        var exampleCollection = new ExampleCollection(data);
-
-        var exampleModel = exampleCollection.at(exampleNumber-1);
-
-        window.app.exampleCollection = exampleCollection;
-        window.app.examplesModel = exampleModel;
+        var exampleModel = window.app.exampleCollection.at(exampleNumber-1);
 
         this.trigger('page', new ExamplesPage({
             model: exampleModel

@@ -6,6 +6,7 @@
 // This view also handles all the 'document' level events such as keyboard shortcuts.
 var View = require('ampersand-view');
 var ViewSwitcher = require('ampersand-view-switcher');
+var ExampleDropdownItem = require('../pages/example-dropdown-item');
 var $ = require('jquery');
 var _ = require('lodash');
 // var tracking = require('../helpers/metrics');
@@ -30,6 +31,8 @@ module.exports = View.extend({
     render: function () {
         // main renderer
         this.renderWithTemplate();
+
+        this.renderCollection(window.app.exampleCollection, ExampleDropdownItem, this.getByRole('dropdown-itens'));
 
         // init and configure our page switcher
         this.pageSwitcher = new ViewSwitcher(this.getByRole('page-container'), {
@@ -74,12 +77,13 @@ module.exports = View.extend({
     },
 
     updateActiveNav: function () {
-        var path = window.location.pathname.slice(1);
+        var path = window.location.hash;
 
         this.getAll('.nav a[href]').forEach(function (aTag) {
-            var aPath = aTag.pathname.slice(1);
 
-            if ((!aPath && !path) || (aPath && path.indexOf(aPath) === 0)) {
+            var aHash = aTag.hash;
+
+            if ((!aHash && !path) || (aHash && path.indexOf(aHash) === 0)) {
                 $(aTag.parentNode).addClass('active');
             } else {
                 $(aTag.parentNode).removeClass('active');
