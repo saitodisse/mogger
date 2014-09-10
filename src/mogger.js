@@ -13,8 +13,7 @@
 
 var meld                = require('meld');
 var _                   = require('lodash');
-var traceAspect           = require('./trace-aspect');
-var helpers             = require('./helpers');
+var traceAspect         = require('./trace-aspect');
 var defaultConfig       = require('./default-config');
 var interceptorsHelpers = require('./interceptors-helpers');
 var Reporter            = require('./reporter');
@@ -26,10 +25,11 @@ var Mogger = function (options) {
 
     this._targets = [];
 
-    var mergedConfig = _.merge(defaultConfig, options);
+    // defaults from ./default-config.js
+    _.merge(this, defaultConfig);
 
-    // merge all options to this
-    helpers.merge(this, mergedConfig);
+    // override with constructor options
+    _.merge(this, options);
 
     this.surrogateTargets = options.surrogateTargets;
 };

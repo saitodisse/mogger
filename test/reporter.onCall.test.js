@@ -16,18 +16,21 @@ var assert          = require('assert'),
     sinon           = require('sinon'),
     Reporter        = require('../src/reporter'),
     fakeConsole     = require('./fake-console'),
-    helpers         = require('../src/helpers'),
+    _               = require('lodash'),
     defaultConfig = require('../src/default-config'),
     reporter
 ;
 
 describe('Reporter OnCall:', function(){
 
-    var defaultGlobalConfig;
+    var defaultGlobalConfig = {};
 
     beforeEach(function(){
         fakeConsole.logRecorder = [];
-        defaultGlobalConfig = helpers.merge(defaultConfig, { defaultConsole: fakeConsole });
+
+        _.merge(defaultGlobalConfig, defaultConfig);
+        _.merge(defaultGlobalConfig, { defaultConsole: fakeConsole });
+
         reporter = new Reporter({
             globalConfig: defaultGlobalConfig
         });

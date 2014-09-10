@@ -40,4 +40,17 @@ describe('Mogger.Creation:', function(){
         assert.notEqual(console, mogger.defaultConsole);
     });
 
+    it('creating again get the same instance', function() {
+        var mogger = new Mogger({
+            surrogateTargets: [],
+            globalBeforeConfig: {css: 123}
+        });
+
+        assert.deepEqual({css: 123}, mogger.globalBeforeConfig);
+        mogger = new Mogger({
+            surrogateTargets: []
+        });
+        assert.deepEqual(null, mogger.globalBeforeConfig);
+    });
+
 });

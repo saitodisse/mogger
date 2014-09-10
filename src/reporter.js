@@ -17,18 +17,19 @@ var Reporter = function (options) {
 
     this._logs = [];
 
-    var mergedWithGlobals = _.merge({
+    var defaultReporterConfig = {
         Logger                 : ColorfulLogger.Logger,
         before                 : null,
         selectedTargetConfig   : null,
         localInterceptors      : null,
-    }, options.globalConfig);
+    };
 
-    // merge global to this
-    helpers.merge(this, mergedWithGlobals);
-    // merge local to this
-    helpers.merge(this, options.localConfig);
-
+    // defaults to this
+    _.merge(this, defaultReporterConfig);
+    // global to this
+    _.merge(this, options.globalConfig);
+    // local to this
+    _.merge(this, options.localConfig);
 
     var logger  = new this.Logger({
         output: this.defaultConsole
@@ -139,19 +140,20 @@ Reporter.prototype._addMainLog = function(mainMessage) {
     this._logs.push(targetLog);
 };
 
-Reporter.prototype._getOrMergeLogConfiguration = function(globalConfig, localConfig) {
+Reporter.prototype._getOrMergeLogConfiguration = function(globalLogConfig, localLogConfig) {
 
-    var hasGlobal = globalConfig !== null;
-    var hasLocal = localConfig !== null;
+    // var hasGlobal = globalLogConfig !== null;
+    // var hasLocal = localLogConfig !== null;
 
-    var selectedConfig = localConfig || globalConfig;
+    var selectedLogConfig = {};//localLogConfig || globalLogConfig;
 
     // merge both
-    if(hasLocal && hasGlobal){
-        selectedConfig = helpers.merge(globalConfig, localConfig);
-    }
+    // if(hasLocal && hasGlobal){
+    _.merge(selectedLogConfig, globalLogConfig);
+    _.merge(selectedLogConfig, localLogConfig);
+    // }
 
-    return selectedConfig;
+    return selectedLogConfig;
 };
 
 Reporter.prototype._renderToConsole = function(info, mainMessage) {

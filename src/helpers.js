@@ -1,12 +1,6 @@
 var _ = require('lodash');
 
-var merge = function(object, sources) {
-    return _.merge(object, sources);
-};
-
 var checkRelevantArguments = function(args) {
-
-
   if(args.length === 0){
     return false;
   }
@@ -30,6 +24,5 @@ var checkRelevantArguments = function(args) {
 };
 
 module.exports = {
-    merge: merge,
     checkRelevantArguments: checkRelevantArguments,
 };

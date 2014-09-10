@@ -93,14 +93,16 @@ describe('traceObj() Functional Tests', function(){
 
         it('with before', function () {
             mogger.traceObj({
-                before: {
-                    message: 'Sample OBJ: ',
+                localBeforeConfig: {
                     css: 'color: blue'
                 },
-                targetTitle: 'SAMPLE_OBJ',
                 localTargetConfig: {
                     css: 'color: red'
-                }
+                },
+                before: {
+                    message: 'Sample OBJ: ',
+                },
+                targetTitle: 'SAMPLE_OBJ',
             });
 
             sample_obj.addNumbers();
@@ -129,14 +131,16 @@ describe('traceObj() Functional Tests', function(){
 
         it('with before', function () {
             mogger.traceObj({
-                before: {
-                    message: 'Sample OBJ: ',
+                localBeforeConfig: {
                     size: 15
                 },
-                targetTitle: 'SAMPLE_OBJ',
                 localTargetConfig: {
                     size: 15
-                }
+                },
+                before: {
+                    message: 'Sample OBJ: '
+                },
+                targetTitle: 'SAMPLE_OBJ',
             });
 
             sample_obj.addNumbers();

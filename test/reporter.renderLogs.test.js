@@ -16,14 +16,14 @@ var assert          = require('assert'),
     sinon           = require('sinon'),
     Reporter        = require('../src/reporter'),
     fakeConsole     = require('./fake-console'),
-    helpers         = require('../src/helpers'),
+    _               = require('lodash'),
     defaultConfig   = require('../src/default-config'),
     reporter
 ;
 
 describe('Reporter RenderLogs:', function(){
 
-    var defaultGlobalConfig;
+    var defaultGlobalConfig = {};
     var fakeInfo;
 
     beforeEach(function(){
@@ -33,7 +33,10 @@ describe('Reporter RenderLogs:', function(){
         });
 
         fakeConsole.logRecorder = [];
-        defaultGlobalConfig = helpers.merge(defaultConfig, { defaultConsole: fakeConsole });
+
+        _.merge(defaultGlobalConfig, defaultConfig);
+        _.merge(defaultGlobalConfig, { defaultConsole: fakeConsole });
+
         reporter = new Reporter({
             globalConfig: defaultGlobalConfig
         });
@@ -56,8 +59,7 @@ describe('Reporter RenderLogs:', function(){
 
         it('adds the first log', function() {
             var beforeConfig = {
-                message: 'before message:',
-                logType: 'log'
+                message: 'before message:'
             };
 
             reporter = new Reporter({
@@ -226,7 +228,7 @@ describe('Reporter RenderLogs:', function(){
                 size: 10
             }];
 
-
+            console.log('\n\nreporter.globalConfig: ', reporter.globalConfig);
             reporter._renderToConsole(fakeInfo, fakeInfo.method);
 
             assert.equal(3, fakeConsole.logRecorder.length);
