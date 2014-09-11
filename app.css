@@ -30,6 +30,19 @@ body {
   .title-box .colorful-08 {
     color: #ccbb33; }
 
+.title-box-example h1 {
+  font-size: 50px;
+  margin: 11px 0; }
+.title-box-example h3 {
+  font-size: 28px;
+  margin: 18px 0; }
+.title-box-example p.description {
+  font-size: 18px;
+  margin: 29px 0 34px 0 !important; }
+.title-box-example p.button {
+  font-size: 18px;
+  margin: 15px 0 0 0 !important; }
+
 .alert.alert-success.alert-dismissible {
   margin-top: 16px; }
 
