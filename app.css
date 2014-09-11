@@ -33,6 +33,9 @@ body {
 .alert.alert-success.alert-dismissible {
   margin-top: 16px; }
 
+.buttons-examples-top {
+  margin-top: 16px; }
+
 /*! normalize.css v3.0.1 | MIT License | git.io/normalize */
 html {
   font-family: sans-serif;
