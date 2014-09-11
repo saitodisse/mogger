@@ -28,6 +28,7 @@ module.exports = View.extend({
     events: {
         'click a[href]': 'handleLinkClick'
     },
+
     render: function () {
         // main renderer
         this.renderWithTemplate();
@@ -72,7 +73,7 @@ module.exports = View.extend({
         // and it's a local url, navigate internally
         if (local && isHash && !e.ctrlKey && !e.shiftKey && !e.altKey && !e.metaKey) {
             e.preventDefault();
-            app.navigate(aTag.hash);
+            window.app.navigate(aTag.hash);
         }
     },
 

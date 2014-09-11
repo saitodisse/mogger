@@ -2,8 +2,8 @@
 
 var Router = require('./router');
 var MainView = require('./views/main-view');
+var shortcuts = require('./shortcuts');
 var $ = require('jquery');
-// var domReady = require('domready');
 
 module.exports = {
     // this is the the whole app initter
@@ -39,6 +39,9 @@ module.exports = {
 
             // activating bootstrap JS
             window.jQuery = $;require('bootstrap');
+
+            //shortcuts
+            shortcuts('registerShortcuts');
         });
     },
 

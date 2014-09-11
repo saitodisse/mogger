@@ -6,7 +6,7 @@ var HomePage = require('./pages/home-page');
 module.exports = Router.extend({
     routes: {
         ''            : 'load_home',
-        'ex-(*path)'  : 'example_01',
+        'ex-(*path)'  : 'examples',
         '(*path)'     : 'catchAll'
     },
 
@@ -15,14 +15,12 @@ module.exports = Router.extend({
         this.trigger('page', new HomePage());
     },
 
-    example_01: function () {
 
+    examples: function () {
         /*
-
-        hash = 'ex-01'
-        exampleNumber = 1
-        exampleString = '01'
-
+        document.location.hash => '#ex-01'
+        exampleNumber          => 1
+        exampleString          => '01'
          */
         var exampleNumber = Number(/ex-(\d+)/.exec(document.location.hash)[1]);
         var exampleString = exampleNumber + '';
