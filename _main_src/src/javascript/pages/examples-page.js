@@ -32,6 +32,11 @@ module.exports = BasePage.extend({
             name: 'href',
             role: 'sourceExampleUrl'
         },
+
+        'model.id': {
+            type: 'text',
+            role: 'button-example-title'
+        },
     },
 
     events: {
@@ -51,7 +56,6 @@ module.exports = BasePage.extend({
     nextExample: function() {
         shortcuts('next');
     },
-
 
     render: function () {
         this.renderWithTemplate(this);

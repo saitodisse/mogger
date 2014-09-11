@@ -70,8 +70,4 @@ module.exports = function(action) {
         nextExample();
     }
 
-    if(action === 'runExample'){
-        window.app.runExample();
-    }
-
 };
