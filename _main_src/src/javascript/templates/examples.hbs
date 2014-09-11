@@ -1,7 +1,7 @@
 <div>
 
     <div class="row buttons-examples-top">
-      <div class="col-md-6">
+      <div class="col-md-12">
         <div class="btn-group btn-group-justified">
           <a class="btn btn-default" role="button-previous">
             <span class="glyphicon glyphicon-step-backward"></span>
@@ -17,42 +17,47 @@
     </div>
 
     <div class="row">
+      <div class="col-md-12">
 
-      <div class="col-md-6">
-
-        <div class="title-box text-center">
-
-          <h1 role="title">ex-01</h1>
-          <p role="subTitle">
-            logging a simple object
+        <div class="title-box-example text-center">
+          <h1 role="title">TITLE_HERE</h1>
+          <h3 role="subTitle">
+            SUB-TITLE_HERE
+          </h3>
+          <p class="description" role="description">
+            DESCRIPTION_HERE
           </p>
-
-          <p>
-            <a target="_blank" role="sourceExampleUrl">
+          <p class="button">
+            <a class="btn btn-success" target="_blank" role="button-next">
+              next example
+            </a>
+          </p>
+          <p class="button">
+            <a class="btn btn-default" target="_blank" role="sourceExampleUrl">
               see source on github
             </a>
           </p>
-
         </div>
 
       </div>
+    </div>
 
-
-
-      <div class="col-md-offset-1 col-md-5">
-
-        <div class="alert alert-success alert-dismissible" role="alert">
-          <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-          <h3>Please, open your console.</h3>
-
-          <hr>
-          <h4>shortcuts:</h4>
-          <p>Windows / Linux: <strong>F12</strong> or <strong>Ctrl + Shift + I</strong></p>
-          <p>Mac: <strong>Cmd + Opt + I</strong></p>
+    <!-- Modal -->
+    <div class="modal fade" id="detectConsoleModal" tabindex="-1" role="dialog" aria-labelledby="detectConsoleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h3 class="modal-title" id="detectConsoleModalLabel">Please, open your console.</h3>
+          </div>
+          <div class="modal-body">
+            <h4>keyboards shortcuts:</h4>
+            <p>Windows / Linux: <strong>F12</strong></p>
+            <p>Windows / Linux: <strong>Ctrl + Shift + I</strong></p>
+            <p>Mac: <strong>Cmd + Opt + I</strong></p>
+          </div>
         </div>
-
       </div>
-
     </div>
 
 </div>

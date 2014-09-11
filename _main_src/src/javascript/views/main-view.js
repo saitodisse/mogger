@@ -63,7 +63,7 @@ module.exports = View.extend({
 
         var hljs = require('highlight.js');
         $('pre code').each(function(i, block) {
-            console.log('highlight.js');
+            //console.log('highlight.js', block);
             hljs.highlightBlock(block);
         });
     },

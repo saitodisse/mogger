@@ -15,6 +15,7 @@ module.exports = Model.extend({
         id: 'string',
         title: 'string',
         subTitle: 'string',
+        description: 'string',
         script: 'function'
     },
 

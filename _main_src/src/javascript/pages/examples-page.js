@@ -3,6 +3,7 @@
 var BasePage = require('./base-page');
 var configuration = require('../configuration');
 var shortcuts = require('../shortcuts');
+var $ = require('jquery');
 
 /*
 
@@ -25,6 +26,11 @@ module.exports = BasePage.extend({
         'model.subTitle': {
             type: 'text',
             role: 'subTitle'
+        },
+
+        'model.description': {
+            type: 'text',
+            role: 'description'
         },
 
         'model.sourceExampleUrl': {
@@ -63,6 +69,11 @@ module.exports = BasePage.extend({
         // run example script
         this.model.script();
         this.pageTitle = this.model.title;
+
+        $(function() {
+            // from app.js
+            window.app.devTools.verifyConsole();
+        });
 
         return this;
     },

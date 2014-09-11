@@ -58,6 +58,7 @@
     "ampersand-view": "^6.0.3",
     "ampersand-view-switcher": "^1.0.2",
     "bootstrap-sass": "^3.2.0",
+    "devtools-detect": "git://github.com/saitodisse/devtools-detect",
     "highlight.js": "^8.2.0",
     "jquery": "~2.1.0",
     "lodash": "^2.4.1",

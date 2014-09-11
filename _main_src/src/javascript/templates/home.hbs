@@ -28,7 +28,10 @@
 
         <hr>
         <h3>Usage</h3>
-        <pre><code class="javascript">/**
+        <pre><code class="javascript">
+var Mogger = require('Mogger');
+
+/**
  * an object with two methods
  */
 var simple_obj = {
@@ -40,7 +43,6 @@ var simple_obj = {
  * instantiate mogger
  * add the surrogateTargets array.
  */
-var Mogger = require('Mogger');
 var mogger = new Mogger({
     surrogateTargets: [{
         title: 'SIMPLE_OBJ',
@@ -53,7 +55,8 @@ var mogger = new Mogger({
  */
 mogger.traceObj({
     targetTitle: 'SIMPLE_OBJ'
-});</code></pre>
+});
+</code></pre>
 
 		{{!-- <img src="{{rootDir}}images/gulp.png" alt="" /> --}}
       </div>

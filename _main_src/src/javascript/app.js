@@ -42,8 +42,58 @@ module.exports = {
 
             //shortcuts
             shortcuts('registerShortcuts');
+
+            // is devtools open?
+            self._detectDevToolsOpen();
         });
     },
+
+    _detectDevToolsOpen: function() {
+        // export helper to global "window.app.devTools"
+        window.app.devTools = {
+            devtools_detect: require('devtools-detect'),
+            isOpen: null,
+            verifyConsole: this._verifyConsole,
+            openModal: this._openModal,
+            closeModal: this._closeModal,
+        };
+
+        // on "browser event"
+        window.addEventListener('devtoolschange', function (e) {
+            if(e.detail.open){
+                window.app.devTools.closeModal();
+            }
+            else{
+                window.app.devTools.openModal();
+            }
+        });
+    },
+
+    _verifyConsole: function() {
+        var self = this;
+        if(window.app.devTools.isOpen === true){
+            window.app.devTools.closeModal();
+        }
+        else if (window.app.devTools.isOpen === false){
+            window.app.devTools.openModal();
+        }
+        else if (window.app.devTools.isOpen === null){
+            setTimeout(function() {
+                // console.log('call again...');
+                window.app.devTools.isOpen = window.app.devTools.devtools_detect.open;
+                window.app.devTools.verifyConsole()
+            }, 600);
+        }
+    },
+    // _checkConsoleOpen: function() {
+    // },
+    _openModal: function() {
+        $('#detectConsoleModal').modal('show');
+    },
+    _closeModal: function() {
+        $('#detectConsoleModal').modal('hide');
+    },
+
 
     // This is how you navigate around the app.
     // this gets called by a global click handler that handles
