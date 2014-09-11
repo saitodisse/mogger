@@ -27,19 +27,33 @@
         <pre>npm install mogger --save</pre>
 
         <hr>
-        <h3>Configuring Mogger</h3>
-        <pre class="prettyprint lang-js">var Mogger = require('Mogger');</pre>
-
-        <hr>
         <h3>Usage</h3>
-        <pre class="prettyprint lang-js">// get the tracer
-var tracer = new Mogger({/* global configurations */});
+        <pre><code class="javascript">/**
+ * an object with two methods
+ */
+var simple_obj = {
+    methodA: function() {},
+    methodB: function() {}
+};
 
-// start watching some targets
-tracer.traceObj({
-  before: { message: 'SimpleObj -> ', css: 'color: #A42' },
-  target: simpleObj, targetConfig: {  css: 'color: #E42' }
-});</pre>
+/**
+ * instantiate mogger
+ * add the surrogateTargets array.
+ */
+var Mogger = require('Mogger');
+var mogger = new Mogger({
+    surrogateTargets: [{
+        title: 'SIMPLE_OBJ',
+        target: simple_obj
+    }]
+});
+
+/**
+ * tracing all methods from simple_obj
+ */
+mogger.traceObj({
+    targetTitle: 'SIMPLE_OBJ'
+});</code></pre>
 
 		{{!-- <img src="{{rootDir}}images/gulp.png" alt="" /> --}}
       </div>

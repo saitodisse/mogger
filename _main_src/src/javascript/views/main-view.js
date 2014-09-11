@@ -60,6 +60,12 @@ module.exports = View.extend({
 
         // mark the correct nav item selected
         this.updateActiveNav();
+
+        var hljs = require('highlight.js');
+        $('pre code').each(function(i, block) {
+            console.log('highlight.js');
+            hljs.highlightBlock(block);
+        });
     },
 
     handleLinkClick: function (e) {

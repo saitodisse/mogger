@@ -13,5 +13,5 @@ instance: homePage
 
 module.exports = BasePage.extend({
     pageTitle: 'home',
-    template: require('../templates/home')(configuration)
+    template: require('../templates/home')(configuration),
 });
