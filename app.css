@@ -8,11 +8,25 @@ body {
   font-family: sans-serif; }
 
 .title-box {
-  font-family: monospace, 'Courier New'; }
+  font-family: Menlo, Monaco, Consolas, "Courier New", monospace; }
+  .title-box .mainTitle {
+    color: #4C4E4E;
+    display: block;
+    box-sizing: border-box;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 160px;
+    font-weight: 500;
+    margin: 49px 0 29px 0;
+    text-shadow: rgba(0, 0, 0, 0.3) 2px 3px 1px; }
+    @media screen and (max-width: 640px) {
+      .title-box .mainTitle {
+        font-size: 64px;
+        border-style: none; } }
   .title-box h1 {
-    font-size: 64px; }
+    font-size: 72px; }
   .title-box p {
-    font-size: 24px; }
+    font-size: 24px;
+    margin-bottom: 40px; }
   .title-box .colorful-01 {
     color: #f80c12; }
   .title-box .colorful-02 {
@@ -30,6 +44,13 @@ body {
   .title-box .colorful-08 {
     color: #ccbb33; }
 
+.home-boby {
+  font-size: 18px; }
+
+code.javascript.hljs {
+  font-size: 15px;
+  font-weight: bold; }
+
 .title-box-example h1 {
   font-size: 50px;
   margin: 11px 0; }
@@ -42,9 +63,6 @@ body {
 .title-box-example p.button {
   font-size: 18px;
   margin: 15px 0 0 0 !important; }
-
-.alert.alert-success.alert-dismissible {
-  margin-top: 16px; }
 
 .buttons-examples-top {
   margin-top: 16px; }
