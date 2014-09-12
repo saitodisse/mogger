@@ -2,10 +2,12 @@
 
 var Router = require('ampersand-router');
 var HomePage = require('./pages/home-page');
+var Screenshots = require('./pages/screenshots');
 
 module.exports = Router.extend({
     routes: {
         ''            : 'load_home',
+        'screenshots' : 'load_screenshots',
         'ex-(*path)'  : 'examples',
         '(*path)'     : 'catchAll'
     },
@@ -13,6 +15,10 @@ module.exports = Router.extend({
     // ------- ROUTE HANDLERS ---------
     load_home: function () {
         this.trigger('page', new HomePage());
+    },
+
+    load_screenshots: function () {
+        this.trigger('page', new Screenshots());
     },
 
 
