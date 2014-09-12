@@ -39,20 +39,22 @@ module.exports = function() {
                 target: simple_obj_2
             }
         ],
-        globalInterceptors: {
-            filterRegex: /^.*_(A|B)/i,
-            callback: function(info) {
-                var arg0 = '', arg1 = '';
-                if(info.args[0]){
-                    arg0 = info.args[0];
-                }
-                if(info.args[1]){
-                    arg1 = ', ' + info.args[1];
-                }
+        globalInterceptors: [
+            {
+                filterRegex: /^.*_(A|B)/i,
+                callback: function(info) {
+                    var arg0 = '', arg1 = '';
+                    if(info.args[0]){
+                        arg0 = info.args[0];
+                    }
+                    if(info.args[1]){
+                        arg1 = ', ' + info.args[1];
+                    }
 
-                return info.method + '(' + arg0 + arg1 + ')';
+                    return info.method + '(' + arg0 + arg1 + ')';
+                }
             }
-        }
+        ],
     });
 
     /**

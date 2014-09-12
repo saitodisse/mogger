@@ -7,7 +7,7 @@
 		font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 		font-size: 160px;
 		font-weight: 500;
-		margin: 49px 0 29px 0;
+		margin: 23px 0 29px 0;
 		text-shadow: rgba(0, 0, 0, 0.3) 2px 3px 1px;
 
 		@media screen and (max-width: 640px) {
@@ -23,9 +23,18 @@
 		font-size: 72px;
 	}
 
-	p {
+	h3 {
+		font-size: 32px;
+		margin-bottom: 20px;
+	}
+
+	p.subTitle {
 		font-size: 24px;
 		margin-bottom: 40px;
+	}
+
+	span {
+		font-weight: bold;
 	}
 
 	.colorful-01 {
@@ -52,13 +61,18 @@
 	.colorful-08 {
 		color: #ccbb33;
 	}
+
 }
 
 .home-boby{
 	font-size: 18px;
+	p {
+		margin: 17px 0px 0px 22px;
+		line-height: 30px;
+	}
 }
 
 code.javascript.hljs {
-	font-size: 15px;
-	font-weight: bold
+	font-size: 16px;
+	font-weight: 800
 }

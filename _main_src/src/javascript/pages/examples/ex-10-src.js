@@ -39,12 +39,14 @@ module.exports = function() {
                 target: simple_obj_2
             }
         ],
-        globalInterceptors: {
-            filterRegex: /^.*_A/i,
-            callback: function(info) {
-                return '! MATCH !: ' + info.method;
+        globalInterceptors: [
+            {
+                filterRegex: /^.*_A/i,
+                callback: function(info) {
+                    return '! MATCH !: ' + info.method;
+                }
             }
-        }
+        ],
     });
 
     /**
