@@ -15,7 +15,7 @@ module.exports = BasePage.extend({
     template: require('../templates/example-dropdown-item')(configuration),
 
     bindings: {
-        'model.title': {
+        'model.exampleTitle': {
             type: 'text',
             role: 'itemLink'
         },
@@ -23,7 +23,7 @@ module.exports = BasePage.extend({
         'model.subTitle': {
             type: 'attribute',
             name: 'title',
-            role: 'subTitle'
+            role: 'itemLink'
         },
 
         'model.hashUrl': {

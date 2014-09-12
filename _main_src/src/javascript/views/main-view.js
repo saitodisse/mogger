@@ -90,6 +90,10 @@ module.exports = View.extend({
 
             var aHash = aTag.hash;
 
+            if(aHash.length === 0){
+                return;
+            }
+
             if ((!aHash && !path) || (aHash && path.indexOf(aHash) === 0)) {
                 $(aTag.parentNode).addClass('active');
             } else {

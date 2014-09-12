@@ -1,21 +1,22 @@
 <div>
     <div class="title-box text-center">
-
-      <h1>Mogger</h1>
+      <span class="mainTitle">Mogger</span>
       <p>automatic customizable
       <span class="colorful-01">c</span><span class="colorful-02">o</span><span class="colorful-03">l</span><span class="colorful-04">o</span><span class="colorful-05">r</span><span class="colorful-06">f</span><span class="colorful-07">u</span><span class="colorful-08">l</span>       logger</p>
     </div>
 
-    <div class="row">
+
+    <div class="row home-boby">
       <div class="col-xs-10 col-xs-offset-1">
 
         <h3>What is Mogger?</h3>
         <p>
-          Mogger it is a way to log your app without change him.
-          Uses AOP (Aspect-oriented programming) library named <a href="https://github.com/cujojs/meld">meld.js</a>
-          and other library that facilitates the print
-          of colorful outputs in browser, the <a href="https://github.com/saitodisse/colorful-logger">colorful-logger</a>.
+          Mogger it is a way to log your app without change it.
+          Uses AOP (Aspect-oriented programming) <a href="https://github.com/cujojs/meld">meld.js</a> lib
+          and <a href="https://github.com/saitodisse/colorful-logger">colorful-logger</a> lib,
+          that facilitates the output of colorful logs on browser.
         </p>
+
         <p>
           The goal of this library is to be easy to configure and to help
           the programmer to understand the inner of some javascript codes.
@@ -24,41 +25,40 @@
 
         <hr>
         <h3>Instalation</h3>
-        <pre>npm install mogger --save</pre>
+        <pre><code class="javascript">npm install mogger --save</code></pre>
 
         <hr>
         <h3>Usage</h3>
-        <pre><code class="javascript">
-var Mogger = require('Mogger');
+        <pre><code class="javascript">var Mogger = require('Mogger');
 
-/**
- * an object with two methods
- */
+// an object with two methods
 var simple_obj = {
     methodA: function() {},
     methodB: function() {}
 };
 
-/**
- * instantiate mogger
- * add the surrogateTargets array.
- */
+// initialize mogger
 var mogger = new Mogger({
+    // add the targets here
     surrogateTargets: [{
         title: 'SIMPLE_OBJ',
         target: simple_obj
     }]
 });
 
-/**
- * tracing all methods from simple_obj
- */
+// enable tracing for all methods in simple_obj
 mogger.traceObj({
     targetTitle: 'SIMPLE_OBJ'
 });
 </code></pre>
 
-		{{!-- <img src="{{rootDir}}images/gulp.png" alt="" /> --}}
+      <h3>Now what?</h3>
+      <p><a href="#ex-01">examples</a></p>
+      <p><a href="https://github.com/saitodisse/mogger/wiki/mogger-API-::-traceObj">docs</a></p>
+      <p><a href="https://github.com/saitodisse/mogger">github</a></p>
+
+
+      <hr>
       </div>
 
     </div>

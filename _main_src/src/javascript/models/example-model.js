@@ -20,6 +20,12 @@ module.exports = Model.extend({
     },
 
     derived: {
+        exampleTitle: {
+            deps: ['id', 'title'],
+            fn: function () {
+                return this.id + ' : : ' + this.title;
+            }
+        },
         sourceExampleUrl: {
             deps: ['id'],
             fn: function () {
