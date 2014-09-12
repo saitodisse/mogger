@@ -61,6 +61,8 @@ module.exports = View.extend({
         // mark the correct nav item selected
         this.updateActiveNav();
 
+        this.sendPageViewGoogleAnalytics();
+
         var hljs = require('highlight.js');
         $('pre code').each(function(i, block) {
             //console.log('highlight.js', block);
@@ -99,6 +101,13 @@ module.exports = View.extend({
             } else {
                 $(aTag.parentNode).removeClass('active');
             }
+        });
+    },
+
+    sendPageViewGoogleAnalytics: function() {
+        var path = window.location.hash;
+        window.ga('send', 'pageview', {
+          'page': path
         });
     }
 });
