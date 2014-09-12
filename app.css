@@ -5,7 +5,7 @@ body {
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
   color: #555555;
-  font-family: sans-serif; }
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
 
 .title-box {
   font-family: Menlo, Monaco, Consolas, "Courier New", monospace; }
@@ -16,7 +16,7 @@ body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-size: 160px;
     font-weight: 500;
-    margin: 49px 0 29px 0;
+    margin: 23px 0 29px 0;
     text-shadow: rgba(0, 0, 0, 0.3) 2px 3px 1px; }
     @media screen and (max-width: 640px) {
       .title-box .mainTitle {
@@ -24,9 +24,14 @@ body {
         border-style: none; } }
   .title-box h1 {
     font-size: 72px; }
-  .title-box p {
+  .title-box h3 {
+    font-size: 32px;
+    margin-bottom: 20px; }
+  .title-box p.subTitle {
     font-size: 24px;
     margin-bottom: 40px; }
+  .title-box span {
+    font-weight: bold; }
   .title-box .colorful-01 {
     color: #f80c12; }
   .title-box .colorful-02 {
@@ -46,10 +51,13 @@ body {
 
 .home-boby {
   font-size: 18px; }
+  .home-boby p {
+    margin: 17px 0px 0px 22px;
+    line-height: 30px; }
 
 code.javascript.hljs {
-  font-size: 15px;
-  font-weight: bold; }
+  font-size: 16px;
+  font-weight: 800; }
 
 .title-box-example h1 {
   font-size: 50px;
