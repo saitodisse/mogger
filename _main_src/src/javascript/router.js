@@ -26,6 +26,7 @@ module.exports = Router.extend({
     load_styleGenerator: function () {
         var StyleGeneratorModel = require('./models/style-generator-model');
         var styleGeneratorModel = new StyleGeneratorModel();
+        window.app.styleGeneratorModel = styleGeneratorModel;
         this.trigger('page', new StyleGeneratorPage({
             model: styleGeneratorModel
         }));
