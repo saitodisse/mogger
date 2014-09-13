@@ -3,13 +3,13 @@
     <div class="row buttons-examples-top">
       <div class="col-sm-offset-8 col-sm-4 col-md-offset-9 col-md-3">
         <div class="btn-group btn-group-justified">
-          <a class="btn btn-default" role="button-previous">
+          <a class="btn btn-default" data-hook="button-previous">
             <span class="glyphicon glyphicon-step-backward"></span>
           </a>
-          <a class="btn btn-default" role="button-example-title">
+          <a class="btn btn-default" data-hook="button-example-title">
             [example id]
           </a>
-          <a class="btn btn-default" role="button-next">
+          <a class="btn btn-default" data-hook="button-next">
             <span class="glyphicon glyphicon-step-forward"></span>
           </a>
         </div>
@@ -20,20 +20,20 @@
       <div class="col-md-12">
 
         <div class="title-box-example">
-          <h1 role="title">TITLE_HERE</h1>
-          <h3 role="subTitle">
+          <h1 data-hook="title">TITLE_HERE</h1>
+          <h3 data-hook="subTitle">
             SUB-TITLE_HERE
           </h3>
-          <p class="description" role="description">
+          <p class="description" data-hook="description">
             DESCRIPTION_HERE
           </p>
           <p class="button">
-            <a class="btn btn-default" target="_blank" role="sourceExampleUrl">
+            <a class="btn btn-default" target="_blank" data-hook="sourceExampleUrl">
               see source on github
             </a>
           </p>
           <p class="button">
-            <a class="btn btn-success" target="_blank" role="button-next">
+            <a class="btn btn-success" target="_blank" data-hook="button-next">
               next example
             </a>
           </p>
@@ -43,7 +43,7 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="detectConsoleModal" tabindex="-1" role="dialog" aria-labelledby="detectConsoleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="detectConsoleModal" tabindex="-1" data-hook="dialog" aria-labelledby="detectConsoleModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">

@@ -14,19 +14,22 @@
         <div class="navbar-collapse collapse" id="navbar-main">
           <ul class="nav navbar-nav">
 
-            <li>
-              <a href="https://github.com/saitodisse/mogger/wiki">docs</a>
-            </li>
-
-
             <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown" href="" id="themes">examples <span class="caret"></span></a>
-              <ul class="dropdown-menu" aria-labelledby="themes" role="dropdown-itens">
+              <ul class="dropdown-menu" aria-labelledby="themes" data-hook="dropdown-itens">
               </ul>
             </li>
 
             <li>
               <a href="#screenshots">screenshots</a>
+            </li>
+
+            <li>
+              <a href="#style-generator">style-generator</a>
+            </li>
+
+            <li>
+              <a href="https://github.com/saitodisse/mogger/wiki">docs</a>
             </li>
 
             <li>
@@ -39,6 +42,6 @@
       </div>
     </div>
 
-    <div class="container" role="page-container" id="main-container">
+    <div class="container" data-hook="page-container" id="main-container">
     </div>
 </body>

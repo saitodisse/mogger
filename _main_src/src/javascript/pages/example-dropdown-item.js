@@ -17,19 +17,19 @@ module.exports = BasePage.extend({
     bindings: {
         'model.exampleTitle': {
             type: 'text',
-            role: 'itemLink'
+            hook: 'itemLink'
         },
 
         'model.subTitle': {
             type: 'attribute',
             name: 'title',
-            role: 'itemLink'
+            hook: 'itemLink'
         },
 
         'model.hashUrl': {
             type: 'attribute',
             name: 'href',
-            role: 'itemLink'
+            hook: 'itemLink'
         },
 
     },

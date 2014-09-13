@@ -29,14 +29,14 @@ module.exports = View.extend({
         'click a[href]': 'handleLinkClick'
     },
 
-    render: function () {
+    render: function (opts) {
         // main renderer
         this.renderWithTemplate();
 
-        this.renderCollection(window.app.exampleCollection, ExampleDropdownItem, this.getByRole('dropdown-itens'));
+        this.renderCollection(window.app.exampleCollection, ExampleDropdownItem, this.el.querySelector('[data-hook=dropdown-itens]'), opts);
 
         // init and configure our page switcher
-        this.pageSwitcher = new ViewSwitcher(this.getByRole('page-container'), {
+        this.pageSwitcher = new ViewSwitcher(this.el.querySelector('[data-hook=page-container]'), {
             show: function (newView/*, oldView*/) {
                 // it's inserted and rendered for me
                 document.title = 'Mogger :: ' + _.result(newView, 'pageTitle');
@@ -59,7 +59,7 @@ module.exports = View.extend({
         this.pageSwitcher.set(view);
 
         // mark the correct nav item selected
-        this.updateActiveNav();
+        this.updateActiveNav(view);
 
         this.sendPageViewGoogleAnalytics();
 
@@ -85,11 +85,11 @@ module.exports = View.extend({
         }
     },
 
-    updateActiveNav: function () {
+    updateActiveNav: function (view) {
         var path = window.location.hash;
 
-        this.getAll('.nav a[href]').forEach(function (aTag) {
-
+        $('.nav a[href]').each(function () {
+            var aTag = $(this)[0];
             var aHash = aTag.hash;
 
             if(aHash.length === 0){

@@ -20,35 +20,35 @@ module.exports = BasePage.extend({
     bindings: {
         'model.title': {
             type: 'text',
-            role: 'title'
+            hook: 'title'
         },
 
         'model.subTitle': {
             type: 'text',
-            role: 'subTitle'
+            hook: 'subTitle'
         },
 
         'model.description': {
             type: 'text',
-            role: 'description'
+            hook: 'description'
         },
 
         'model.sourceExampleUrl': {
             type: 'attribute',
             name: 'href',
-            role: 'sourceExampleUrl'
+            hook: 'sourceExampleUrl'
         },
 
         'model.id': {
             type: 'text',
-            role: 'button-example-title'
+            hook: 'button-example-title'
         },
     },
 
     events: {
-        'click [role="button-example-title"]': 'runExampleAgain',
-        'click [role="button-next"]': 'nextExample',
-        'click [role="button-previous"]': 'previousExample'
+        'click [data-hook="button-example-title"]': 'runExampleAgain',
+        'click [data-hook="button-next"]': 'nextExample',
+        'click [data-hook="button-previous"]': 'previousExample'
     },
 
     runExampleAgain: function() {

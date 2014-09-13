@@ -2,14 +2,16 @@
 
 var Router = require('ampersand-router');
 var HomePage = require('./pages/home-page');
-var Screenshots = require('./pages/screenshots');
+var ScreenshotsPage = require('./pages/screenshots-page');
+var StyleGeneratorPage = require('./pages/style-generator-page');
 
 module.exports = Router.extend({
     routes: {
-        ''            : 'load_home',
-        'screenshots' : 'load_screenshots',
-        'ex-(*path)'  : 'examples',
-        '(*path)'     : 'catchAll'
+        ''                : 'load_home',
+        'screenshots'     : 'load_screenshots',
+        'style-generator' : 'load_styleGenerator',
+        'ex-(*path)'      : 'examples',
+        '(*path)'         : 'catchAll'
     },
 
     // ------- ROUTE HANDLERS ---------
@@ -18,7 +20,11 @@ module.exports = Router.extend({
     },
 
     load_screenshots: function () {
-        this.trigger('page', new Screenshots());
+        this.trigger('page', new ScreenshotsPage());
+    },
+
+    load_styleGenerator: function () {
+        this.trigger('page', new StyleGeneratorPage());
     },
 
 
