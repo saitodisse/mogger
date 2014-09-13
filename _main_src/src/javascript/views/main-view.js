@@ -105,9 +105,9 @@ module.exports = View.extend({
     },
 
     sendPageViewGoogleAnalytics: function() {
-        var path = window.location.hash;
-        window.ga('send', 'pageview', {
-          'page': path
-        });
+        // var path = window.location.hash;
+        // window.ga('send', 'pageview', {
+        //   'page': path
+        // });
     }
 });
