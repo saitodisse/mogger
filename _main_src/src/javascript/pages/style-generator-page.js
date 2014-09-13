@@ -17,8 +17,13 @@ module.exports = BasePage.extend({
     bindings:{
         'model.beforeColor': {
             type: 'attribute',
-            name: 'href',
-            hook: 'sourceExampleUrl'
+            name: 'value',
+            hook: 'color-picker'
+        },
+        'model.beforeSize': {
+            type: 'attribute',
+            name: 'value',
+            hook: 'font-size'
         },
     }
 });

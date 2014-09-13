@@ -33,10 +33,10 @@ module.exports = View.extend({
         // main renderer
         this.renderWithTemplate();
 
-        this.renderCollection(window.app.exampleCollection, ExampleDropdownItem, this.el.querySelector('[data-hook=dropdown-itens]'), opts);
+        this.renderCollection(window.app.exampleCollection, ExampleDropdownItem, this.queryByHook('dropdown-itens'), opts);
 
         // init and configure our page switcher
-        this.pageSwitcher = new ViewSwitcher(this.el.querySelector('[data-hook=page-container]'), {
+        this.pageSwitcher = new ViewSwitcher(this.queryByHook('page-container'), {
             show: function (newView/*, oldView*/) {
                 // it's inserted and rendered for me
                 document.title = 'Mogger :: ' + _.result(newView, 'pageTitle');
@@ -88,8 +88,7 @@ module.exports = View.extend({
     updateActiveNav: function (view) {
         var path = window.location.hash;
 
-        $('.nav a[href]').each(function () {
-            var aTag = $(this)[0];
+        this.queryAll('.nav a[href]').forEach(function(aTag) {
             var aHash = aTag.hash;
 
             if(aHash.length === 0){
