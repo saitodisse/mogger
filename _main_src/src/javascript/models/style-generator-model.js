@@ -19,11 +19,18 @@ module.exports = Model.extend({
     },
 
     derived: {
-        cssBefore: {
+        beforeCss: {
             deps: ['beforeSize', 'beforeColor'],
             fn: function () {
-                return [ 'color=' + this.beforeColor +
-                		 ''];
+                return [ 'color:' + this.beforeColor +
+                		 ''].join();
+            }
+        },
+        targetCss: {
+            deps: ['targetColor'],
+            fn: function () {
+                return [ 'color:' + this.targetColor +
+                		 ''].join();
             }
         },
     }

@@ -32,15 +32,16 @@ module.exports = function() {
 
     this.createMogger = function () {
         this.mogger = new Mogger({
-            surrogateTargets: this.surrogateTargetsList
+            surrogateTargets: this.surrogateTargetsList,
+            showPause: false
         });
 
         this.mogger.traceObj({
             before: { message: 'Simple Obj 1' },
-            localBeforeConfig: { css: this.styleGenModel.cssBefore, size: this.styleGenModel.beforeSize },
+            localBeforeConfig: { css: this.styleGenModel.beforeCss, size: this.styleGenModel.beforeSize },
 
             targetTitle: 'SIMPLE_OBJ_1',
-            localTargetConfig: { css: 'color: #299;' }
+            localTargetConfig: { css: this.styleGenModel.targetCss }
         });
     };
 
