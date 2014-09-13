@@ -17,21 +17,22 @@ module.exports = Model.extend({
         beforeColor: ['string', false, '#000000'],
         beforeFontSize: ['number', false, 12],
         targetColor: ['string', false, '#000000'],
+        targetFontSize: ['number', false, 12],
     },
 
     derived: {
         beforeCss: {
-            deps: ['beforeSize', 'beforeFontSize', 'beforeColor'],
+            deps: ['beforeSize', 'beforeColor', 'beforeFontSize'],
             fn: function () {
                 return [ 'color: '     + this.beforeColor + '; '  +
                 		 'font-size: ' + this.beforeFontSize + 'px'].join();
             }
         },
         targetCss: {
-            deps: ['targetColor'],
+            deps: ['targetColor', 'targetFontSize'],
             fn: function () {
-                return [ 'color:' + this.targetColor +
-                		 ''].join();
+                return [ 'color: '     + this.targetColor + '; '  +
+                		 'font-size: ' + this.targetFontSize + 'px'].join();
             }
         },
     }
