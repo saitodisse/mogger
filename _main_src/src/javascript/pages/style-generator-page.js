@@ -34,7 +34,13 @@ module.exports = BasePage.extend({
 
     render: function () {
         this.renderWithTemplate(this);
+        this._initializeEvents();
+        this._initializeLogs();
+		this._initializeDOM();
+        return this;
+    },
 
+    _initializeEvents: function() {
 		// listen to model
         this.listenTo(this.model, 'change:beforeSize', this.beforeSizeChanged);
 
@@ -47,12 +53,31 @@ module.exports = BasePage.extend({
 
         // update logs on every change
         this.listenTo(this.model, 'change', function(model) {
-    		this.cleanAndShowLogs(model);
+    		this._cleanAndShowLogs(model);
         });
+    },
 
-        // first initialization to mogger
-        this.initializeLogs();
+    _initializeLogs: function() {
+        this.styleGeneratorExecute = new StyleGeneratorExecute({
+        	model: this.model
+        });
+		this.styleGeneratorExecute.setModel(this.model);
+        this.styleGeneratorExecute.createMogger();
+        this._cleanAndShowLogs(this.model);
+    },
 
+    /**
+     * - console.clear()
+     * - and render logs
+     */
+    _cleanAndShowLogs: function(model) {
+		this.styleGeneratorExecute.setModel(model);
+		this.styleGeneratorExecute.clearConsole();
+		this.styleGeneratorExecute.createMogger();
+		this.styleGeneratorExecute.callSources();
+    },
+
+    _initializeDOM: function() {
 		// initialize from model
 		this.beforeSizeChanged(this.model);
 
@@ -61,11 +86,13 @@ module.exports = BasePage.extend({
 
 		this.targetColorChanged(this.model);
 		this.targetFontSizeChanged(this.model);
-
-        return this;
     },
 
-	// set model state
+
+
+	/**
+	 * Set Model State
+	 */
 	setBeforeSize: function(ev) {
 		this.model.beforeSize = Number(ev.target.value);
 	},
@@ -83,7 +110,12 @@ module.exports = BasePage.extend({
 		this.model.targetFontSize = Number(ev.target.value);
 	},
 
-	// get model state
+
+
+
+	/**
+	 * Model Event -> Update DOM
+	 */
     beforeSizeChanged: function(model) {
     	this.queryByHook('font-size-range').value = model.beforeSize;
     	this.queryByHook('font-size-text').value = model.beforeSize;
@@ -105,24 +137,5 @@ module.exports = BasePage.extend({
     	this.queryByHook('target-font-size-range').value = model.targetFontSize;
     	this.queryByHook('target-font-size-text').value = model.targetFontSize;
     },
-
-
-
-    initializeLogs: function() {
-        this.styleGeneratorExecute = new StyleGeneratorExecute({
-        	model: this.model
-        });
-		this.styleGeneratorExecute.setModel(this.model);
-        this.styleGeneratorExecute.createMogger();
-        this.cleanAndShowLogs(this.model);
-    },
-
-    cleanAndShowLogs: function(model) {
-		this.styleGeneratorExecute.setModel(model);
-		this.styleGeneratorExecute.clearConsole();
-		this.styleGeneratorExecute.createMogger();
-		this.styleGeneratorExecute.callSources();
-    },
-
 
 });
