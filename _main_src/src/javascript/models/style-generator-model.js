@@ -13,8 +13,9 @@ module.exports = Model.extend({
 
     props: {
         id: 'string',
-        beforeColor: ['string', true, '#000000'],
-        beforeSize: ['number', true, 12],
+        beforeSize: ['number', false, 12],
+        beforeColor: ['string', false, '#000000'],
+        targetColor: ['string', false, '#000000'],
     },
 
     derived: {
