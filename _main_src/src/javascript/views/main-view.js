@@ -109,5 +109,11 @@ module.exports = View.extend({
         window.ga('send', 'pageview', {
           'page': path
         });
+
+        /**
+         * mixpanel
+         */
+        window.mixpanel.track("Video play");
+
     }
 });
