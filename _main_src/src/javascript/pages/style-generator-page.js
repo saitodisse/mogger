@@ -71,14 +71,14 @@ module.exports = BasePage.extend({
      * - and render logs
      */
     _cleanAndShowLogs: function(model) {
+        // update log immediately
         this.styleGeneratorExecute.setModel(model);
         this.styleGeneratorExecute.clearConsole();
         this.styleGeneratorExecute.createMogger();
         this.styleGeneratorExecute.callSources();
 
-        // update code
+        // update highlighted code after 200ms
         this.codeBeforeCssChanged(model);
-        app.view.highlightCode();
     },
 
     _initializeDOM: function() {
@@ -145,9 +145,15 @@ module.exports = BasePage.extend({
     },
 
     codeBeforeCssChanged: function(model) {
-        this.queryByHook('code-before-css').innerHTML = '\'' + model.beforeCss + '\'';
-        this.queryByHook('code-before-size').innerHTML = model.beforeSize;
-    	this.queryByHook('code-target-css').innerHTML = '\'' + model.targetCss + '\'';
+        if(this.timeOutId){
+            clearTimeout(this.timeOutId);
+        }
+        this.timeOutId = setTimeout(function() {
+            this.queryByHook('code-before-css').innerHTML = '\'' + model.beforeCss + '\'';
+            this.queryByHook('code-before-size').innerHTML = model.beforeSize;
+            this.queryByHook('code-target-css').innerHTML = '\'' + model.targetCss + '\'';
+            app.view.highlightCode();
+        }.bind(this), 200);
     },
 
 });
