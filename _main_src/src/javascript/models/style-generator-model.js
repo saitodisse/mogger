@@ -13,11 +13,18 @@ module.exports = Model.extend({
 
     props: {
         id: 'string',
-        beforeSize: ['number', false, 12],
+        beforeSize: ['number', false, 14],
         beforeColor: ['string', false, '#000000'],
         targetColor: ['string', false, '#000000'],
     },
 
     derived: {
+        cssBefore: {
+            deps: ['beforeSize', 'beforeColor'],
+            fn: function () {
+                return [ 'color=' + this.beforeColor +
+                		 ''];
+            }
+        },
     }
 });
