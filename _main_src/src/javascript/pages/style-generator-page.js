@@ -20,6 +20,9 @@ module.exports = BasePage.extend({
     	'input  [data-hook = font-size-range]'         : 'setBeforeSize',
     	'change [data-hook = font-size-text]'          : 'setBeforeSize',
 
+    	'input  [data-hook = before-font-size-range]'  : 'setBeforeFontSize',
+    	'change [data-hook = before-font-size-text]'   : 'setBeforeFontSize',
+
     	'change [data-hook = before-color-picker]'     : 'setBeforeColor',
     	'change [data-hook = before-color-picker-text]': 'setBeforeColor',
 
@@ -32,6 +35,7 @@ module.exports = BasePage.extend({
 
 		// listen to model
         this.listenTo(this.model, 'change:beforeSize', this.beforeSizeChanged);
+        this.listenTo(this.model, 'change:beforeFontSize', this.beforeFontSizeChanged);
         this.listenTo(this.model, 'change:beforeColor', this.beforeColorChanged);
         this.listenTo(this.model, 'change:targetColor', this.targetColorChanged);
 
@@ -43,6 +47,7 @@ module.exports = BasePage.extend({
 
 		// initialize from model
 		this.beforeSizeChanged(this.model);
+		this.beforeFontSizeChanged(this.model);
 		this.beforeColorChanged(this.model);
 		this.targetColorChanged(this.model);
 
@@ -52,6 +57,10 @@ module.exports = BasePage.extend({
 	// set model state
 	setBeforeSize: function(ev) {
 		this.model.beforeSize = Number(ev.target.value);
+	},
+
+	setBeforeFontSize: function(ev) {
+		this.model.beforeFontSize = Number(ev.target.value);
 	},
 
 	setBeforeColor: function(ev) {
@@ -66,6 +75,10 @@ module.exports = BasePage.extend({
     beforeSizeChanged: function(model) {
     	this.queryByHook('font-size-range').value = model.beforeSize;
     	this.queryByHook('font-size-text').value = model.beforeSize;
+    },
+    beforeFontSizeChanged: function(model) {
+    	this.queryByHook('before-font-size-range').value = model.beforeFontSize;
+    	this.queryByHook('before-font-size-text').value = model.beforeFontSize;
     },
     beforeColorChanged: function(model) {
     	this.queryByHook('before-color-picker').value = model.beforeColor;

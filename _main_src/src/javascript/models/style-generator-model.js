@@ -15,15 +15,16 @@ module.exports = Model.extend({
         id: 'string',
         beforeSize: ['number', false, 14],
         beforeColor: ['string', false, '#000000'],
+        beforeFontSize: ['number', false, 12],
         targetColor: ['string', false, '#000000'],
     },
 
     derived: {
         beforeCss: {
-            deps: ['beforeSize', 'beforeColor'],
+            deps: ['beforeSize', 'beforeFontSize', 'beforeColor'],
             fn: function () {
-                return [ 'color:' + this.beforeColor +
-                		 ''].join();
+                return [ 'color: '     + this.beforeColor + '; '  +
+                		 'font-size: ' + this.beforeFontSize + 'px'].join();
             }
         },
         targetCss: {
