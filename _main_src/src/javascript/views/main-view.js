@@ -85,7 +85,7 @@ module.exports = View.extend({
         }
     },
 
-    updateActiveNav: function (view) {
+    updateActiveNav: function () {
         var path = window.location.hash;
 
         this.queryAll('.nav a[href]').forEach(function(aTag) {
