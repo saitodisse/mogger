@@ -9,6 +9,7 @@ var ViewSwitcher = require('ampersand-view-switcher');
 var ExampleDropdownItem = require('../pages/example-dropdown-item');
 var $ = require('jquery');
 var _ = require('lodash');
+var hljs = require('highlight.js');
 // var tracking = require('../helpers/metrics');
 
 /*
@@ -63,9 +64,11 @@ module.exports = View.extend({
 
         this.sendPageViewGoogleAnalytics();
 
-        var hljs = require('highlight.js');
+        this.highlightCode();
+    },
+
+    highlightCode: function() {
         $('pre code').each(function(i, block) {
-            //console.log('highlight.js', block);
             hljs.highlightBlock(block);
         });
     },

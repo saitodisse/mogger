@@ -52,9 +52,9 @@ module.exports = BasePage.extend({
 
 
         // update logs on every change
-        this.listenTo(this.model, 'change', function(model) {
-    		this._cleanAndShowLogs(model);
-        });
+        this.listenTo(this.model, 'change:beforeSize', this._cleanAndShowLogs);
+        this.listenTo(this.model, 'change:beforeCss', this._cleanAndShowLogs);
+        this.listenTo(this.model, 'change:targetCss', this._cleanAndShowLogs);
     },
 
     _initializeLogs: function() {
@@ -71,10 +71,14 @@ module.exports = BasePage.extend({
      * - and render logs
      */
     _cleanAndShowLogs: function(model) {
-		this.styleGeneratorExecute.setModel(model);
-		this.styleGeneratorExecute.clearConsole();
-		this.styleGeneratorExecute.createMogger();
-		this.styleGeneratorExecute.callSources();
+        this.styleGeneratorExecute.setModel(model);
+        this.styleGeneratorExecute.clearConsole();
+        this.styleGeneratorExecute.createMogger();
+        this.styleGeneratorExecute.callSources();
+
+        // update code
+        this.codeBeforeCssChanged(model);
+        app.view.highlightCode();
     },
 
     _initializeDOM: function() {
@@ -86,6 +90,8 @@ module.exports = BasePage.extend({
 
 		this.targetColorChanged(this.model);
 		this.targetFontSizeChanged(this.model);
+
+        this.codeBeforeCssChanged(this.model);
     },
 
 
@@ -134,8 +140,14 @@ module.exports = BasePage.extend({
     	this.queryByHook('target-color-picker-text').value = model.targetColor;
     },
     targetFontSizeChanged: function(model) {
-    	this.queryByHook('target-font-size-range').value = model.targetFontSize;
-    	this.queryByHook('target-font-size-text').value = model.targetFontSize;
+        this.queryByHook('target-font-size-range').value = model.targetFontSize;
+        this.queryByHook('target-font-size-text').value = model.targetFontSize;
+    },
+
+    codeBeforeCssChanged: function(model) {
+        this.queryByHook('code-before-css').innerHTML = '\'' + model.beforeCss + '\'';
+        this.queryByHook('code-before-size').innerHTML = model.beforeSize;
+    	this.queryByHook('code-target-css').innerHTML = '\'' + model.targetCss + '\'';
     },
 
 });

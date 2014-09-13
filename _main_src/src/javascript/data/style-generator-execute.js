@@ -37,11 +37,20 @@ module.exports = function() {
         });
 
         this.mogger.traceObj({
-            before: { message: 'Simple Obj 1' },
-            localBeforeConfig: { css: this.styleGenModel.beforeCss, size: this.styleGenModel.beforeSize },
+            before: {
+                message: 'Simple Obj 1'
+            },
+
+            localBeforeConfig: {
+                css: this.styleGenModel.beforeCss,
+                size: this.styleGenModel.beforeSize
+            },
 
             targetTitle: 'SIMPLE_OBJ_1',
-            localTargetConfig: { css: this.styleGenModel.targetCss }
+
+            localTargetConfig: {
+                css: this.styleGenModel.targetCss
+            }
         });
     };
 
