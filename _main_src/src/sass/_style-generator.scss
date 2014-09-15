@@ -14,10 +14,19 @@
 }
 
 .font-size-text{
-	width: 73px !important;
+	// width: 73px !important;
 }
 
 .color-picker-text{
-	width: 113px !important;
+	// width: 113px !important;
 }
 
+.font-size[disabled], .color-picker[disabled] {
+	cursor: not-allowed;
+	background-color: #EEE;
+	opacity: 0.6;
+}
+
+.form-group-hidden{
+	visibility: hidden;
+}
