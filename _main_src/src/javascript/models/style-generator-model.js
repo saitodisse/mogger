@@ -33,28 +33,42 @@ module.exports = Model.extend({
         targetCss: {
             deps: [
                 'targetColor',
+                'targetFontSizeDerived',
+                'targetColorDerived',
+            ],
+
+            fn: function () {
+                var fontSize = this.targetFontSizeDerived + 'px';
+                return [ 'color: '     + this.targetColorDerived + '; '  +
+                         'font-size: ' + fontSize].join();
+            }
+        },
+        targetFontSizeDerived: {
+            deps: [
                 'targetFontSize',
-
-
                 'lockFontSize', // when locked with before configs
-                'lockColor',
-                'beforeColor',
                 'beforeFontSize',
             ],
 
             fn: function () {
-
-                if(this.lockColor){
-                    this.targetColor = this.beforeColor;
-                }
-
                 if(this.lockFontSize){
-                    this.targetFontSize = this.beforeFontSize;
+                    return this.beforeFontSize;
                 }
-                var fontSize = this.targetFontSize + 'px';
+                return this.targetFontSize;
+            }
+        },
+        targetColorDerived: {
+            deps: [
+                'targetColor',
+                'lockColor', // when locked with before configs
+                'beforeColor',
+            ],
 
-                return [ 'color: '     + this.targetColor + '; '  +
-                		 'font-size: ' + fontSize].join();
+            fn: function () {
+                if(this.lockFontSize){
+                    return this.beforeColor;
+                }
+                return this.targetColor;
             }
         },
     }
