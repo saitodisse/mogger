@@ -29,7 +29,10 @@ module.exports = BasePage.extend({
     	'change [data-hook = target-color-picker]'     : 'setTargetColor',
     	'change [data-hook = target-color-picker-text]': 'setTargetColor',
     	'input  [data-hook = target-font-size-range]'  : 'setTargetFontSize',
-    	'change [data-hook = target-font-size-text]'   : 'setTargetFontSize',
+        'change [data-hook = target-font-size-text]'   : 'setTargetFontSize',
+
+        'click [data-hook = check-lock-font-size]'     : 'setLockFontSize',
+    	'click [data-hook = check-lock-color]'         : 'setLockColor',
     },
 
     render: function () {
@@ -49,6 +52,9 @@ module.exports = BasePage.extend({
 
         this.listenTo(this.model, 'change:targetColor', this.targetColorChanged);
         this.listenTo(this.model, 'change:targetFontSize', this.targetFontSizeChanged);
+
+        this.listenTo(this.model, 'change:lockFontSize', this.lockFontSizeChanged);
+        this.listenTo(this.model, 'change:lockColor', this.lockColorChanged);
 
 
         // update logs on every change
@@ -89,7 +95,10 @@ module.exports = BasePage.extend({
 		this.beforeFontSizeChanged(this.model);
 
 		this.targetColorChanged(this.model);
-		this.targetFontSizeChanged(this.model);
+        this.targetFontSizeChanged(this.model);
+
+        this.lockFontSizeChanged(this.model);
+        this.lockColorChanged(this.model);
 
         this.codeBeforeCssChanged(this.model);
     },
@@ -115,6 +124,14 @@ module.exports = BasePage.extend({
 	setTargetFontSize: function(ev) {
 		this.model.targetFontSize = Number(ev.target.value);
 	},
+
+    setLockFontSize: function(ev) {
+        this.model.lockFontSize = ev.target.checked;
+    },
+
+    setLockColor: function(ev) {
+        this.model.lockColor = ev.target.checked;
+    },
 
 
 
@@ -142,6 +159,16 @@ module.exports = BasePage.extend({
     targetFontSizeChanged: function(model) {
         this.queryByHook('target-font-size-range').value = model.targetFontSize;
         this.queryByHook('target-font-size-text').value = model.targetFontSize;
+    },
+
+    lockFontSizeChanged: function(model) {
+        this.queryByHook('target-font-size-range').disabled = model.lockFontSize;
+        this.queryByHook('target-font-size-text').disabled = model.lockFontSize;
+    },
+
+    lockColorChanged: function(model) {
+        this.queryByHook('target-color-picker').disabled = model.lockColor;
+        this.queryByHook('target-color-picker-text').disabled = model.lockColor;
     },
 
     codeBeforeCssChanged: function(model) {

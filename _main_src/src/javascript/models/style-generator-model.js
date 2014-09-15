@@ -18,6 +18,8 @@ module.exports = Model.extend({
         beforeFontSize: ['number', false, 12],
         targetColor: ['string', false, '#000000'],
         targetFontSize: ['number', false, 12],
+        lockColor: ['boolean', false, true],
+        lockFontSize: ['boolean', false, true],
     },
 
     derived: {
@@ -29,10 +31,30 @@ module.exports = Model.extend({
             }
         },
         targetCss: {
-            deps: ['targetColor', 'targetFontSize'],
+            deps: [
+                'targetColor',
+                'targetFontSize',
+
+
+                'lockFontSize', // when locked with before configs
+                'lockColor',
+                'beforeColor',
+                'beforeFontSize',
+            ],
+
             fn: function () {
+
+                if(this.lockColor){
+                    this.targetColor = this.beforeColor;
+                }
+
+                if(this.lockFontSize){
+                    this.targetFontSize = this.beforeFontSize;
+                }
+                var fontSize = this.targetFontSize + 'px';
+
                 return [ 'color: '     + this.targetColor + '; '  +
-                		 'font-size: ' + this.targetFontSize + 'px'].join();
+                		 'font-size: ' + fontSize].join();
             }
         },
     }
