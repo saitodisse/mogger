@@ -162,11 +162,13 @@ module.exports = BasePage.extend({
     },
 
     lockFontSizeChanged: function(model) {
+        this.queryByHook('check-lock-font-size').checked = model.lockFontSize;
         this.queryByHook('target-font-size-range').disabled = model.lockFontSize;
         this.queryByHook('target-font-size-text').disabled = model.lockFontSize;
     },
 
     lockColorChanged: function(model) {
+        this.queryByHook('check-lock-color').checked = model.lockColor;
         this.queryByHook('target-color-picker').disabled = model.lockColor;
         this.queryByHook('target-color-picker-text').disabled = model.lockColor;
     },
