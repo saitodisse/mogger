@@ -81,20 +81,24 @@ code.javascript.hljs {
 .screenshot img {
   box-shadow: 5px 5px 7px 0px rgba(50, 50, 50, 0.71); }
 
+.sub-form {
+  margin: 16px 0px 0px 12px; }
+
 .font-size {
-  margin: 6px 0px 0px 28px;
-  width: 271px !important; }
+  margin: 6px 0px 0px 0px; }
 
 .color-picker {
   height: 31px;
   margin: 2px 0px 0px 0px;
-  width: 277px; }
+  width: 100%; }
 
-.font-size-text {
-  width: 73px !important; }
+.font-size[disabled], .color-picker[disabled] {
+  cursor: not-allowed;
+  background-color: #EEE;
+  opacity: 0.6; }
 
-.color-picker-text {
-  width: 113px !important; }
+.form-group-hidden {
+  visibility: hidden; }
 
 /*! normalize.css v3.0.1 | MIT License | git.io/normalize */
 html {
