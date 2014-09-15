@@ -50,8 +50,8 @@ module.exports = BasePage.extend({
         this.listenTo(this.model, 'change:beforeColor', this.beforeColorChanged);
         this.listenTo(this.model, 'change:beforeFontSize', this.beforeFontSizeChanged);
 
-        this.listenTo(this.model, 'change:targetColor', this.targetColorChanged);
-        this.listenTo(this.model, 'change:targetFontSize', this.targetFontSizeChanged);
+        this.listenTo(this.model, 'change:targetColorDerived', this.targetColorChanged);
+        this.listenTo(this.model, 'change:targetFontSizeDerived', this.targetFontSizeChanged);
 
         this.listenTo(this.model, 'change:lockFontSize', this.lockFontSizeChanged);
         this.listenTo(this.model, 'change:lockColor', this.lockColorChanged);
@@ -153,12 +153,12 @@ module.exports = BasePage.extend({
     },
 
     targetColorChanged: function(model) {
-    	this.queryByHook('target-color-picker').value = model.targetColor;
-    	this.queryByHook('target-color-picker-text').value = model.targetColor;
+    	this.queryByHook('target-color-picker').value = model.targetColorDerived;
+    	this.queryByHook('target-color-picker-text').value = model.targetColorDerived;
     },
     targetFontSizeChanged: function(model) {
-        this.queryByHook('target-font-size-range').value = model.targetFontSize;
-        this.queryByHook('target-font-size-text').value = model.targetFontSize;
+        this.queryByHook('target-font-size-range').value = model.targetFontSizeDerived;
+        this.queryByHook('target-font-size-text').value = model.targetFontSizeDerived;
     },
 
     lockFontSizeChanged: function(model) {
