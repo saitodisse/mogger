@@ -3,6 +3,9 @@
 var BasePage = require('./base-page');
 var configuration = require('../configuration');
 var StyleGeneratorExecute = require('../data/style-generator-execute');
+var DetectConsoleModalInclude = require('./detect-console-modal-include');
+var $ = require('jquery');
+
 /*
 
 file:     style-generator-page.js
@@ -37,6 +40,14 @@ module.exports = BasePage.extend({
 
     render: function () {
         this.renderWithTemplate(this);
+
+        this.renderSubview(new DetectConsoleModalInclude(), '[data-hook=detect-console-modal-container]');
+
+        $(function() {
+            // from app.js
+            window.app.devTools.verifyConsole();
+        });
+
         this._initializeEvents();
         this._initializeLogs();
 		this._initializeDOM();

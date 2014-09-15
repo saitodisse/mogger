@@ -3,6 +3,7 @@
 var BasePage = require('./base-page');
 var configuration = require('../configuration');
 var shortcuts = require('../shortcuts');
+var DetectConsoleModalInclude = require('./detect-console-modal-include')
 var $ = require('jquery');
 
 /*
@@ -65,6 +66,8 @@ module.exports = BasePage.extend({
 
     render: function () {
         this.renderWithTemplate(this);
+
+        this.renderSubview(new DetectConsoleModalInclude(), '[data-hook=detect-console-modal-container]');
 
         // run example script
         this.model.script();
