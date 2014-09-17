@@ -49,3 +49,16 @@ gulp.task('istanbul', function () {
            ;
         });
 });
+
+
+gulp.task('browserify', function() {
+
+    var browserify = require('gulp-browserify');
+    // var exposify   = require('exposify');
+
+    // exposify.config = { Mogger: 'Mogger', ColorfulLogger: 'ColorfulLogger' };
+    // Single entry point to browserify
+    gulp.src('src/mogger.js')
+        .pipe(browserify())
+        .pipe(gulp.dest('./dist'));
+});

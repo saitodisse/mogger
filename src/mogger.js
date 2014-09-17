@@ -111,4 +111,10 @@ Mogger.prototype.removeAllTraces = function() {
 };
 
 
+if(typeof window !== 'undefined'){
+    window.Mogger = Mogger;
+}
+
 module.exports = Mogger;
+
+
