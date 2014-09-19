@@ -1,5 +1,8 @@
 # TODO
 
+- [ ] include lodash node_modules to coverage and extract or use individual packages from lodash
+- [ ] minify everything but mogger on build gulp task
+
 - [x] Break tests on many files
 
  * Creation
