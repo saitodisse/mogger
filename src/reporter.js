@@ -183,10 +183,10 @@ Reporter.prototype._renderToConsole = function(info, mainMessage) {
     }
 };
 
-var globalTimeoutLogId = null;
+this.globalTimeoutLogId = null;
 
 var setParentTimeout = function(logger, wait, pauseCallBack) {
-    globalTimeoutLogId = setTimeout(function (){
+    this.globalTimeoutLogId = setTimeout(function (){
         logger.log('----------------------------------pause--------------------------');
         if(pauseCallBack){
             pauseCallBack();
