@@ -1,5 +1,9 @@
 # TODO
 
+- [ ] include lodash node_modules to coverage and extract or use individual packages from lodash
+- [ ] minify everything but mogger on build gulp task
+- [ ] include all interception mode like https://github.com/saitodisse/meteor-todomvc-auth/blob/master/client/mogger-start/enable-mogger.js in Mogger
+
 - [x] Break tests on many files
 
  * Creation
