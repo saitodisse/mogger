@@ -57,7 +57,12 @@ Reporter.prototype.onCall = function(info) {
     // Pause
     if(this.showPause){
         // cancel last setTimeout because is processing
-        clearTimeout(this.globalTimeoutLogId);
+        if(typeof window !== 'undefined'){
+            clearTimeout(window.globalTimeoutLogId);
+        }else{
+            clearTimeout(this.globalTimeoutLogId);
+        }
+
         // if not canceled, it shows the line bellow
 
         setParentTimeout(this.logger, this.waitForPause, this.pauseCallBack);
@@ -183,15 +188,26 @@ Reporter.prototype._renderToConsole = function(info, mainMessage) {
     }
 };
 
-this.globalTimeoutLogId = null;
+if(typeof window !== 'undefined'){
+    window.globalTimeoutLogId = null;
+}
+else{
+    this.globalTimeoutLogId = null;
+}
 
 var setParentTimeout = function(logger, wait, pauseCallBack) {
-    this.globalTimeoutLogId = setTimeout(function (){
+    var globalTimeoutLogId = setTimeout(function (){
         logger.log('----------------------------------pause--------------------------');
         if(pauseCallBack){
             pauseCallBack();
         }
     }.bind(this), wait);
+
+    if(typeof window !== 'undefined'){
+        window.globalTimeoutLogId = globalTimeoutLogId;
+    }else{
+        this.globalTimeoutLogId = globalTimeoutLogId;
+    }
 };
 
 module.exports = Reporter;
