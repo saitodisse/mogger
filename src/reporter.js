@@ -1,5 +1,5 @@
 var ColorfulLogger = require('colorful-logger');
-var _ = require('lodash');
+var _ = require('./custom-lodash');
 var helpers = require('./helpers');
 
 /**

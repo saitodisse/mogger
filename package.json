@@ -33,7 +33,15 @@
   "homepage": "https://github.com/saitodisse/mogger",
   "dependencies": {
     "colorful-logger": "^0.1.1",
-    "lodash": "^2.4.1",
+    "lodash.find": "^2.4.1",
+    "lodash.isarray": "^2.4.1",
+    "lodash.isboolean": "^2.4.1",
+    "lodash.isempty": "^2.4.1",
+    "lodash.isnumber": "^2.4.1",
+    "lodash.isobject": "^2.4.1",
+    "lodash.isstring": "^2.4.1",
+    "lodash.isundefined": "^2.4.1",
+    "lodash.merge": "^2.4.1",
     "meld": "saitodisse/meld"
   },
   "devDependencies": {
@@ -52,6 +60,7 @@
     "gulp-watch": "^0.7.0",
     "istanbul": "^0.3.1",
     "jshint-stylish": "^0.2.0",
+    "lodash": "^2.4.1",
     "mocha": "^1.21.4",
     "mocha-istanbul": "^0.2.0",
     "sinon": "^1.10.3"

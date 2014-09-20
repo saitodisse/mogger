@@ -12,7 +12,7 @@
  */
 
 var meld                = require('meld');
-var _                   = require('lodash');
+var _                   = require('./custom-lodash');
 var traceAspect         = require('./trace-aspect');
 var defaultConfig       = require('./default-config');
 var interceptorsHelpers = require('./interceptors-helpers');

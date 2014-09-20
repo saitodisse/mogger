@@ -1,4 +1,4 @@
-var _ = require('lodash');
+var _ = require('./custom-lodash');
 
 var checkRelevantArguments = function(args) {
   if(args.length === 0){

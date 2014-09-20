@@ -14,7 +14,7 @@
 
 var assert = require('assert');
 var sinon = require('sinon');
-var _ = require('lodash');
+var _ = require('../src/custom-lodash');
 var traceAspect = require('../src/trace-aspect');
 
 describe('Trace Aspect (meld)', function (){

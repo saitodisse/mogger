@@ -16,7 +16,7 @@ var assert          = require('assert'),
     sinon           = require('sinon'),
     Reporter        = require('../src/reporter'),
     fakeConsole     = require('./fake-console'),
-    _               = require('lodash'),
+    _               = require('../src/custom-lodash'),
     defaultConfig   = require('../src/default-config'),
     reporter
 ;
