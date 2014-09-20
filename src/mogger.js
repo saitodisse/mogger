@@ -48,7 +48,7 @@ Mogger.prototype.traceObj = function(localOptions) {
 
     var surrogateTargetItem = this._selectTargetFromSurrogateTargets();
 
-    var pointcut = this.pointcut || /./;
+    var pointcut = localOptions.pointcut || this.pointcut || /./;
 
     var reporter = this._createReporter(localOptions);
 

@@ -73,6 +73,19 @@ describe('traceObj() Functional Tests', function(){
             assert.equal('addNumbers', fakeConsole.logRecorder[0].message);
             assert.equal('justReturn', fakeConsole.logRecorder[1].message);
         });
+
+        it('pointcut must filter methods name locally', function () {
+            mogger.traceObj({
+                targetTitle: 'SAMPLE_OBJ',
+                pointcut: /addNumbers/i
+            });
+
+            sample_obj.addNumbers();
+            sample_obj.justReturn();
+
+            assert.equal(1, fakeConsole.logRecorder.length);
+            assert.equal('addNumbers', fakeConsole.logRecorder[0].message);
+        });
     });
 
     describe('css', function () {
