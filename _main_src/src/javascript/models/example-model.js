@@ -29,7 +29,7 @@ module.exports = Model.extend({
         sourceExampleUrl: {
             deps: ['id'],
             fn: function () {
-                return 'https://github.com/saitodisse/mogger/blob/gh-pages/_main_src/src/javascript/pages/examples/' + this.id + '-src.js';
+                return 'https://github.com/saitodisse/mogger/tree/gh-pages/_main_src/src/javascript/data/examples/' + this.id + '-src.js';
             }
         },
         hashUrl: {
